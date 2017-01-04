@@ -1,9 +1,11 @@
 package com.xinyu.mwp.ui.activities;
 
+import android.media.tv.TvContract;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -86,8 +88,10 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         FragmentTransaction tr = fragmentManager.beginTransaction();
         switch (view.getId()) {
-            case R.id.view_head:
-                ToastUtil.showToast("111111", context);
+            case R.id.view_head:  //进入注册页面
+                //ToastUtil.showToast("注册", context);
+               // toActivity(RegisterActivity.class);
+                toActivity(LogonActivity.class,false);
                 break;
             case R.id.home_layout:
                 if (mHomeFragment == null) {

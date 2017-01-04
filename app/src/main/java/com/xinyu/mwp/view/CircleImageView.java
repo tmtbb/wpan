@@ -1,4 +1,4 @@
-package com.xinyu.mwp.view;
+package com.xinyu.mwp.view;//package com.xinyu.mwp.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
