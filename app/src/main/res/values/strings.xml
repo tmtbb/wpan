@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WpanDemo</string>
+
+    <string name="tab_home">首页</string>
+    <string name="tab_exchange">交易</string>
+    <string name="tab_share">晒单</string>
+</resources>
