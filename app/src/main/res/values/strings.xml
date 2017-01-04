@@ -4,4 +4,22 @@
     <string name="tab_home">首页</string>
     <string name="tab_exchange">交易</string>
     <string name="tab_share">晒单</string>
+    <string name="propt_phone">请输入手机号</string>
+    <string name="propt_identifying_code">请输入验证码</string>
+    <string name="propt_identifying_code_voice">请输入语音验证码</string>
+    <string name="propt_get_voice_code">获取语音验证码</string>
+    <string name="btn_next">下一步</string>
+    <string name="prop_user_pwd">请设置用户密码</string>
+    <string name="set_trade_pwd">设置交易密码</string>
+    <string name="set_trade_pwd_confirm">重新输入交易密码</string>
+    <string name="user_agreement">点击确定,即同意用户协议</string>
+    <string name="btn_sure">确定</string>
+    <string name="btn_sure_modify">确认修改</string>
+    <string name="et_pet_name">输入昵称</string>
+    <string name="et_trade_name">请输入交易密码</string>
+    <string name="et_forget_pwd">忘记密码</string>
+    <string name="et_logon">登录</string>
+    <string name="et_register">注册</string>
+
+    <string name="btn_random">随机</string>
 </resources>

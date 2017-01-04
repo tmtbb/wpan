@@ -13,4 +13,24 @@
         <item name="android:windowExitAnimation">@anim/dark_fade_out</item>
     </style>
 
+    <style name="style_et_phone">
+        <item name="android:inputType">phone|number</item>
+        <item name="android:layout_width">600px</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:layout_marginLeft">20px</item>
+        <item name="android:layout_marginRight">20px</item>
+        <item name="android:layout_marginTop">10px</item>
+    </style>
+
+    <style name="style_btn_next">
+        <item name="android:layout_marginLeft">20px</item>
+        <item name="android:layout_marginRight">20px</item>
+        <item name="android:layout_marginTop">10px</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80px</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">#e9573f</item>
+        <item name="android:textSize">36px</item>
+    </style>
+
 </resources>
