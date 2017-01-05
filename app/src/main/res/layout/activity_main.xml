@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -114,31 +113,133 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp">
-
-                <com.xinyu.mwp.view.CircleImageView
-                    android:id="@+id/view_head"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@mipmap/ic_person_left"/>
+                android:background="#0ff"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_marginLeft="10dp">
+
+                    <com.xinyu.mwp.view.CircleImageView
+                        android:id="@+id/view_head"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="30dp"
+                        android:src="@mipmap/ic_person_left"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="45dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="我的大刀"
+                            android:textColor="@color/color_toorbar"
+                            android:textSize="24sp"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/security_rank"
+                                android:textColor="@color/gray_4"
+                                android:textSize="16sp"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/ic_star"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/ic_star"/>
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/ic_star"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="我的大刀"/>
+                        android:drawableLeft="@mipmap/ic_assets"
+                        android:drawablePadding="5dp"
+                        android:text="@string/my_assets"
+                        android:textColor="@color/gray_4"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_assets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_assets_num"
+                        android:textColor="@color/color_toorbar"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="安全等级"/>
+                        android:drawableLeft="@mipmap/ic_grade"
+                        android:drawablePadding="5dp"
+                        android:text="@string/my_grade"
+                        android:textColor="@color/gray_4"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_grade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_grade_num"
+                        android:textColor="@color/color_toorbar"
+                        android:textSize="16sp"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/white"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_drawer_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/bg_drawer_setting"/>
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

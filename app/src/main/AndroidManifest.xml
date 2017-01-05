@@ -21,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.AActivity"/>
         <activity android:name=".ui.activities.RegisterActivity"/>
         <activity android:name=".ui.activities.SetTradePwdActivity"/>
         <activity android:name=".ui.activities.SetPetNameActivity"/>

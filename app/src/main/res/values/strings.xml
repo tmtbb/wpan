@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WpanDemo</string>
+    <string name="app_name">Wpan</string>
 
     <string name="tab_home">首页</string>
     <string name="tab_exchange">交易</string>
@@ -22,4 +22,20 @@
     <string name="et_register">注册</string>
 
     <string name="btn_random">随机</string>
+
+    <!--侧滑菜单栏-->
+    <string name="security_rank">安全等级</string>
+    <string name="my_assets">我的资产：</string>
+    <string name="my_assets_num">%s 元</string>
+    <string name="my_grade">我的积分：</string>
+    <string name="my_grade_num">%s 分</string>
+    <array name="drawer_setting">
+        <item>我的关注</item>
+        <item>我的推单</item>
+        <item>我的晒单</item>
+        <item>交易明细</item>
+        <item>意见反馈</item>
+        <item>产品评分</item>
+        <item>关注我们</item>
+    </array>
 </resources>
