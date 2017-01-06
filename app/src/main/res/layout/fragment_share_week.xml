@@ -36,14 +36,14 @@
             android:textSize="24px" />
     </com.zhy.autolayout.AutoLinearLayout>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_marginTop="22px"
         android:id="@+id/lv_share_ranking_week"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 </com.zhy.autolayout.AutoLinearLayout>

@@ -2,87 +2,74 @@ package com.xinyu.mwp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.base.BaseFragment;
+import com.xinyu.mwp.bean.ProductBean;
+import com.xinyu.mwp.ui.adapter.RankingInfoAdapter;
 import com.xinyu.mwp.utils.LogUtil;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
  * 上周名人
  * Created by Administrator on 2017/1/6.
  */
-public class WeekRankingFragment extends Fragment {
+public class WeekRankingFragment extends BaseFragment {
+    @BindView(R.id.tv_share_ranking)
+    TextView tvShareRanking;
+    @BindView(R.id.lv_share_ranking_week)
+    RecyclerView lvShareRankingWeek;
 
+    List<ProductBean> mList;
 
-    private View view;
-    private TextView tvRanking;  //排名名次
-    private ListView lvWeek;  //listView
-    private List<String> list;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        setContentView(R.layout.fragment_share_week);
 
-        view = inflater.inflate(R.layout.fragment_share_week, container, false);
+        // ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+
         initView();
-        initData();
-        return view;
+
+        return parentView;
     }
 
-    //初始化布局
-    private void initView() {
-        tvRanking = (TextView) view.findViewById(R.id.tv_share_ranking);
-        lvWeek = (ListView) view.findViewById(R.id.lv_share_ranking_week);
-        list = new ArrayList<>();
-        list.add("猪八戒");
-        list.add("沙和尚");
-        list.add("唐僧");
-        list.add("孙悟空");
-    }
-
-    //初始化数据  网络请求数据--javabean对象--填充到item里面
-    private void initData() {
-        LogUtil.d("上周名人--初始化");
-        lvWeek.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return list.get(position);
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-
-                if (convertView == null){
-                    convertView = View.inflate(getContext(),R.layout.item_share_ranking,null);
-                }
-                TextView userName = (TextView) convertView.findViewById(R.id.tv_user_name);
-                userName.setText(list.get(position));
-
-                AutoUtils.autoSize(convertView);
-                return convertView;
-            }
-        });
+    @Override
+    public void initView() {
+        /**
+         *jiashuju
+         */
+        mList = new ArrayList<>();
+        List<String> products = Arrays.asList(getResources().getStringArray(R.array.defaultname));
+        ProductBean bean;
+        int size = products.size();
+        for (int i = 0; i < size; i++) {
+            bean = new ProductBean();
+            bean.setName(products.get(i));
+            mList.add(bean);
+        }
+        lvShareRankingWeek.setLayoutManager(new LinearLayoutManager(context));
+        lvShareRankingWeek.setHasFixedSize(true);
+        tvShareRanking.setText("100");
+        RankingInfoAdapter adapter = new RankingInfoAdapter(context, mList, R.layout.item_share_ranking);
+        lvShareRankingWeek.setAdapter(adapter);
     }
 }
+

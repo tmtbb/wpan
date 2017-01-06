@@ -2,7 +2,6 @@ package com.xinyu.mwp.ui.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -45,16 +44,16 @@ public class SetPetNameActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_name);
         ButterKnife.bind(this);
-        initActinbar(toolBar, null);
+        //initToolbar(toolBar, null);
 
     }
 
-    @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawer) {
-        super.initActinbar(toolbar, drawer);
+    /*@Override
+    public void initToolbar(Toolbar toolbar, DrawerLayout drawer) {
+        super.initToolbar(toolbar, drawer);
         toolbarTitle.setText("修改昵称");
         toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
-    }
+    }*/
 
     @Override
     public void initView() {

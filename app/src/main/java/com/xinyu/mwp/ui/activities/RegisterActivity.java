@@ -3,7 +3,6 @@ package com.xinyu.mwp.ui.activities;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
@@ -59,7 +58,7 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
-        initActinbar(toolBar, null);
+        //initToolbar(toolBar, null);
         codeUtils = CodeUtils.getInstance();
         //生成一张验证码图片
         ivIdentifyingCode.setImageBitmap(codeUtils.createBitmap());
@@ -68,14 +67,14 @@ public class RegisterActivity extends BaseActivity {
 
     }
 
-    @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawer) {
-        super.initActinbar(toolbar, drawer);
+    /*@Override
+    public void initToolbar(Toolbar toolbar, DrawerLayout drawer) {
+        super.initToolbar(toolbar, drawer);
         toolbarTitle.setText("注册");
 //        toolbarTitle.setTextColor();
 //        toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 36);
         toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
-    }
+    }*/
 
     @Override
     public void initView() {

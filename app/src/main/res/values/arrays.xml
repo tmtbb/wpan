@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="products">
+        <item>白银</item>
+        <item>原油</item>
+        <item>咖啡</item>
+    </string-array>
+
+    <string-array name="defaultname">
+        <item>唐僧</item>
+        <item>孙悟空</item>
+        <item>猪八戒</item>
+        <item>沙僧</item>
+    </string-array>
+</resources>

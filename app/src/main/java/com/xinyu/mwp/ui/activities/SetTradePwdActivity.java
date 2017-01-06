@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
@@ -51,7 +50,7 @@ public class SetTradePwdActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tradepwd);
         ButterKnife.bind(this);
-        initActinbar(toolBar, null);
+       //initToolbar(toolBar, null);
 
         //触摸输入框的时候,清除所有格式
         etTradePwd.setOnTouchListener(new View.OnTouchListener() {
@@ -70,12 +69,12 @@ public class SetTradePwdActivity extends BaseActivity {
         });
     }
 
-    @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawer) {
-        super.initActinbar(toolbar, drawer);
+    /*@Override
+    public void initToolbar(Toolbar toolbar, DrawerLayout drawer) {
+        super.initToolbar(toolbar, drawer);
         toolbarTitle.setText("设置交易密码");
         toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
-    }
+    }*/
 
     @Override
     public void initView() {
