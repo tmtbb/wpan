@@ -1,11 +1,9 @@
 package com.xinyu.mwp.ui.activities;
 
-import android.media.tv.TvContract;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,8 +15,8 @@ import com.xinyu.mwp.base.BaseActivity;
 import com.xinyu.mwp.ui.fragments.ExchangeFragment;
 import com.xinyu.mwp.ui.fragments.HomeFragment;
 import com.xinyu.mwp.ui.fragments.ShareFragment;
+import com.xinyu.mwp.ui.fragments.ToolNavigationDrawerFragment;
 import com.xinyu.mwp.utils.ToastUtil;
-import com.xinyu.mwp.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,50 +24,60 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements ToolNavigationDrawerFragment.menuItemClickListener {
 
     @BindView(R.id.toolBar)
-    Toolbar mToolBar;
-    @BindView(R.id.container)
-    FrameLayout mContainer;
+    Toolbar mToolbar;
     @BindView(R.id.toolbar_title)
     TextView mToolbarTitle;
-    @BindView(R.id.drawer)
-    DrawerLayout mDrawer;
-    @BindView(R.id.view_head)
-    CircleImageView mHead;
-    @BindView(R.id.nav_bar)
-    LinearLayout mNavBar;
+    @BindView(R.id.container)
+    FrameLayout mContainer;
     @BindView(R.id.home_layout)
     LinearLayout mHomeLayout;
     @BindView(R.id.exchange_layout)
     LinearLayout mExchangeLayout;
     @BindView(R.id.share_layout)
     LinearLayout mShareLayout;
+    @BindView(R.id.left_drawer)
+    DrawerLayout mLeftDrawer;
 
-    public static HomeFragment mHomeFragment;
-    public static ExchangeFragment mExchangeFragment;
-    public static ShareFragment mShareFragment;
-    private List<View> mViews = new ArrayList<>();
+    public HomeFragment mHomeFragment;
+    public ExchangeFragment mExchangeFragment;
+    public ShareFragment mShareFragment;
+    private List<View> mViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initActinbar(mToolBar, mDrawer);
+        initView();
+        initFragments(savedInstanceState);
     }
 
-    @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawer) {
-        super.initActinbar(toolbar, drawer);
-        mToolbarTitle.setText("喵仔微盘");
-        mToolBar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
+    /**
+     * 为页面加载初始状态的fragment
+     */
+    private void initFragments(Bundle savedInstanceState) {
+        //判断activity是否重建，如果不是，则不需要重新建立fragment.
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            if (currentFragment == null) {
+                currentFragment = new HomeFragment();
+            }
+            mHomeFragment = (HomeFragment) currentFragment;
+            ft.replace(R.id.container, currentFragment).commitAllowingStateLoss();
+        }
     }
 
     @Override
     public void initView() {
-        mHomeFragment = new HomeFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, mHomeFragment).commitAllowingStateLoss();
+        mDrawer = mLeftDrawer;
+        initToolbar(mToolbar, mToolbarTitle, getString(R.string.home_toolbar));
+        mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
+        /**
+         * 首页tab导航页
+         */
+        mViews = new ArrayList<>();
         mHomeLayout.setSelected(true);
         mViews.add(mHomeLayout);
         mViews.add(mExchangeLayout);
@@ -84,16 +92,14 @@ public class MainActivity extends BaseActivity {
     public void initListener() {
     }
 
-    @OnClick({R.id.view_head, R.id.home_layout, R.id.exchange_layout, R.id.share_layout})
+    @OnClick({R.id.home_layout, R.id.exchange_layout, R.id.share_layout})
     public void onClick(View view) {
         FragmentTransaction tr = fragmentManager.beginTransaction();
         switch (view.getId()) {
-            case R.id.view_head:  //进入注册页面
-                //ToastUtil.showToast("注册", context);
-               // toActivity(RegisterActivity.class);
-                toActivity(LogonActivity.class,false);
-                break;
             case R.id.home_layout:
+                mToolbar.setVisibility(View.VISIBLE);
+                initToolbar(mToolbar, mToolbarTitle, getString(R.string.home_toolbar));
+                mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
                 if (mHomeFragment == null) {
                     mHomeFragment = new HomeFragment();
                 }
@@ -105,6 +111,9 @@ public class MainActivity extends BaseActivity {
                 setFragmentSelectedById(0);
                 break;
             case R.id.exchange_layout:
+                mToolbar.setVisibility(View.VISIBLE);
+                initToolbar(mToolbar, mToolbarTitle, getString(R.string.tab_exchange));
+                mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_back);
                 if (mExchangeFragment == null) {
                     mExchangeFragment = new ExchangeFragment();
                 }
@@ -116,6 +125,7 @@ public class MainActivity extends BaseActivity {
                 setFragmentSelectedById(1);
                 break;
             case R.id.share_layout:
+                mToolbar.setVisibility(View.GONE);
                 if (mShareFragment == null) {
                     mShareFragment = new ShareFragment();
                 }
@@ -175,5 +185,20 @@ public class MainActivity extends BaseActivity {
             finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    public void menuItemClick(int position, String menuName) {
+        initToolbar(mToolbar, mToolbarTitle, menuName);
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        switch (position) {
+            case 0:
+                break;
+            default:
+                break;
+        }
+        invalidateOptionsMenu();
+        //关闭左侧滑出菜单
+        mDrawer.closeDrawers();
     }
 }

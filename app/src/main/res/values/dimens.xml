@@ -5,4 +5,10 @@
 
     <dimen name="drawerLayout_width">280dp</dimen>
     <dimen name="tab_height">60dp</dimen>
+    <dimen name="space">2dp</dimen>
+    <dimen name="home_banner_height">150dp</dimen>
+    <dimen name="home_activity_height">120dp</dimen>
+    <dimen name="divide_line_width">1dp</dimen>
+    <dimen name="divide_line_height">1dp</dimen>
+
 </resources>
