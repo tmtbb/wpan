@@ -32,12 +32,22 @@ public class HomeFragment extends BaseFragment {
     LinearLayout mBanner;
     @BindView(R.id.ll_dots)
     LinearLayout mDots;
+    @BindView(R.id.view_activity)
+    LinearLayout mActivities;
+    @BindView(R.id.ll_dot_activity)
+    LinearLayout mLLDots;
 
     private int[] banners = new int[]{R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner3,
             R.mipmap.banner4, R.mipmap.banner5, R.mipmap.banner6, R.mipmap.banner7};
-    private AutoScrollViewPager mViewPager;
+    private AutoScrollViewPager mBannerViewPager;
+    private AutoScrollViewPager mActivityViewPager;
     private List<ImageView> imgViews;
     private List<ImageView> imgDots;
+
+    private int[] activities = new int[]{R.mipmap.activity1, R.mipmap.activity2, R.mipmap.activity3};
+    private List<ImageView> imgActivities;
+    private List<ImageView> imgLLDots;
+
 
     @Nullable
     @Override
@@ -45,7 +55,6 @@ public class HomeFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         setContentView(R.layout.fragment_home);
         initView();
-        initData(null);
         initListener();
         return parentView;
     }
@@ -56,7 +65,6 @@ public class HomeFragment extends BaseFragment {
          * 首页轮播图
          */
         imgViews = new ArrayList<>();
-        imgDots = new ArrayList<>();
         int length = banners.length;
         for (int i = 0; i < length; i++) {
             ImageView view = new ImageView(context);
@@ -65,18 +73,37 @@ public class HomeFragment extends BaseFragment {
             imgViews.add(view);
         }
         imgDots = new ArrayList<>();
-        initDots(length);
-        mViewPager = new AutoScrollViewPager(context);
-        mViewPager.setImageView(imgViews);
-        mViewPager.setDots(imgDots);
-        mViewPager.start();
-        mBanner.addView(mViewPager);
+        initDots(banners, mDots, imgDots);
+        mBannerViewPager = new AutoScrollViewPager(context);
+        mBannerViewPager.setImageView(imgViews);
+        mBannerViewPager.setDots(imgDots);
+        mBannerViewPager.start();
+        mBanner.addView(mBannerViewPager);
+        /**
+         * 首页活动轮播图
+         */
+        imgActivities = new ArrayList<>();
+        int len = activities.length;
+        for (int i = 0; i < len; i++) {
+            ImageView view = new ImageView(context);
+            view.setImageResource(activities[i]);
+            view.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imgActivities.add(view);
+        }
+        imgLLDots = new ArrayList<>();
+        initDots(activities, mLLDots, imgLLDots);
+        mActivityViewPager = new AutoScrollViewPager(context);
+        mActivityViewPager.setImageView(imgActivities);
+        mActivityViewPager.setDots(imgLLDots);
+        mActivityViewPager.start();
+        mActivities.addView(mActivityViewPager);
     }
 
-    private void initDots(int size) {
-        imgDots.clear();
-        mDots.removeAllViews();
-        for (int i = 0; i < size; i++) {
+    private void initDots(int[] imgs, LinearLayout layout, List<ImageView> dots) {
+        dots.clear();
+        layout.removeAllViews();
+        int length = imgs.length;
+        for (int i = 0; i < length; i++) {
             ImageView dot = new ImageView(context);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(PixUtil.dip2px(context, 8), PixUtil.dip2px(context, 8));
             if (i == 0) {
@@ -86,14 +113,13 @@ public class HomeFragment extends BaseFragment {
                 dot.setBackgroundResource(R.drawable.dot_normal);
             }
             dot.setLayoutParams(params);
-            imgDots.add(dot);
-            mDots.addView(dot);
+            dots.add(dot);
+            layout.addView(dot);
         }
     }
 
     @Override
     public void initData(Object data) {
-
     }
 
     @Override
@@ -101,9 +127,17 @@ public class HomeFragment extends BaseFragment {
         /**
          * 轮播图点击监听
          */
-        mViewPager.setOnItemClickListener(new AutoScrollViewPager.onItemClickListener() {
+        mBannerViewPager.setOnItemClickListener(new AutoScrollViewPager.onItemClickListener() {
             @Override
             public void onClick(int position) {
+                // TODO: 2017/1/5 广告栏点击进入详情页待定
+                ToastUtil.showToast("点击了第" + (position + 1) + "个条目", context);
+            }
+        });
+        mActivityViewPager.setOnItemClickListener(new AutoScrollViewPager.onItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                // TODO: 2017/1/5 广告栏点击进入详情页待定
                 ToastUtil.showToast("点击了第" + (position + 1) + "个条目", context);
             }
         });

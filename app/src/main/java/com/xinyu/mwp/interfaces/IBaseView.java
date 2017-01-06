@@ -1,7 +1,7 @@
 package com.xinyu.mwp.interfaces;
 
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 /**
  * Created by Don on 2016/11/11 17:54.
@@ -20,7 +20,7 @@ public interface IBaseView<T> {
     /**
      * actionBar
      */
-    void initActinbar(Toolbar toolbar, DrawerLayout drawer);
+    void initToolbar(Toolbar toolbar, TextView titleView, String title);
 
     /**
      * UI显示方法(操作UI，但不存在数据获取或处理代码，也不存在事件监听代码)

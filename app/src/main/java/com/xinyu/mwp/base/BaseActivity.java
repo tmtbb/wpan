@@ -10,14 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.interfaces.IBaseView;
@@ -60,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
      * @warn 不能在子类中创建
      */
     protected View view = null;
-    //protected Toolbar mToolbar;
+    protected BaseFragment currentFragment;
     /**
      * 布局解释器
      *
@@ -103,6 +103,8 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
      * 退出时该界面动画,可在finish();前通过改变它的值来改变动画效果
      */
     protected int exitAnim = R.anim.right_push_out;
+
+    protected ActionBarDrawerToggle mDrawerToggle;
 
     /**
      * 初始化方法
@@ -236,6 +238,27 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     public void onBackStackChanged() {
     }
 
+    /**
+     * 当fragment进行切换时，采用隐藏与显示的方法加载fragment以防止数据的重复加载
+     *
+     * @param from
+     * @param to
+     */
+    public void switchFragment(BaseFragment from, BaseFragment to) {
+        if (currentFragment != to) {
+            currentFragment = to;
+            //添加渐隐渐现的动画
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            // setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            //FragmentTransaction ft = fm.beginTransaction().setCustomAnimations(R.anim.in_from_right_fragment,R.anim.out_to_left_fragment);
+            if (!to.isAdded()) {    // 先判断是否被add过
+                ft.hide(from).add(R.id.container, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+            } else {
+                ft.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
+            }
+        }
+    }
+
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>显示fragment方法>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     protected void showFragment(Fragment targetFragment, String tag) {
         FragmentTransaction tr = fragmentManager.beginTransaction();
@@ -325,25 +348,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     }
 
     @Override
-    public void initActinbar(Toolbar toolbar, final DrawerLayout drawer) {
+    public void initToolbar(Toolbar toolbar, TextView titleView, String title) {
+        if (toolbar == null || titleView == null || title == null) {
+            return;
+        }
+        titleView.setText(title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (drawer == null) {
-                    finish();
-                } else {
-                    if (drawer.isDrawerVisible(Gravity.START)) {
-                        drawer.closeDrawer(Gravity.START);
-                    } else {
-                        drawer.openDrawer(Gravity.START);
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -352,7 +365,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
      * @param clazz
      */
     public void toActivity(Class<? extends BaseActivity> clazz) {
-        toActivity(clazz, -1);
+        toActivity(clazz, true);
     }
 
     public void toActivity(Class<? extends BaseActivity> clazz, boolean showAnimation) {
