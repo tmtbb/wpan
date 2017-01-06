@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +12,9 @@ import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.base.BaseActivity;
+import com.xinyu.mwp.utils.ToastUtil;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +36,8 @@ public class SetPetNameActivity extends BaseActivity {
     TextView btnRandom;
     @BindView(R.id.btn_modify_name)
     Button btnModifyName;
+    //模拟随机昵称
+    private String[] petNames = {"qqqqqqqq","wwwww","ccccc","vvvvvv"};
 
 
     @Override
@@ -70,8 +76,20 @@ public class SetPetNameActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_random: //随机获取昵称
+                Random r = new Random();
+                String petName = petNames[r.nextInt(4)];
+                etPetName.setText(petName);
                 break;
             case R.id.btn_modify_name:  //确认修改
+                //获取输入的昵称
+                String mPetName = etPetName.getText().toString().trim();
+
+                if (TextUtils.isEmpty(mPetName)){
+                    ToastUtil.showToast("昵称不能为空",context);
+                    return;
+                }
+                //判断昵称是否已经被使用
+
                 toActivity(MainActivity.class,false);
                 finish();
                 break;

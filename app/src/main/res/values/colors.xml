@@ -7,4 +7,6 @@
     <color name="color_toorbar">#e9573f</color>
     <color name="color_tab_text_color_normal">#666666</color>
     <color name="white">#ffffff</color>
+    <color name="color_bg">#f5f7fa</color>
+    <color name="color_share_font_normal">#444</color>
 </resources>

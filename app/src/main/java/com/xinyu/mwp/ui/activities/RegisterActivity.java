@@ -1,18 +1,25 @@
 package com.xinyu.mwp.ui.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.base.BaseActivity;
+import com.xinyu.mwp.configs.Constant;
+import com.xinyu.mwp.utils.CodeUtils;
+import com.xinyu.mwp.utils.LogUtil;
 import com.xinyu.mwp.utils.ToastUtil;
 
 import butterknife.BindView;
@@ -43,6 +50,8 @@ public class RegisterActivity extends BaseActivity {
     Button btnRegisterNext;  //下一步
     @BindView(R.id.et_user_pwd)
     EditText etUserPwd;
+    private CodeUtils codeUtils;
+    private String codePic;  //图片显示的验证码
 
 
     @Override
@@ -51,6 +60,11 @@ public class RegisterActivity extends BaseActivity {
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         initActinbar(toolBar, null);
+        codeUtils = CodeUtils.getInstance();
+        //生成一张验证码图片
+        ivIdentifyingCode.setImageBitmap(codeUtils.createBitmap());
+        codePic = codeUtils.getCode();
+        LogUtil.d("1,图片显示的验证码是"+codePic);
 
     }
 
@@ -83,28 +97,68 @@ public class RegisterActivity extends BaseActivity {
     @OnClick({R.id.iv_identifying_code, R.id.btn_get_voice_code, R.id.btn_register_next})
     public void onClick(View view) {
 
-        String phoneNumber = etRegisterPhone.getText().toString().trim(); //获取输入的验证码
+        String phoneNumber = etRegisterPhone.getText().toString().trim(); //获取用户输入的验证码
+
         String mVoiceCode = etIdentifyingVoiceCode.getText().toString().trim(); //语音验证码
-        String mPhoneCode = etRegisterCode.getText().toString().trim();  //验证码
-        String pwd = etUserPwd.getText().toString().trim();
+        String mPhoneCode = etRegisterCode.getText().toString().trim();  //输入的图片验证码
+        String pwd = etUserPwd.getText().toString().trim();   //设置的密码
+
         switch (view.getId()) {
             case R.id.iv_identifying_code: //切换图片验证码
+                codeUtils = CodeUtils.getInstance();
+                Bitmap bitmap = codeUtils.createBitmap();
+                ivIdentifyingCode.setImageBitmap(bitmap);
+                codePic = codeUtils.getCode();
+                LogUtil.d("2,图片显示的验证码是"+codePic);
                 break;
             case R.id.btn_get_voice_code:  //获取语音验证码
-
-                break;
-            case R.id.btn_register_next: //进入
-                // String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
-                String regex = "[1][3578]\\d{9}"; //简单判断手机号码
-                if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(mVoiceCode)
-                        || TextUtils.isEmpty(mPhoneCode) ||TextUtils.isEmpty(pwd)) {
-                    ToastUtil.showToast("不能为空",context);
-                    return;
-                }
-                if (!phoneNumber.matches(regex)) {
+                if (!phoneNumber.matches(Constant.REGEX_MOBILE)) {  //判断手机号
                     ToastUtil.showToast("手机号码输入有误,请重新输入", context);
                     return;
                 }
+                //判断图片验证码是否正确
+                if (null == mPhoneCode || TextUtils.isEmpty(mPhoneCode)) {
+                   ToastUtil.showToast("请输入图片验证码",context);
+                    return;
+                }
+                //图片显示的验证码
+                codePic = codeUtils.getCode();
+                LogUtil.d("3,图片显示的验证码是"+codePic);
+                if (codePic.equalsIgnoreCase(mPhoneCode)) {
+                    LogUtil.d("图片验证码正确,执行操作,获取语音验证码");
+
+
+                } else {
+                    Toast.makeText(this, "图片验证码错误,请重新输入", 0).show();
+                    return;
+                }
+
+                break;
+            case R.id.btn_register_next: //下一步
+                if (TextUtils.isEmpty(phoneNumber) || TextUtils.isEmpty(mVoiceCode)
+                        || TextUtils.isEmpty(mPhoneCode) ||TextUtils.isEmpty(pwd)) {
+                    ToastUtil.showToast("输入不能为空",context);
+                    return;
+                }
+                //1,判断手机号
+                if (!phoneNumber.matches(Constant.REGEX_MOBILE)) {
+                    ToastUtil.showToast("手机号码输入有误,请重新输入", context);
+                    return;
+                }
+
+                //2,判断图片验证码
+                codePic = codeUtils.getCode();
+                LogUtil.d("4,图片显示的验证码是"+codePic);
+                if (codePic.equalsIgnoreCase(mPhoneCode)) {
+                    LogUtil.d("图片验证码正确,执行操作,下一步");
+
+                } else {
+                    Toast.makeText(this, "图片验证码错误,请重新输入", 0).show();
+                    return;
+                }
+                //3,判断语音验证码
+
+
                 //设定交易密码
                 toActivity(SetTradePwdActivity.class,false);
                 break;

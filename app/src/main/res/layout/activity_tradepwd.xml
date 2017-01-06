@@ -2,24 +2,35 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f7fa"
     android:orientation="vertical">
+
     <include layout="@layout/layout_toorbar" />
-<EditText
-    android:id="@+id/et_trade_pwd"
-    style="@style/style_et_phone"
-    android:hint="@string/set_trade_pwd"/>
+
+    <EditText
+        android:id="@+id/et_trade_pwd"
+        style="@style/style_et_phone"
+        android:hint="@string/set_trade_pwd"
+        android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/et_trade_pwd_again"
-    style="@style/style_et_phone"
-    android:hint="@string/set_trade_pwd_confirm"/>
+        style="@style/style_et_phone"
+        android:hint="@string/set_trade_pwd_confirm"
+        android:inputType="textPassword" />
 
     <TextView
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_agreement"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="24px"
+        android:text="@string/user_agreement"
+        android:textColor="#444444"
+        android:textSize="24px" />
+
     <Button
         android:id="@+id/btn_trade_pwd_sure"
-        android:text="@string/btn_sure"
-        style="@style/style_btn_next" />
+        style="@style/style_btn_next"
+        android:layout_marginTop="52px"
+        android:text="@string/btn_sure" />
 </com.zhy.autolayout.AutoLinearLayout>
