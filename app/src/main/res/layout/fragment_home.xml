@@ -48,6 +48,7 @@
             <include layout="@layout/include_div_red"/>
 
             <com.xinyu.mwp.view.AlwaysMarqueeTextView
+                android:id="@+id/tv_notice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -62,6 +63,7 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/tv_trace_bill"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"

@@ -5,16 +5,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -103,8 +105,10 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
      * 退出时该界面动画,可在finish();前通过改变它的值来改变动画效果
      */
     protected int exitAnim = R.anim.right_push_out;
-
-    protected ActionBarDrawerToggle mDrawerToggle;
+    /**
+     * 侧滑菜单栏
+     */
+    protected DrawerLayout mDrawer;
 
     /**
      * 初始化方法
@@ -348,7 +352,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     }
 
     @Override
-    public void initToolbar(Toolbar toolbar, TextView titleView, String title) {
+    public void initToolbar(final Toolbar toolbar, TextView titleView, String title) {
         if (toolbar == null || titleView == null || title == null) {
             return;
         }
@@ -357,6 +361,22 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable icon = toolbar.getNavigationIcon();
+                if (icon.getConstantState().equals(getResources().getDrawable(R.mipmap.ic_toolbar_menu).getConstantState())) {
+                    if (mDrawer.isDrawerVisible(Gravity.START)) {
+                        mDrawer.closeDrawer(Gravity.START);
+                    } else {
+                        mDrawer.openDrawer(Gravity.START);
+                    }
+                }
+                if (icon.getConstantState().equals(getResources().getDrawable(R.mipmap.ic_toolbar_back).getConstantState())) {
+                    finish();
+                }
+            }
+        });
     }
 
     /**

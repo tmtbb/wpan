@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -40,7 +39,7 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
     @BindView(R.id.share_layout)
     LinearLayout mShareLayout;
     @BindView(R.id.left_drawer)
-    DrawerLayout mDrawer;
+    DrawerLayout mLeftDrawer;
 
     public HomeFragment mHomeFragment;
     public ExchangeFragment mExchangeFragment;
@@ -51,8 +50,6 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initToolbar(mToolbar, mToolbarTitle, getString(R.string.home_toolbar));
-        mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
         initView();
         initFragments(savedInstanceState);
     }
@@ -73,25 +70,10 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
     }
 
     @Override
-    public void initToolbar(Toolbar toolbar, TextView titleView, String title) {
-        super.initToolbar(toolbar, titleView, title);
-        if (toolbar == null) {
-            return;
-        }
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mDrawer.isDrawerVisible(Gravity.START)) {
-                    mDrawer.closeDrawer(Gravity.START);
-                } else {
-                    mDrawer.openDrawer(Gravity.START);
-                }
-            }
-        });
-    }
-
-    @Override
     public void initView() {
+        mDrawer = mLeftDrawer;
+        initToolbar(mToolbar, mToolbarTitle, getString(R.string.home_toolbar));
+        mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
         /**
          * 首页tab导航页
          */
@@ -115,6 +97,7 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
         FragmentTransaction tr = fragmentManager.beginTransaction();
         switch (view.getId()) {
             case R.id.home_layout:
+                mToolbar.setVisibility(View.VISIBLE);
                 initToolbar(mToolbar, mToolbarTitle, getString(R.string.home_toolbar));
                 mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_menu);
                 if (mHomeFragment == null) {
@@ -128,6 +111,7 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
                 setFragmentSelectedById(0);
                 break;
             case R.id.exchange_layout:
+                mToolbar.setVisibility(View.VISIBLE);
                 initToolbar(mToolbar, mToolbarTitle, getString(R.string.tab_exchange));
                 mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_back);
                 if (mExchangeFragment == null) {
@@ -141,8 +125,7 @@ public class MainActivity extends BaseActivity implements ToolNavigationDrawerFr
                 setFragmentSelectedById(1);
                 break;
             case R.id.share_layout:
-                initToolbar(mToolbar, mToolbarTitle, getString(R.string.tab_share));
-                mToolbar.setNavigationIcon(R.mipmap.ic_toolbar_back);
+                mToolbar.setVisibility(View.GONE);
                 if (mShareFragment == null) {
                     mShareFragment = new ShareFragment();
                 }
