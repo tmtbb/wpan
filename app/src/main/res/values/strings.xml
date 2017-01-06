@@ -56,5 +56,8 @@
     <string name="min_price">最低</string>
     <string name="today_price">今开</string>
     <string name="yesterday_price">昨开</string>
+    <string name="create_package">建仓:</string>
+    <string name="price">价位:</string>
+    <string name="person_num">人数:</string>
 
 </resources>
