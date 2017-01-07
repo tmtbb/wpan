@@ -1,5 +1,7 @@
 package com.xinyu.mwp.bean;
 
+import android.text.SpannableString;
+
 /**
  * Created by Don on 2017/1/6.
  * Describe ${TODO}
@@ -9,7 +11,7 @@ public class TraceBillBean {
     private int imgRes;//临时数据
     private String imgUrl;//实际开发时头像json数据为字符串url
     private String personName;
-    private String product;
+    private SpannableString product;
     private String productOverTime;
     private String productCreateTime;
     private float productPrice;
@@ -18,7 +20,7 @@ public class TraceBillBean {
     public TraceBillBean() {
     }
 
-    public TraceBillBean(int imgRes, String imgUrl, String personName, String product, String productOverTime, String productCreateTime, float productPrice, int numPersonAttention) {
+    public TraceBillBean(int imgRes, String imgUrl, String personName, SpannableString product, String productOverTime, String productCreateTime, float productPrice, int numPersonAttention) {
         this.imgRes = imgRes;
         this.imgUrl = imgUrl;
         this.personName = personName;
@@ -53,11 +55,11 @@ public class TraceBillBean {
         this.personName = personName;
     }
 
-    public String getProduct() {
+    public SpannableString getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(SpannableString product) {
         this.product = product;
     }
 
