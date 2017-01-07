@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="products">
+        <item>白银</item>
+        <item>原油</item>
+        <item>咖啡</item>
+    </string-array>
+</resources>

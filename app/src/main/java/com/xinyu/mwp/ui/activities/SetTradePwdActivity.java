@@ -2,7 +2,6 @@ package com.xinyu.mwp.ui.activities;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,16 +36,16 @@ public class SetTradePwdActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tradepwd);
         ButterKnife.bind(this);
-        initActinbar(toolBar, null);
+       //initToolbar(toolBar, null);
 
     }
 
-    @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawer) {
-        super.initActinbar(toolbar, drawer);
+    /*@Override
+    public void initToolbar(Toolbar toolbar, DrawerLayout drawer) {
+        super.initToolbar(toolbar, drawer);
         toolbarTitle.setText("设置交易密码");
         toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
-    }
+    }*/
 
     @Override
     public void initView() {

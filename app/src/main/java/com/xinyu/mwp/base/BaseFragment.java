@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.xinyu.mwp.interfaces.IBaseView;
 import com.xinyu.mwp.manager.WeakHandler;
@@ -60,6 +61,7 @@ public class BaseFragment extends Fragment implements IBaseView {
     private boolean isRunning = false;
     protected Context context;
     protected Activity activity;
+    protected AppCompatActivity appCompatActivity;
     protected WeakHandler mHandler;
     protected String packageName;
 
@@ -68,6 +70,7 @@ public class BaseFragment extends Fragment implements IBaseView {
         super.onCreate(savedInstanceState);
         context = (Context) getActivity();
         activity = getActivity();
+        appCompatActivity = (AppCompatActivity) activity;
         mHandler = new WeakHandler(Looper.myLooper());//使用HandlerThread的looper对象创建Handler
         packageName = BaseApplication.getPackageInfo(context).packageName;
     }
@@ -172,62 +175,36 @@ public class BaseFragment extends Fragment implements IBaseView {
     }
 
     /**
-     * 打开新的Activity，向左滑入效果
-     *
-     * @param intent
-     */
-    public void toActivity(final Intent intent) {
-        toActivity(intent, true);
-    }
-
-    /**
      * 打开新的Activity
      *
-     * @param intent
-     * @param showAnimation
+     * @param clazz
      */
-    public void toActivity(final Intent intent, final boolean showAnimation) {
-        toActivity(intent, -1, showAnimation);
+    public void toActivity(Class<? extends BaseActivity> clazz) {
+        toActivity(clazz, true);
     }
 
-    /**
-     * 打开新的Activity，向左滑入效果
-     *
-     * @param intent
-     * @param requestCode
-     */
-    public void toActivity(final Intent intent, final int requestCode) {
-        toActivity(intent, requestCode, true);
+    public void toActivity(Class<? extends BaseActivity> clazz, boolean showAnimation) {
+        toActivity(clazz, -1, showAnimation);
     }
 
-    /**
-     * 打开新的Activity
-     *
-     * @param intent
-     * @param requestCode
-     * @param showAnimation
-     */
-    public void toActivity(final Intent intent, final int requestCode, final boolean showAnimation) {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                if (intent == null) {
-                    Log.w(TAG, "toActivity  intent == null >> return;");
-                    return;
-                }
-                //fragment中使用context.startActivity会导致在fragment中不能正常接收onActivityResult
-                if (requestCode < 0) {
-                    startActivity(intent);
-                } else {
-                    startActivityForResult(intent, requestCode);
-                }
-            }
-        });
+    public void toActivity(Class<? extends BaseActivity> clazz, int requestCode) {
+        toActivity(clazz, requestCode, true);
+    }
+
+    public void toActivity(Class<? extends BaseActivity> clazz, int requestCode, boolean showAnimation) {
+        if (clazz == null) {
+            return;
+        }
+        //fragment中使用context.startActivity会导致在fragment中不能正常接收onActivityResult
+        if (requestCode < 0) {
+            startActivity(new Intent(context, clazz));
+        } else {
+            startActivityForResult(new Intent(context, clazz), requestCode);
+        }
     }
 
     @Override
-    public void initActinbar(Toolbar toolbar, DrawerLayout drawerLayout) {
-
+    public void initToolbar(Toolbar toolbar, TextView titleView, String title) {
     }
 
     @Override
