@@ -2,28 +2,40 @@
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f7fa"
     android:orientation="vertical">
+
     <include layout="@layout/layout_toorbar" />
+
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="80px"
+
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/et_pet_name"
+            style="@style/style_et_phone"
             android:layout_weight="1"
-            style="@style/style_et_phone"
-            android:hint="@string/et_pet_name"/>
-        <TextView
-            android:id="@+id/btn_random"
-          android:layout_width="0dp"
-            style="@style/style_et_phone"
-            android:text="@string/btn_random"/>
-    </com.zhy.autolayout.AutoLinearLayout>
+            android:hint="@string/et_pet_name" />
 
+        <TextView
+            android:layout_marginRight="20px"
+            android:layout_marginTop="10px"
+            android:id="@+id/btn_random"
+            android:layout_width="wrap_content"
+            android:layout_height="80px"
+            android:text="@string/btn_random"
+            android:paddingTop="24px"
+            android:paddingBottom="24px"
+            android:paddingRight="8px"
+            android:textSize="30px" />
+    </com.zhy.autolayout.AutoLinearLayout>
 
 
     <Button
         android:id="@+id/btn_modify_name"
-        android:text="@string/btn_sure_modify"
-        style="@style/style_btn_next" />
+        style="@style/style_btn_next"
+        android:text="@string/btn_sure_modify" />
+
 </com.zhy.autolayout.AutoLinearLayout>

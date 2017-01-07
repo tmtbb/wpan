@@ -12,14 +12,27 @@
         <item name="android:windowEnterAnimation">@anim/dark_fade_in</item>
         <item name="android:windowExitAnimation">@anim/dark_fade_out</item>
     </style>
-
+    <!--输入号码框格式-->
     <style name="style_et_phone">
+        <item name="android:textColorHint">#cccccc</item>
+        <item name="android:paddingLeft">8px</item>
+        <item name="android:paddingTop">24px</item>
+        <item name="android:paddingBottom">24px</item>
+        <item name="android:textSize">30px</item>
         <item name="android:inputType">phone|number</item>
         <item name="android:layout_width">600px</item>
         <item name="android:layout_height">80px</item>
         <item name="android:layout_marginLeft">20px</item>
         <item name="android:layout_marginRight">20px</item>
         <item name="android:layout_marginTop">10px</item>
+    </style>
+    <!--输入框输入文字的格式-->
+    <style name="style_et_font">
+        <item name="android:textColorHint">#cccccc</item>
+        <item name="android:paddingLeft">8px</item>
+        <item name="android:paddingTop">24px</item>
+        <item name="android:paddingBottom">24px</item>
+        <item name="android:textSize">30px</item>
     </style>
 
     <style name="style_btn_next">
@@ -30,6 +43,16 @@
         <item name="android:layout_height">80px</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:background">#e9573f</item>
+        <item name="android:textSize">36px</item>
+    </style>
+    <!--晒单界面-昨日之星等标签-->
+    <style name="style_share_star">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/sel_share_star</item>
         <item name="android:textSize">36px</item>
     </style>
 

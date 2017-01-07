@@ -12,6 +12,7 @@ import com.xinyu.mwp.R;
 import com.xinyu.mwp.base.BaseAdapter;
 import com.xinyu.mwp.base.BaseFragment;
 import com.xinyu.mwp.bean.DrawerSettingBean;
+import com.xinyu.mwp.ui.activities.LogonActivity;
 import com.xinyu.mwp.ui.adapter.DrawerSettingAdapter;
 import com.xinyu.mwp.utils.SpaceItemDecoration;
 import com.xinyu.mwp.utils.ToastUtil;
@@ -22,6 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -37,7 +40,8 @@ public class ToolNavigationDrawerFragment extends BaseFragment {
     @BindView(R.id.rcv_drawer_list)
     RecyclerView mDrawerList;
     @BindView(R.id.view_head)
-    CircleImageView mHead;
+    CircleImageView viewHead;
+
 
     private int[] settingImgs = new int[]{R.mipmap.ic_drawer_attention, R.mipmap.ic_drawer_push_bill, R.mipmap.ic_drawer_share_bill,
             R.mipmap.ic_drawer_exchange_detail, R.mipmap.ic_drawer_comments, R.mipmap.ic_drawer_products_grade, R.mipmap.ic_drawer_focus};
@@ -51,6 +55,7 @@ public class ToolNavigationDrawerFragment extends BaseFragment {
         setContentView(R.layout.fragment_setting_drawer);
         initView();
         initListener();
+        ButterKnife.bind(this, parentView);
         return parentView;
     }
 
@@ -96,10 +101,16 @@ public class ToolNavigationDrawerFragment extends BaseFragment {
         });
     }
 
+    @OnClick(R.id.view_head)
+    public void onClick() {
+        toActivity(LogonActivity.class);  //跳转到登录界面
+    }
+
     /**
      * 设置菜单点击接口，以方便外部Activity调用
      */
     public interface menuItemClickListener {
         void menuItemClick(int position, String menuName);
     }
+
 }
