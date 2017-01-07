@@ -17,4 +17,5 @@
     <color name="green">#00ff00</color>
     <color name="red">#e9573f</color>
     <color name="blue">#3F51B5</color>
+    <color name="trace_bill_product">#009944</color>
 </resources>
