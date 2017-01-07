@@ -12,8 +12,8 @@
     <string name="propt_get_voice_code">获取语音验证码</string>
     <string name="btn_next">下一步</string>
     <string name="prop_user_pwd">请设置用户密码</string>
-    <string name="set_trade_pwd">设置交易密码</string>
-    <string name="set_trade_pwd_confirm">重新输入交易密码</string>
+    <string name="set_trade_pwd">请输入您的交易密码</string>
+    <string name="set_trade_pwd_confirm">验证输入您的交易密码</string>
     <string name="user_agreement">点击确定,即同意用户协议</string>
     <string name="btn_sure">确定</string>
     <string name="btn_sure_modify">确认修改</string>
@@ -22,6 +22,14 @@
     <string name="et_forget_pwd">忘记密码</string>
     <string name="et_logon">登录</string>
     <string name="et_register">注册</string>
+
+
+    <string name="tv_share_ranking">您当前的排名:</string>
+
+    <string name="rb_yesterday_star">昨日之星</string>
+    <string name="rb_week_star">上周名人</string>
+    <string name="rb_month_star">月度名人</string>
+
 
     <string name="btn_random">随机</string>
 

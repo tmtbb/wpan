@@ -40,18 +40,10 @@ public class LogonActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
         ButterKnife.bind(this);
-        //initToolbar(toolBar, null);
+       initToolbar(toolBar,toolbarTitle,getString(R.string.et_logon));
 
     }
 
-    /*@Override
-    public void initToolbar(Toolbar toolbar,  TextView titleView, String title) {
-        super.initToolbar(toolbar, drawer);
-        toolbarTitle.setText("登录");
-        toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
-        // toolbar.setOverflowIcon(R.mipmap.ic_launcher);
-//        toolbar.setPointerIcon();
-    }*/
 
     @Override
     public void initView() {

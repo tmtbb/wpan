@@ -1,15 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#f5f7fa">
 
-    <TextView
-        android:id="@+id/tv"
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="270px"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="270px"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/banner" />
+
+        <ImageView
+            android:layout_width="22px"
+            android:layout_height="40px"
+            android:layout_marginLeft="18px"
+            android:layout_marginTop="56px"
+            android:src="@mipmap/ic_toolbar_back" />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:layout_marginTop="10px"
+        android:clickable="true"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_share1"
+            android:text="@string/rb_yesterday_star"
+            android:textColor="@color/sel_share_font"
+            style="@style/style_share_star" />
+
+        <RadioButton
+            android:id="@+id/rb_share2"
+            android:text="@string/rb_week_star"
+            android:checked="true"
+            android:textColor="@color/sel_share_font"
+            style="@style/style_share_star"/>
+
+        <RadioButton
+            android:id="@+id/rb_share3"
+            android:text="@string/rb_month_star"
+            android:textColor="@color/sel_share_font"
+            style="@style/style_share_star"/>
+    </RadioGroup>
+
+    <com.xinyu.mwp.ui.viewpagers.NoScrollViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="1"
-        android:textSize="20sp" />
+        android:id="@+id/vp_share"/>
+    <!--<com.zhy.autolayout.AutoFrameLayout-->
+        <!--android:id="@+id/id_share_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-</LinearLayout>
+    <!--</com.zhy.autolayout.AutoFrameLayout>-->
+
+
+</com.zhy.autolayout.AutoLinearLayout>
