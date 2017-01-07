@@ -15,4 +15,6 @@
     <color name="cl_immediately_winner">#e43532</color>
     <color name="cl_history_winner">#047bd7</color>
     <color name="green">#00ff00</color>
+    <color name="trace_bill_product">#009944</color>
+
 </resources>

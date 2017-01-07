@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="10dp"
+              android:layout_marginRight="12dp"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <com.xinyu.mwp.view.CircleImageView
+            android:id="@+id/civ_trace_bill_imgRes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_person_right"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="12dp">
+
+            <TextView
+                android:id="@+id/tv_trace_bill_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="111"
+                android:textColor="@color/color_toorbar"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/tv_trace_bill_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="111"
+                android:textColor="@color/gray_4"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/tv_trace_bill_over_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="111"
+                android:textColor="@color/gray_4"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_tv_orange_corner5"
+            android:gravity="center"
+            android:text="@string/trace_bill"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/create_package"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_trace_bill_create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="111"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/price"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_trace_bill_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="111"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="@string/person_num"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_trace_bill_person_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:text="111"
+            android:textColor="@color/gray_4"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</LinearLayout>
