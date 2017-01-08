@@ -11,10 +11,17 @@
     <color name="blue">#0000ff</color>
     <color name="gray_4">#444444</color>
     <color name="gray_6">#666666</color>
+    <color name="gray_8">#888888</color>
+
     <color name="bg_drawer_setting">#f5f7fa</color>
     <color name="cl_immediately_winner">#e43532</color>
     <color name="cl_history_winner">#047bd7</color>
     <color name="green">#00ff00</color>
     <color name="trace_bill_product">#009944</color>
+
+    <color name="bg_exchange_btn_normal">#e6e9ed</color>
+    <color name="bg_exchange_btn_selected">#fc6e51</color>
+    <color name="fill_prograssbar_complete">#e9573f</color>
+    <color name="fill_prograssbar_uncomplete">#009944</color>
 
 </resources>
