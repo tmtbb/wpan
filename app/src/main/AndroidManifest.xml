@@ -35,6 +35,10 @@
         <activity
             android:name=".ui.activities.TraceBillActivity"
             android:screenOrientation="portrait" />
-    </application>
 
+        <!--用户主页-->
+        <activity
+            android:name=".ui.activities.UserHomeActivity"
+            android:screenOrientation="portrait"/>
+    </application>
 </manifest>

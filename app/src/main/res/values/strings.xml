@@ -12,8 +12,8 @@
     <string name="propt_get_voice_code">获取语音验证码</string>
     <string name="btn_next">下一步</string>
     <string name="prop_user_pwd">请设置用户密码</string>
-    <string name="set_trade_pwd">设置交易密码</string>
-    <string name="set_trade_pwd_confirm">重新输入交易密码</string>
+    <string name="set_trade_pwd">请输入您的交易密码</string>
+    <string name="set_trade_pwd_confirm">验证输入您的交易密码</string>
     <string name="user_agreement">点击确定,即同意用户协议</string>
     <string name="btn_sure">确定</string>
     <string name="btn_sure_modify">确认修改</string>
@@ -22,6 +22,14 @@
     <string name="et_forget_pwd">忘记密码</string>
     <string name="et_logon">登录</string>
     <string name="et_register">注册</string>
+
+
+    <string name="tv_share_ranking">您当前的排名:</string>
+
+    <string name="rb_yesterday_star">昨日之星</string>
+    <string name="rb_week_star">上周名人</string>
+    <string name="rb_month_star">月度名人</string>
+
 
     <string name="btn_random">随机</string>
 
@@ -74,4 +82,29 @@
     <string name="hold_storage_loss_or_profit">持仓亏盈(元)</string>
     <string name="balance_storage">平仓</string>
 
+    <!--用户中心-->
+    <string name="user_name">哈穆尔:</string>
+    <string name="push_bill_notice">推单通知</string>
+    <string name="special_notice">特别通知</string>
+    <string name="user_trading_volume">今日200名用户交易320次</string>
+    <string name="total_revenue">总收益</string>
+    <string name="month_revenue">本月收益</string>
+    <string name="week_revenue">本周收益</string>
+    <string name="friend_tab_share">好友晒单</string>
+    <string name="friend_push_bill">好友推单</string>
+    <string name="receten_five_bill_income">最近五单收益</string>
+
+    <!--用户中心-好友晒单-->
+    <string name="share_bill_total_count">晒单总数:</string>
+    <string name="share_bill_mouth_count">本月:</string>
+    <string name="share_bill_week_count">本周:</string>
+    <string name="share_bill_today_count">今日:</string>
+    <string name="level_package">平仓:</string>
+    <string name="user_revenue">总收益</string>
+
+    <!--用户中心-好友晒单-->
+    <string name="push_bill_count">推单总数:</string>
+    <string name="month_win_rate">本月胜率</string>
+    <string name="win_count">胜场</string>
+    <string name="week_win_rate">本周胜率</string>
 </resources>

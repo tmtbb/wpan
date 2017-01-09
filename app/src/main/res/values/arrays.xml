@@ -6,13 +6,12 @@
         <item>咖啡</item>
     </string-array>
 
-    <string-array name="trace_bill">
-        <item>白二哥</item>
-        <item>老子就是猪八戒</item>
-        <item>城市套路深</item>
-        <item>祖国尚未统一</item>
+    <string-array name="defaultname">
+        <item>唐僧</item>
+        <item>孙悟空</item>
+        <item>猪八戒</item>
+        <item>沙僧</item>
     </string-array>
-
     <string-array name="trace_bill_over_time">
         <item>2016-08-15 08:20</item>
         <item>2016-11-18 11:11</item>
@@ -20,6 +19,13 @@
         <item>2016-09-21 04:40</item>
     </string-array>
     <string-array name="trace_bill_create_time">
+        <item>2016-01-08 02:50</item>
+        <item>2016-10-25 08:09</item>
+        <item>2016-09-26 11:45</item>
+        <item>2016-07-21 09:12</item>
+    </string-array>
+
+    <string-array name="trace_bill">
         <item>2016-01-08 02:50</item>
         <item>2016-10-25 08:09</item>
         <item>2016-09-26 11:45</item>
