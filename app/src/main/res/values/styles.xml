@@ -56,4 +56,32 @@
         <item name="android:textSize">36px</item>
     </style>
 
+    <style name="style_user_revenue">
+        <item name="android:textSize">30px</item>
+        <item name="android:textColor">@color/color_share_font_normal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="style_user_revenue_data">
+        <item name="android:textSize">30px</item>
+        <item name="android:textColor">@color/color_toorbar</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="style_friend_share_description">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24px</item>
+    </style>
+
+    <style name="style_friend_share_count">
+        <item name="android:textSize">24px</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:layout_marginLeft">15px</item>
+    </style>
+
 </resources>
