@@ -2,11 +2,13 @@ package com.xinyu.mwp.ui.adapter;
 
 import android.content.Context;
 import android.text.SpannableStringBuilder;
+import android.view.View;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.base.BaseAdapter;
 import com.xinyu.mwp.base.BaseViewHolder;
 import com.xinyu.mwp.bean.TraceBillBean;
+import com.xinyu.mwp.utils.ToastUtil;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class TraceBillAdapter extends BaseAdapter<TraceBillBean> {
     }
 
     @Override
-    protected void convert(Context context, BaseViewHolder holder, TraceBillBean traceBillBean) {
+    protected void convert(final Context context, final BaseViewHolder holder, TraceBillBean traceBillBean) {
         holder.setImageResource(R.id.civ_trace_bill_imgRes, traceBillBean.getImgRes())
                 .setText(R.id.tv_trace_bill_name, traceBillBean.getPersonName())
                 .setText(R.id.tv_trace_bill_product, SpannableStringBuilder.valueOf(traceBillBean.getProduct()))
@@ -30,5 +32,11 @@ public class TraceBillAdapter extends BaseAdapter<TraceBillBean> {
                 .setText(R.id.tv_trace_bill_create_time, traceBillBean.getProductCreateTime())
                 .setText(R.id.tv_trace_bill_price, String.format("%.1f", traceBillBean.getProductPrice()))
                 .setText(R.id.tv_trace_bill_person_num, String.valueOf(traceBillBean.getNumPersonAttention()));
+        holder.setOnClickListener(R.id.tv_trace_bill_btn, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.showToast("跟单" + holder.getLayoutPosition(), context);
+            }
+        });
     }
 }

@@ -64,9 +64,23 @@
     <string name="min_price">最低</string>
     <string name="today_price">今开</string>
     <string name="yesterday_price">昨开</string>
+    <!--跟单-->
     <string name="create_package">建仓:</string>
     <string name="price">价位:</string>
     <string name="person_num">人数:</string>
+    <!--交易-->
+    <string name="exchange_assets">总资产(元)</string>
+    <string name="exchange_ticket">体验券(张)</string>
+    <string name="min_hour_line">分时线</string>
+    <string name="min_15_line">15分钟线</string>
+    <string name="min_60_line">60分钟线</string>
+    <string name="min_day_line">日时线</string>
+    <string name="buy_plus">买涨</string>
+    <string name="buy_minus">买跌</string>
+    <string name="today_exchange_data">今日交易大数据</string>
+    <string name="create_package_price">建仓价</string>
+    <string name="hold_storage_loss_or_profit">持仓亏盈(元)</string>
+    <string name="balance_storage">平仓</string>
 
     <!--用户中心-->
     <string name="user_name">哈穆尔:</string>
