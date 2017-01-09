@@ -38,9 +38,7 @@ public class ShareFragment extends BaseFragment {
     RadioButton rbShare3;
     @BindView(R.id.vp_share)
     NoScrollViewPager vpShare;
-    private View view1;
-    private View view2;
-    private View view3;
+
 
     private List<Fragment> viewList;
 
@@ -63,9 +61,9 @@ public class ShareFragment extends BaseFragment {
     public void initView() {
         super.initView();
         LogUtil.d("晒单界面初始化");
-        YesterdayRankingFragment f1 = new YesterdayRankingFragment();
-        WeekRankingFragment f2 = new WeekRankingFragment();
-        MonthRankingFragment f3 = new MonthRankingFragment();
+        YesterdayRankingFragment f1 = new YesterdayRankingFragment(); //昨日之星
+        WeekRankingFragment f2 = new WeekRankingFragment(); //上周名人
+        MonthRankingFragment f3 = new MonthRankingFragment(); //月度名人
 
         viewList.add(f1);
         viewList.add(f2);

@@ -8,6 +8,7 @@ import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,13 +58,9 @@ public class RegisterActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
         //initToolbar(toolBar, null);
-        codeUtils = CodeUtils.getInstance();
-        //生成一张验证码图片
-        ivIdentifyingCode.setImageBitmap(codeUtils.createBitmap());
-        codePic = codeUtils.getCode();
-        LogUtil.d("1,图片显示的验证码是"+codePic);
+        initView();
 
     }
 
@@ -78,6 +75,17 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        initToolbar(toolBar, toolbarTitle, getString(R.string.et_register));
+       toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
+
+        codeUtils = CodeUtils.getInstance();
+        //生成一张验证码图片
+        ivIdentifyingCode.setImageBitmap(codeUtils.createBitmap());
+//        ViewGroup.LayoutParams params = new Toolbar.LayoutParams(getResources().getDimension(R.dimen.code_width),
+//                getResources().getDimension(R.dimen.code_height));
+       // ivIdentifyingCode.setLayoutParams(params);
+        codePic = codeUtils.getCode();
+        LogUtil.d("1,图片显示的验证码是"+codePic);
 
     }
 

@@ -56,12 +56,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/vp_share"/>
-    <!--<com.zhy.autolayout.AutoFrameLayout-->
-        <!--android:id="@+id/id_share_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-    <!--</com.zhy.autolayout.AutoFrameLayout>-->
-
 
 </com.zhy.autolayout.AutoLinearLayout>

@@ -39,15 +39,14 @@ public class LogonActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logon);
-        ButterKnife.bind(this);
-       initToolbar(toolBar,toolbarTitle,getString(R.string.et_logon));
-
+        initView();
     }
 
 
     @Override
     public void initView() {
-
+        initToolbar(toolBar, toolbarTitle, getString(R.string.et_logon));
+        toolBar.setNavigationIcon(R.mipmap.ic_toolbar_back);
     }
 
     @Override

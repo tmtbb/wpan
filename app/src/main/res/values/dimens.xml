@@ -11,4 +11,8 @@
     <dimen name="divide_line_width">1dp</dimen>
     <dimen name="divide_line_height">1dp</dimen>
 
+    <!--验证码宽高-->
+    <dimen name="code_width">200px</dimen>
+    <dimen name="code_height">80px</dimen>
+
 </resources>
