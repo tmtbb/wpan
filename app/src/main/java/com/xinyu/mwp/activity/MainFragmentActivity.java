@@ -136,6 +136,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)) {
+            
             if ((System.currentTimeMillis() - exitNow) > 2000) {
                 Toast.makeText(this, String.format(getString(R.string.confirm_exit_app), getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
                 exitNow = System.currentTimeMillis();
