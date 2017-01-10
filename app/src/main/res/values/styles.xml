@@ -1,87 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/color_toorbar</item>
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="DarkAnimation">
-        <item name="android:windowEnterAnimation">@anim/dark_fade_in</item>
-        <item name="android:windowExitAnimation">@anim/dark_fade_out</item>
-    </style>
-    <!--输入号码框格式-->
-    <style name="style_et_phone">
-        <item name="android:textColorHint">#cccccc</item>
-        <item name="android:paddingLeft">8px</item>
-        <item name="android:paddingTop">24px</item>
-        <item name="android:paddingBottom">24px</item>
-        <item name="android:textSize">30px</item>
-        <item name="android:inputType">phone|number</item>
-        <item name="android:layout_width">600px</item>
-        <item name="android:layout_height">80px</item>
-        <item name="android:layout_marginLeft">20px</item>
-        <item name="android:layout_marginRight">20px</item>
-        <item name="android:layout_marginTop">10px</item>
-    </style>
-    <!--输入框输入文字的格式-->
-    <style name="style_et_font">
-        <item name="android:textColorHint">#cccccc</item>
-        <item name="android:paddingLeft">8px</item>
-        <item name="android:paddingTop">24px</item>
-        <item name="android:paddingBottom">24px</item>
-        <item name="android:textSize">30px</item>
-    </style>
-
-    <style name="style_btn_next">
-        <item name="android:layout_marginLeft">20px</item>
-        <item name="android:layout_marginRight">20px</item>
-        <item name="android:layout_marginTop">10px</item>
+    <style name="navigationbar_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80px</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:background">#e9573f</item>
-        <item name="android:textSize">36px</item>
-    </style>
-    <!--晒单界面-昨日之星等标签-->
-    <style name="style_share_star">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">0px</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:button">@null</item>
-        <item name="android:background">@drawable/sel_share_star</item>
-        <item name="android:textSize">36px</item>
+        <item name="android:layout_height">49dp</item>
+        <!--<item name="android:background">@drawable/navigationbar_bg</item>-->
+        <item name="android:background">#333236</item>
     </style>
 
-    <style name="style_user_revenue">
-        <item name="android:textSize">30px</item>
-        <item name="android:textColor">@color/color_share_font_normal</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="style_user_revenue_data">
-        <item name="android:textSize">30px</item>
-        <item name="android:textColor">@color/color_toorbar</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="style_friend_share_description">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">24px</item>
-    </style>
-
-    <style name="style_friend_share_count">
-        <item name="android:textSize">24px</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/red</item>
-        <item name="android:layout_marginLeft">15px</item>
+    <style name="SwipeBackLayout">
+        <item name="edge_size">20dp</item>
+        <item name="shadow_left">@mipmap/shadow_left</item>
+        <item name="shadow_right">@mipmap/shadow_right</item>
+        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
     </style>
 
 </resources>
