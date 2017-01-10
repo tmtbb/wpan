@@ -13,4 +13,15 @@
         <attr name="shadow_right" format="reference" />
         <attr name="shadow_bottom" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="roundWidth" format="dimension" />
+        <attr name="roundHeight" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CellView">
+        <attr name="cell_icon" format="reference" />
+        <attr name="cell_name" format="reference|string" />
+        <attr name="cell_text_color" format="color" />
+    </declare-styleable>
 </resources>

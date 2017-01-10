@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_line" />
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#FCFCFC"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/item_index"
+            style="@style/bottombar_item_style">
+
+            <ImageView
+                style="@style/bottombar_item_icon_style"
+                android:background="@color/default_red" />
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:text="首页" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_deal"
+            style="@style/bottombar_item_style">
+
+            <ImageView
+                style="@style/bottombar_item_icon_style"
+                android:background="@color/default_red" />
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:text="交易" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_shareorder"
+            style="@style/bottombar_item_style">
+
+            <ImageView
+                style="@style/bottombar_item_icon_style"
+                android:background="@color/default_red" />
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:text="晒单" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
