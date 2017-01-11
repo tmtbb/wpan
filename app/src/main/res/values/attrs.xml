@@ -24,4 +24,15 @@
         <attr name="cell_name" format="reference|string" />
         <attr name="cell_text_color" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="WPEditText">
+        <attr name="edit_icon" format="reference|integer" />
+        <attr name="edit_show_eye" format="reference|boolean" />
+        <attr name="edit_hint" format="reference|string" />
+        <attr name="edit_pwd" format="reference|boolean" />
+        <attr name="edit_show_icon" format="reference|boolean" />
+        <attr name="edit_show_right_text" format="reference|boolean" />
+        <attr name="edit_right_text" format="reference|string" />
+    </declare-styleable>
+
 </resources>
