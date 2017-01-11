@@ -27,6 +27,7 @@
 
     <declare-styleable name="WPEditText">
         <attr name="edit_icon" format="reference|integer" />
+        <attr name="edit_left_text" format="reference|string" />
         <attr name="edit_show_eye" format="reference|boolean" />
         <attr name="edit_hint" format="reference|string" />
         <attr name="edit_pwd" format="reference|boolean" />

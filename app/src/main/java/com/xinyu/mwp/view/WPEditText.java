@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.xinyu.mwp.R;
@@ -37,6 +38,10 @@ public class WPEditText extends BaseLinearLayout {
 
     @ViewInject(R.id.rightText)
     protected Button rightText;
+    @ViewInject(R.id.leftText)
+    protected TextView leftText;
+    @ViewInject(R.id.lineView)
+    protected View lineView;
 
     public WPEditText(Context context) {
         super(context);
@@ -69,6 +74,13 @@ public class WPEditText extends BaseLinearLayout {
                 rightText.setVisibility(typedArray.getBoolean(R.styleable.WPEditText_edit_show_right_text, false) ? VISIBLE : GONE);
             if (typedArray.hasValue(R.styleable.WPEditText_edit_right_text))
                 rightText.setText(typedArray.getString(R.styleable.WPEditText_edit_right_text));
+
+            if (typedArray.hasValue(R.styleable.WPEditText_edit_left_text)){
+                leftText.setVisibility(VISIBLE);
+                lineView.setVisibility(VISIBLE);
+                leftText.setText(typedArray.getString(R.styleable.WPEditText_edit_left_text));
+            }
+
 
             if (typedArray.hasValue(R.styleable.WPEditText_edit_pwd))
                 if (typedArray.getBoolean(R.styleable.WPEditText_edit_pwd, false)) {

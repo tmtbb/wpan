@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.xinyu.mwp.activity.LoginActivity;
+import com.xinyu.mwp.activity.RegisterActivity;
+
 /**
  * @author : Created by 180
  * @version : 0.01
@@ -23,6 +26,14 @@ public class ActivityUtil {
     public static void next(Context context, Class<? extends Activity> actClas) {
         Intent intent = new Intent(context, actClas);
         next(context, intent);
+    }
+
+    public static void nextRegister(Context context) {
+        next(context, RegisterActivity.class);
+    }
+
+    public static void nextLogin(Context context) {
+        next(context, LoginActivity.class);
     }
 
 }
