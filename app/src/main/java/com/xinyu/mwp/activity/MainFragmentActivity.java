@@ -97,8 +97,10 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(MyAttentionActivity.class);
                         break;
                     case R.id.myPushOrder:
+                        next(MyPushOrderActivity.class);
                         break;
                     case R.id.myShareOrder:
+                        next(MyShareOrderActivity.class);
                         break;
                     case R.id.dealDetail:
                         break;

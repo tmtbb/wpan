@@ -16,8 +16,7 @@
             android:id="@+id/icon"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_centerVertical="true"
-            android:src="@color/font_333" />
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/name"

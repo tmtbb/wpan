@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp">
+
+        <TextView
+            android:id="@+id/tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="或使用以下方式登录"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/dp_13" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_toLeftOf="@id/tip"
+            android:background="#BDBDBD" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_toRightOf="@id/tip"
+            android:background="#BDBDBD" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/shareLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_35"
+        android:paddingTop="@dimen/dp_25">
+
+        <TextView
+            android:id="@+id/qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="@dimen/dp_5"
+            android:drawableTop="@mipmap/icon_qq"
+            android:gravity="center"
+            android:text="QQ"
+            android:textColor="@color/color_666666" />
+
+
+        <TextView
+            android:id="@+id/weixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="@dimen/dp_5"
+            android:drawableTop="@mipmap/icon_weixin"
+            android:gravity="center"
+            android:text="微信"
+            android:textColor="@color/color_666666" />
+
+        <TextView
+            android:id="@+id/weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:drawablePadding="@dimen/dp_5"
+            android:drawableTop="@mipmap/icon_weibo"
+            android:gravity="center"
+            android:text="微博"
+            android:textColor="@color/color_666666" />
+    </LinearLayout>
+
+</LinearLayout>
