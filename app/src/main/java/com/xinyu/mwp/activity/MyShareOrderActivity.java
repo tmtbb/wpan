@@ -6,10 +6,10 @@ import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
-import com.xinyu.mwp.adapter.MyPushOrderAdapter;
+import com.xinyu.mwp.adapter.MyShareOrderAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
-import com.xinyu.mwp.entity.MyPushOrderEntity;
-import com.xinyu.mwp.entity.MyPushOrderItemEntity;
+import com.xinyu.mwp.entity.MyShareOrderEntity;
+import com.xinyu.mwp.entity.MyShareOrderItemEntity;
 import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.util.TestDataUtil;
 
@@ -19,7 +19,7 @@ import org.xutils.view.annotation.ViewInject;
  * Created by Benjamin on 17/1/11.
  */
 
-public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<MyPushOrderItemEntity> {
+public class MyShareOrderActivity extends BaseRefreshAbsListControllerActivity<MyShareOrderItemEntity> {
     @ViewInject(R.id.titleLayout)
     private View titleLayout;
     @ViewInject(R.id.pushOrderCount)
@@ -31,23 +31,24 @@ public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<My
     @ViewInject(R.id.month)
     private TextView month;
 
-    private MyPushOrderEntity entity;
-    private MyPushOrderAdapter adapter;
+    private MyShareOrderEntity entity;
+    private MyShareOrderAdapter adapter;
+
 
     @Override
-    protected IListAdapter<MyPushOrderItemEntity> createAdapter() {
-        return adapter = new MyPushOrderAdapter(context);
+    protected IListAdapter<MyShareOrderItemEntity> createAdapter() {
+        return adapter = new MyShareOrderAdapter(context);
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_mypushorder;
+        return R.layout.activity_myshareorder;
     }
 
     @Override
     protected void initView() {
         super.initView();
-        setTitle("我的推单");
+        setTitle("我的晒单");
     }
 
     @Override
@@ -62,7 +63,7 @@ public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<My
     }
 
     public void doRefresh() {
-        entity = TestDataUtil.getMyPushOrderEntity();
+        entity = TestDataUtil.getMyShareOrderEntity();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -70,10 +71,9 @@ public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<My
                 week.setText("本周" + entity.getWeekCount());
                 month.setText("本月" + entity.getMonthCount());
                 pushOrderCount.setText("推单总数：" + 9999);
-                getRefreshController().refreshComplete(entity.getPushOrders());
+                getRefreshController().refreshComplete(entity.getShareOrders());
                 titleLayout.setVisibility(View.VISIBLE);
             }
         }, 2000);
     }
-
 }

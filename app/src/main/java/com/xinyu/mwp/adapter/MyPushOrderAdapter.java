@@ -57,7 +57,8 @@ public class MyPushOrderAdapter extends BaseListViewAdapter<MyPushOrderItemEntit
                 sucProfit.setTextColor(context.getResources().getColor(R.color.default_red));
                 progressBar.setProgressDrawable(context.getResources().getDrawable(R.drawable.bg_progress_default_red));
             }
-            progressBar.setProgress(Math.abs((int) sp));
+            //防止进度条太短，很难看。
+            progressBar.setProgress(Math.abs((int) sp) < 10 ? 10 : Math.abs((int) sp));
             sucProfit.setText(data.getProfit() + "%");
         }
     }
