@@ -41,7 +41,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     private long exitNow;
     private long first = 0;
 
-
     @Override
     public int getFragmentContainerId() {
         return R.id.contentContainer;
