@@ -2,7 +2,7 @@ package com.xinyu.mwp.activity.base;
 
 import android.view.View;
 
-import com.xinyu.mwp.adapter.IListAdapter;
+import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 
 /**

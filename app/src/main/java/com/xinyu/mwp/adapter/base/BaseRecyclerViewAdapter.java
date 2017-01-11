@@ -1,4 +1,4 @@
-package com.xinyu.mwp.adapter;
+package com.xinyu.mwp.adapter.base;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
