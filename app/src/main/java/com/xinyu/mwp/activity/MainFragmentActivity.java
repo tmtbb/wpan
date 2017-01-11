@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xinyu.mwp.R;
@@ -36,8 +35,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     protected DrawerLayout drawer;
     @ViewInject(R.id.bottomLayout)
     private LinearLayout bottombar;
-    @ViewInject(R.id.title)
-    private TextView title;
     protected LeftFragment leftFragment;
     private long exitNow;
     private long first = 0;
@@ -69,7 +66,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     public void pushFragmentToBackStack(int selectIndex) {
         super.pushFragmentToBackStack(selectIndex);
         bottombar.getChildAt(selectIndex).setSelected(true);
-        toggleTitleBar();
     }
 
     @Override
@@ -150,10 +146,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                 next(clazz);
             }
         }, 300);
-    }
-
-    private void toggleTitleBar() {
-        title.setText(TITLES[selectIndex]);
     }
 
     public void toggleDrawer(boolean open) {

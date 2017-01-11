@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:id="@+id/tabLayout"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/itemLayout1"
+        style="@style/bottombar_item_style">
+
+        <TextView
+            style="@style/tab_user_share_order_text_style"
+            android:text="总收益" />
+
+        <ImageView
+            style="@style/tab_user_share_order_icon_style" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/itemLayout2"
+        style="@style/bottombar_item_style">
+
+        <TextView
+            style="@style/tab_user_share_order_text_style"
+            android:text="好友晒单" />
+
+        <ImageView
+            style="@style/tab_user_share_order_icon_style" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/itemLayout3"
+        style="@style/bottombar_item_style">
+
+        <TextView
+            style="@style/tab_user_share_order_text_style"
+            android:text="好友推单" />
+
+        <ImageView
+            style="@style/tab_user_share_order_icon_style" />
+    </RelativeLayout>
+
+</LinearLayout>

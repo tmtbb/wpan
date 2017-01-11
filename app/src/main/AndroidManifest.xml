@@ -38,6 +38,10 @@
             android:name=".activity.MyAttentionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name=".activity.UserShareOrderActivity" />
         <activity
             android:name=".activity.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"

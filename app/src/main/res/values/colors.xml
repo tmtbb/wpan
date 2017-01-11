@@ -28,5 +28,8 @@
     <color name="color_666666">#666666</color>
     <color name="font_ccc">#cccccc</color>
     <color name="font_666">#666666</color>
+    <color name="font_999">#999</color>
+
     <color name="white">#ffffff</color>
+    <color name="white_alpha_30">#51ffffff</color>
 </resources>
