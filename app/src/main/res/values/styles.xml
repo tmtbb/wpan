@@ -20,4 +20,31 @@
         <item name="shadow_bottom">@mipmap/shadow_bottom</item>
     </style>
 
+    <style name="AppThemeNoTranslucent" parent="AppTheme">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="bottombar_item_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">@dimen/dp_1</item>
+        <item name="android:minWidth">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:onClick">onClickSelect</item>
+    </style>
+
+    <style name="bottombar_item_icon_style">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+
+    <style name="bottombar_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@drawable/sel_bottombar</item>
+        <item name="android:textSize">@dimen/fontSize_10sp</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
 </resources>

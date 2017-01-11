@@ -145,12 +145,14 @@ public abstract class BaseFragmentActivity extends SwipeBackFragmentActivity {
                 beforeFinish();
             }
         });
-        leftImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        });
+        if (null != leftImage) {
+            leftImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    back();
+                }
+            });
+        }
     }
 
     protected void onToastError(Throwable ex, String defError) {
