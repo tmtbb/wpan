@@ -9,22 +9,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/titleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/default_red">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="首页"
-                android:textColor="@color/white"
-                android:textSize="@dimen/fontSize_17sp" />
-        </RelativeLayout>
-
         <include
             android:id="@+id/main_bottombar"
             layout="@layout/ly_main_bottombar"
@@ -37,7 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/main_bottombar"
-            android:layout_below="@id/titleLayout"
             android:orientation="vertical" />
 
     </RelativeLayout>

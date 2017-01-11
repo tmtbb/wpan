@@ -20,6 +20,9 @@
     <color name="font_333">#333333</color>
     <color name="font_444">#444444</color>
     <color name="font_e2e2e2">#e2e2e2</color>
+    <color name="font_999">#999</color>
 
     <color name="white">#ffffff</color>
+    <color name="white_alpha_30">#51ffffff</color>
+    <color name="color_f05f46">#f05f46</color>
 </resources>
