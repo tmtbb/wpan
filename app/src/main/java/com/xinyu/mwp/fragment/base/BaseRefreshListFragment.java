@@ -3,7 +3,7 @@ package com.xinyu.mwp.fragment.base;
 import android.view.View;
 
 import com.xinyu.mwp.activity.base.RefreshListController;
-import com.xinyu.mwp.adapter.IListAdapter;
+import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 
 /**

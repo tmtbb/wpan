@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.xinyu.mwp.adapter.IListAdapter;
+import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.emptyview.EmptyViewEntityUtil;
 import com.xinyu.mwp.entity.EmptyViewEntity;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;

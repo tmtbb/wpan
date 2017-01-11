@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.adapter.BaseListViewAdapter;
+import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.EmptyViewEntity;
 import com.xinyu.mwp.listener.OnChildViewClickListener;

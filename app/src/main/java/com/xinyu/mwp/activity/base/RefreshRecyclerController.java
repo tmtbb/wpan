@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.AbsListView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.xinyu.mwp.adapter.BaseListDataRecyclerViewAdapter;
-import com.xinyu.mwp.adapter.IListAdapter;
+import com.xinyu.mwp.adapter.base.BaseListDataRecyclerViewAdapter;
+import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.emptyview.RecyclerEmptyAdapter;
 
 /**

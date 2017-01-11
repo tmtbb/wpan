@@ -7,8 +7,8 @@ import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.xinyu.mwp.adapter.BaseListViewAdapter;
-import com.xinyu.mwp.adapter.IListAdapter;
+import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
+import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.emptyview.ExpandableListEmptyAdapter;
 import com.xinyu.mwp.emptyview.ListEmptyAdapter;
 import com.xinyu.mwp.entity.EmptyViewEntity;

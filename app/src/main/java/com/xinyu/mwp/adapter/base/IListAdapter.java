@@ -1,4 +1,4 @@
-package com.xinyu.mwp.adapter;
+package com.xinyu.mwp.adapter.base;
 
 import java.util.List;
 

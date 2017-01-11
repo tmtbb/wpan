@@ -3,7 +3,7 @@ package com.xinyu.mwp.emptyview;
 import android.content.Context;
 
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.adapter.MyBaseExpandableListAdapter;
+import com.xinyu.mwp.adapter.base.MyBaseExpandableListAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.EmptyViewEntity;
 
