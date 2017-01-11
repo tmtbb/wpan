@@ -51,6 +51,36 @@
         <item name="android:layout_marginTop">5dp</item>
     </style>
 
+    <style name="tab_share_order_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/sel_tab_share_order_text</item>
+        <item name="android:textSize">@dimen/fontSize_14sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="tab_share_order_icon_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@drawable/sel_tab_share_order_icon</item>
+    </style>
+
+    <style name="tab_user_share_order_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@drawable/sel_tab_user_share_order_text</item>
+        <item name="android:textSize">@dimen/fontSize_18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="tab_user_share_order_icon_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@drawable/sel_tab_user_share_order_icon</item>
+    </style>
+
     <style name="ButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

@@ -42,7 +42,7 @@ public class MyShareOrderFragment extends BaseRefreshAbsListControllerFragment<M
 
     @Override
     protected int getLayoutID() {
-        return R.layout.activity_myshareorder;
+        return R.layout.fragment_myshareorder;
     }
 
     @Override

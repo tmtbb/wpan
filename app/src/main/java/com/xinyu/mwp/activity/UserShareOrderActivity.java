@@ -1,13 +1,21 @@
-package com.xinyu.mwp.fragment;
+package com.xinyu.mwp.activity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.fragment.base.BaseFragment;
+import com.xinyu.mwp.activity.base.BaseFragmentActivity;
+import com.xinyu.mwp.fragment.MyPushOrderFragment;
+import com.xinyu.mwp.fragment.MyShareOrderFragment;
+import com.xinyu.mwp.fragment.ShareOrderPageFragment;
+import com.xinyu.mwp.util.DisplayImageOptionsUtil;
+import com.xinyu.mwp.util.ImageUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -16,11 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Benjamin on 17/1/10.
+ * @author : Created by xiepeng
+ * @email : xiepeng2015929@gmail.com
+ * @created time : 2017/1/11 0011
+ * @describe : com.xinyu.mwp.activity
  */
+public class UserShareOrderActivity extends BaseFragmentActivity {
 
-public class ShareOrderFragment extends BaseFragment {
-
+    @ViewInject(R.id.headImage)
+    private ImageView headImage;
+    @ViewInject(R.id.push)
+    private TextView push;
+    @ViewInject(R.id.attentionIcon)
+    private ImageView attentionIcon;
+    @ViewInject(R.id.attention)
+    private TextView attention;
     @ViewInject(R.id.tabLayout)
     private LinearLayout tabLayout;
     @ViewInject(R.id.viewPager)
@@ -29,23 +47,25 @@ public class ShareOrderFragment extends BaseFragment {
 
     @Override
     protected int getLayoutID() {
-        return R.layout.fragment_shareorder;
+        return R.layout.activity_user_share_order;
     }
 
     @Override
     protected void initView() {
         super.initView();
+        setTitle("若忆流年");
+        ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), headImage, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
         viewPager.setOffscreenPageLimit(tabLayout.getChildCount());
         fragmentList.add(new ShareOrderPageFragment());
-        fragmentList.add(new ShareOrderPageFragment());
-        fragmentList.add(new ShareOrderPageFragment());
+        fragmentList.add(new MyShareOrderFragment());
+        fragmentList.add(new MyPushOrderFragment());
         tabLayout.getChildAt(0).setSelected(true);
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
 
             @Override
             public int getCount() {
