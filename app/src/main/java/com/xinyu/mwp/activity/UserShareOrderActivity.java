@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseFragmentActivity;
+import com.xinyu.mwp.fragment.MyPushOrderFragment;
+import com.xinyu.mwp.fragment.MyShareOrderFragment;
 import com.xinyu.mwp.fragment.ShareOrderPageFragment;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.ImageUtil;
@@ -55,8 +57,8 @@ public class UserShareOrderActivity extends BaseFragmentActivity {
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), headImage, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
         viewPager.setOffscreenPageLimit(tabLayout.getChildCount());
         fragmentList.add(new ShareOrderPageFragment());
-        fragmentList.add(new ShareOrderPageFragment());
-        fragmentList.add(new ShareOrderPageFragment());
+        fragmentList.add(new MyShareOrderFragment());
+        fragmentList.add(new MyPushOrderFragment());
         tabLayout.getChildAt(0).setSelected(true);
     }
 

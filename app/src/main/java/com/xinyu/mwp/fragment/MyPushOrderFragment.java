@@ -42,7 +42,7 @@ public class MyPushOrderFragment extends BaseRefreshAbsListControllerFragment<My
 
     @Override
     protected int getLayoutID() {
-        return R.layout.activity_mypushorder;
+        return R.layout.fragment_mypushorder;
     }
 
     @Override

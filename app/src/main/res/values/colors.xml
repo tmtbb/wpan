@@ -15,6 +15,7 @@
     <color name="default_bg">#F6F7FB</color>
     <color name="default_red">#E9573E</color>
     <color name="default_red_light">#F05F46</color>
+    <color name="default_green">#009944</color>
     <color name="default_view_select">#f1f1f1</color>
 
     <color name="font_333">#333333</color>
@@ -31,5 +32,4 @@
 
     <color name="white">#ffffff</color>
     <color name="white_alpha_30">#51ffffff</color>
-    <color name="color_f05f46">#f05f46</color>
 </resources>
