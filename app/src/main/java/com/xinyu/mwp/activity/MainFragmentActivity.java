@@ -18,6 +18,7 @@ import com.xinyu.mwp.fragment.LeftFragment;
 import com.xinyu.mwp.fragment.ShareOrderFragment;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
 import org.xutils.view.annotation.Event;
@@ -203,5 +204,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     protected void onDestroy() {
         super.onDestroy();
         UserManager.getInstance().unregisterUserUpdateListener(this);
+        LogUtil.e("test");
     }
 }
