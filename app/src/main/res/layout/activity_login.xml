@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <com.xinyu.mwp.view.WPEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_19"
+        app:edit_hint="请设置您的手机号码"
+        app:edit_icon="@mipmap/icon_phone"
+        app:edit_left_text="+86"
+        app:edit_pwd="false"
+        app:edit_show_eye="false"
+        app:edit_show_icon="true"
+        app:edit_show_right_text="false" />
+
+    <com.xinyu.mwp.view.WPEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_19"
+        app:edit_hint="请设置您的登录密码"
+        app:edit_icon="@mipmap/icon_password"
+        app:edit_left_text="密码"
+        app:edit_pwd="true"
+        app:edit_show_eye="true"
+        app:edit_show_icon="true"
+        app:edit_show_right_text="false" />
+
+
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/ButtonStyle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="登录" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_13"
+        android:layout_marginRight="@dimen/dp_13"
+        android:layout_marginTop="@dimen/dp_16">
+
+        <TextView
+            android:id="@+id/registerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="快速注册"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/dp_12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentRight="true"
+            android:text="忘记密码？"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/dp_12" />
+    </RelativeLayout>
+
+    <include layout="@layout/ly_register_footer" />
 
 </LinearLayout>
