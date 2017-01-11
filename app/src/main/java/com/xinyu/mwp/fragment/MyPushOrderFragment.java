@@ -1,15 +1,15 @@
-package com.xinyu.mwp.activity;
+package com.xinyu.mwp.fragment;
 
 import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
 import com.xinyu.mwp.adapter.MyPushOrderAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
+import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.util.TestDataUtil;
 
@@ -19,7 +19,8 @@ import org.xutils.view.annotation.ViewInject;
  * Created by Benjamin on 17/1/11.
  */
 
-public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<MyPushOrderItemEntity> {
+public class MyPushOrderFragment extends BaseRefreshAbsListControllerFragment<MyPushOrderItemEntity> {
+
     @ViewInject(R.id.titleLayout)
     private View titleLayout;
     @ViewInject(R.id.pushOrderCount)
@@ -40,14 +41,8 @@ public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<My
     }
 
     @Override
-    protected int getContentView() {
+    protected int getLayoutID() {
         return R.layout.activity_mypushorder;
-    }
-
-    @Override
-    protected void initView() {
-        super.initView();
-        setTitle("我的推单");
     }
 
     @Override
