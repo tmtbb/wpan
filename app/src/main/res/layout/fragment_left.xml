@@ -168,24 +168,28 @@
                 android:id="@+id/myAttention"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_my_attention"
                 app:cell_name="我的关注" />
 
             <com.xinyu.mwp.view.CellView
                 android:id="@+id/myPushOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_my_pushorder"
                 app:cell_name="我的推单" />
 
             <com.xinyu.mwp.view.CellView
                 android:id="@+id/myShareOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_my_shareorder"
                 app:cell_name="我的晒单" />
 
             <com.xinyu.mwp.view.CellView
                 android:id="@+id/dealDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_dealdetail"
                 app:cell_name="交易明细" />
 
             <include layout="@layout/ly_space" />
@@ -194,18 +198,21 @@
                 android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_feedback"
                 app:cell_name="意见反馈" />
 
             <com.xinyu.mwp.view.CellView
                 android:id="@+id/score"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_score"
                 app:cell_name="产品评分" />
 
             <com.xinyu.mwp.view.CellView
                 android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cell_icon="@mipmap/icon_about"
                 app:cell_name="关于我们" />
         </LinearLayout>
     </ScrollView>
