@@ -18,6 +18,7 @@ import com.xinyu.mwp.fragment.LeftFragment;
 import com.xinyu.mwp.fragment.ShareOrderFragment;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
@@ -94,8 +95,10 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                     case R.id.icon:
                         break;
                     case R.id.login:
+                        ActivityUtil.nextLogin(context);
                         break;
                     case R.id.register:
+                        ActivityUtil.nextRegister(context);
                         break;
                     case R.id.myAttention:
                         next(MyAttentionActivity.class);
