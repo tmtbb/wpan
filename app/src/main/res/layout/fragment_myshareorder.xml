@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/ly_title_bar" />
-
     <LinearLayout
         android:id="@+id/titleLayout"
         android:layout_width="match_parent"
@@ -82,6 +80,7 @@
 
         <include layout="@layout/ly_space" />
     </LinearLayout>
+
 
     <include layout="@layout/ly_listview" />
 

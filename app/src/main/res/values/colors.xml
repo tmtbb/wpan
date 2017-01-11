@@ -22,6 +22,7 @@
     <color name="font_444">#444444</color>
     <color name="font_e2e2e2">#e2e2e2</color>
     <color name="font_ccc">#cccccc</color>
+    <color name="font_666">#666666</color>
 
     <color name="white">#ffffff</color>
 </resources>
