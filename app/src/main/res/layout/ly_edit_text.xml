@@ -23,32 +23,30 @@
         android:layout_marginRight="@dimen/dp_11"
         android:layout_toLeftOf="@id/rightText"
         android:background="@drawable/bg_edittext"
-        android:paddingLeft="@dimen/dp_16">
+        android:paddingLeft="@dimen/dp_7">
 
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/editIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="14dp"
+            android:layout_height="21dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:src="@mipmap/icon_phone" />
+            android:src="@mipmap/icon_phone"
+            android:visibility="gone" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/leftText"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginRight="@dimen/dp_5"
             android:layout_toRightOf="@id/editIcon"
             android:text="密码"
-            android:textColor="@color/color_666666" />
+            android:textColor="@color/color_666666"
+            android:visibility="gone" />
 
         <View
-            android:visibility="gone"
             android:id="@+id/lineView"
             android:layout_width="1dp"
             android:layout_height="23dp"
@@ -56,16 +54,18 @@
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_5"
             android:layout_toRightOf="@id/leftText"
-            android:background="@color/color_cccccc" />
+            android:background="@color/color_cccccc"
+            android:visibility="gone" />
 
         <ImageView
-            android:layout_alignParentRight="true"
             android:id="@+id/editEye"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/dp_10"
-            android:src="@mipmap/icon_password_2"
-            />
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:src="@mipmap/icon_password_2" />
 
 
         <com.xinyu.mwp.view.ClearEditText

@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.util.CountUtil;
+import com.xinyu.mwp.util.StringUtil;
+import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.util.Utils;
 
 import org.xutils.view.annotation.ViewInject;
 
@@ -75,7 +78,7 @@ public class WPEditText extends BaseLinearLayout {
             if (typedArray.hasValue(R.styleable.WPEditText_edit_right_text))
                 rightText.setText(typedArray.getString(R.styleable.WPEditText_edit_right_text));
 
-            if (typedArray.hasValue(R.styleable.WPEditText_edit_left_text)){
+            if (typedArray.hasValue(R.styleable.WPEditText_edit_left_text)) {
                 leftText.setVisibility(VISIBLE);
                 lineView.setVisibility(VISIBLE);
                 leftText.setText(typedArray.getString(R.styleable.WPEditText_edit_left_text));
@@ -109,7 +112,16 @@ public class WPEditText extends BaseLinearLayout {
             rightText.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new CountUtil(rightText).start();
+                    String text = (String) rightText.getTag();
+                    if (StringUtil.isEmpty(text)) {
+                        ToastUtils.show(context, "请输入手机号码");
+                    } else {
+                        if (Utils.isMobile(text))
+                            new CountUtil(rightText).start();
+                        else
+                            ToastUtils.show(context, "请输入正确的手机号码");
+                    }
+
                 }
             });
         }

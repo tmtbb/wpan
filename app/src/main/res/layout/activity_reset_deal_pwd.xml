@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <com.xinyu.mwp.view.WPEditText
+        android:id="@+id/pwdEditText1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_19"
+        app:edit_hint="请设置您的交易密码"
+        app:edit_show_eye="true"
+        app:edit_show_icon="false"
+        app:edit_pwd="true"
+        app:edit_show_right_text="false" />
+
+
+    <com.xinyu.mwp.view.WPEditText
+        android:id="@+id/pwdEditText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_19"
+        app:edit_hint="请确认您的交易密码"
+        app:edit_show_eye="true"
+        app:edit_show_icon="false"
+        app:edit_pwd="true"
+        app:edit_show_right_text="false" />
+
+    <Button
+        android:id="@+id/loginButton"
+        style="@style/ButtonStyle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="登录" />
+
+</LinearLayout>
