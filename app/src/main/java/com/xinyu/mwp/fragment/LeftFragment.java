@@ -38,6 +38,7 @@ public class LeftFragment extends BaseControllerFragment {
     }
 
     @Event(value = {R.id.icon, R.id.login, R.id.register
+            , R.id.myAssetsLayout, R.id.myScoreLayout
             , R.id.myAttention, R.id.myPushOrder, R.id.myShareOrder, R.id.dealDetail
             , R.id.feedback, R.id.score, R.id.about})
     private void click(View v) {

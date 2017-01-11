@@ -5,6 +5,8 @@ import com.xinyu.mwp.entity.MyPushOrderItemEntity;
 import com.xinyu.mwp.entity.MyShareOrderEntity;
 import com.xinyu.mwp.entity.MyShareOrderItemEntity;
 import com.xinyu.mwp.entity.UnitEntity;
+import com.xinyu.mwp.entity.UserAssetsEntity;
+import com.xinyu.mwp.entity.UserAssetsItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,30 @@ public class TestDataUtil {
         }
 
         entity.setPushOrders(list);
+        return entity;
+    }
+
+    public static UserAssetsEntity getUserAssetsEntity() {
+        UserAssetsEntity entity = new UserAssetsEntity();
+        entity.setMoney("188888.00");
+        List<UserAssetsItemEntity> list = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            UserAssetsItemEntity itemEntity = new UserAssetsItemEntity();
+            itemEntity.setTime("2017.1.01");
+            if (i % 5 == 0) {
+                itemEntity.setTimeTag(i + "月");
+            }
+
+            if (i == 1) {
+                itemEntity.setSilverPrice(String.valueOf(-(new Random().nextInt(99) + 1)));
+            } else if (i == 2) {
+                itemEntity.setCafePrice(String.valueOf(new Random().nextInt(99) + 1));
+            } else {
+                itemEntity.setOilPrice(String.valueOf(new Random().nextInt(99) + 1));
+            }
+            list.add(itemEntity);
+        }
+        entity.setAssets(list);
         return entity;
     }
 }
