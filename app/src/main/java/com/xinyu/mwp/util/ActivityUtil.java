@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.xinyu.mwp.activity.LoginActivity;
+import com.xinyu.mwp.activity.LoginSuccessActivity;
 import com.xinyu.mwp.activity.RegisterActivity;
 import com.xinyu.mwp.activity.ResetDealPwdActivity;
 import com.xinyu.mwp.activity.ResetUserPwdActivity;
@@ -47,4 +48,8 @@ public class ActivityUtil {
         next(context, ResetDealPwdActivity.class);
     }
 
+
+    public static void nextLoginSuccess(Context context) {
+        next(context, LoginSuccessActivity.class);
+    }
 }
