@@ -15,6 +15,7 @@
         <include layout="@layout/ly_title_bar" />
 
         <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_40"
@@ -24,6 +25,7 @@
             app:edit_show_right_text="false" />
 
         <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/msgEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_19"
@@ -33,21 +35,24 @@
             app:edit_show_right_text="true" />
 
         <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/soundEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_19"
-            app:edit_hint="请输入语音"
+            app:edit_hint="请输入语音验证码"
             app:edit_right_text="获取语音验证码"
             app:edit_show_eye="false"
             app:edit_show_icon="false"
             app:edit_show_right_text="true" />
 
         <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/pwdEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_19"
             app:edit_hint="请设置您的登录密码"
-            app:edit_show_eye="false"
+            app:edit_show_eye="true"
+            app:edit_pwd="true"
             app:edit_show_icon="false"
             app:edit_show_right_text="false" />
 
