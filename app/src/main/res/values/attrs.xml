@@ -21,8 +21,12 @@
 
     <declare-styleable name="CellView">
         <attr name="cell_icon" format="reference" />
+        <attr name="cell_icon_width" format="reference|integer" />
+        <attr name="cell_icon_height" format="reference|integer" />
         <attr name="cell_name" format="reference|string" />
-        <attr name="cell_text_color" format="color" />
+        <attr name="cell_name_color" format="color" />
+        <attr name="cell_content" format="reference|string" />
+        <attr name="cell_content_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="WPEditText">

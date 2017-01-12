@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/dp_20"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:paddingTop="@dimen/dp_20">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="五日盈亏数"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="买涨"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:id="@+id/buyUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="1999.00"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_40"
+                    android:text="买跌"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:id="@+id/buyDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="1999.00"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="建仓"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:id="@+id/createDepot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="1999.00"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_40"
+                    android:text="平仓"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+
+                <TextView
+                    android:id="@+id/flatDepot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="1999.00"
+                    android:textColor="@color/font_333"
+                    android:textSize="@dimen/fontSize_13sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/ly_space" />
+
+</LinearLayout>
