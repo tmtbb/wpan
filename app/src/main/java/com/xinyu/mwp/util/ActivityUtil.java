@@ -6,6 +6,8 @@ import android.content.Intent;
 
 import com.xinyu.mwp.activity.LoginActivity;
 import com.xinyu.mwp.activity.RegisterActivity;
+import com.xinyu.mwp.activity.ResetDealPwdActivity;
+import com.xinyu.mwp.activity.ResetUserPwdActivity;
 
 /**
  * @author : Created by 180
@@ -34,6 +36,15 @@ public class ActivityUtil {
 
     public static void nextLogin(Context context) {
         next(context, LoginActivity.class);
+    }
+
+    public static void nextResetUserPwd(Context context) {
+        next(context, ResetUserPwdActivity.class);
+    }
+
+
+    public static void nextResetDealPwd(Context context) {
+        next(context, ResetDealPwdActivity.class);
     }
 
 }

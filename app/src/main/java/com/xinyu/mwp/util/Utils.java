@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -30,6 +31,8 @@ import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -417,4 +420,18 @@ public class Utils {
     public static boolean isUserApp(ApplicationInfo pInfo) {
         return (!isSystemApp(pInfo) && !isSystemUpdateApp(pInfo));
     }
+    public static boolean isMobile(String mobiles) {
+        //   Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,3,5-9]))\\d{8}$");
+        //     Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
+        Pattern p = Pattern.compile("^((13[0-9])|(17[0-9])|(147)|(15[^4,\\D])|(18[0-9]))\\d{8}$");
+        Matcher m = p.matcher(mobiles);
+        return m.matches();
+    }
+    public static void closeSoftKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//		if(imm.isActive(v)){
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//		}
+    }
+
 }

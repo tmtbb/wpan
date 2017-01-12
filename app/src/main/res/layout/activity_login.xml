@@ -9,6 +9,7 @@
     <include layout="@layout/ly_title_bar" />
 
     <com.xinyu.mwp.view.WPEditText
+        android:id="@+id/userNameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_19"
@@ -21,6 +22,7 @@
         app:edit_show_right_text="false" />
 
     <com.xinyu.mwp.view.WPEditText
+        android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_19"
@@ -58,9 +60,9 @@
             android:textSize="@dimen/dp_12" />
 
         <TextView
+            android:id="@+id/findPwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentRight="true"
             android:text="忘记密码？"
             android:textColor="@color/color_666666"

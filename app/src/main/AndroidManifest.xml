@@ -38,10 +38,12 @@
             android:name=".activity.MyAttentionActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".activity.UserAssetsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
+
 
         <activity android:name=".activity.UserShareOrderActivity" />
         <activity
@@ -50,6 +52,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ResetUserPwdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ResetDealPwdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
     </application>
