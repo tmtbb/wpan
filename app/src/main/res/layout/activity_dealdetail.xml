@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <include layout="@layout/ly_space" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="交易类型" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealKinds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="交易品种" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="交易时间" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealMoney"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="交易金额" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealSafe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="最低履约保证金" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/dealCounter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="手续费率" />
+    </LinearLayout>
+
+</LinearLayout>

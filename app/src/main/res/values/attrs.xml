@@ -21,12 +21,22 @@
 
     <declare-styleable name="CellView">
         <attr name="cell_icon" format="reference" />
-        <attr name="cell_icon_width" format="reference|integer" />
-        <attr name="cell_icon_height" format="reference|integer" />
+        <attr name="cell_icon_width" format="dimension" />
+        <attr name="cell_icon_visible" format="reference|boolean" />
+        <attr name="cell_icon_height" format="dimension" />
         <attr name="cell_name" format="reference|string" />
+        <attr name="cell_name_size" format="dimension" />
         <attr name="cell_name_color" format="color" />
         <attr name="cell_content" format="reference|string" />
+        <attr name="cell_content_size" format="dimension" />
         <attr name="cell_content_color" format="color" />
+        <attr name="cell_arrow_visible" format="reference|boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CellEditView">
+        <attr name="celledit_name" format="reference|string" />
+        <attr name="celledit_hint" format="reference|string" />
+        <attr name="celledit_cashall" format="reference|boolean" />
     </declare-styleable>
 
     <declare-styleable name="WPEditText">

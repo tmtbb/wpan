@@ -52,7 +52,7 @@ public class UserAssetsActivity extends BaseRefreshAbsListControllerActivity<Use
     private void click(View view) {
         switch (view.getId()) {
             case R.id.cash:
-                showToast("Cash");
+                next(CashActivity.class);
                 break;
             case R.id.recharge:
                 showToast("Recharge");
