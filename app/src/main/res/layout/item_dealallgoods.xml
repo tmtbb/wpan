@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_userassets_title" />
+
+    <com.xinyu.mwp.view.CellView
+        android:id="@+id/buyUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cell_icon="@mipmap/icon_buyup"
+        app:cell_name="买涨" />
+
+    <com.xinyu.mwp.view.CellView
+        android:id="@+id/buyDown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cell_icon="@mipmap/icon_buydown"
+        app:cell_name="买跌" />
+
+    <com.xinyu.mwp.view.CellView
+        android:id="@+id/createDepot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cell_icon="@mipmap/icon_createdepot"
+        app:cell_name="建仓" />
+
+    <com.xinyu.mwp.view.CellView
+        android:id="@+id/flatDepot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cell_icon="@mipmap/icon_flatdepot"
+        app:cell_name="平仓" />
+
+    <include layout="@layout/ly_space" />
+</LinearLayout>

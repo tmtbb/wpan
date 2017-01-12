@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/item_sliver"
+            style="@style/bottombar_item_style"
+            android:gravity="top">
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:layout_centerInParent="true"
+                android:text="白银"
+                android:textSize="@dimen/fontSize_18sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_marginRight="@dimen/dp_17"
+                android:background="@drawable/sel_tab_user_share_order_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_oil"
+            style="@style/bottombar_item_style"
+            android:gravity="top">
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:layout_centerInParent="true"
+                android:text="原油"
+                android:textSize="@dimen/fontSize_18sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_marginRight="@dimen/dp_17"
+                android:background="@drawable/sel_tab_user_share_order_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/item_cafe"
+            style="@style/bottombar_item_style"
+            android:gravity="top">
+
+            <TextView
+                style="@style/bottombar_text_style"
+                android:layout_centerInParent="true"
+                android:text="咖啡"
+                android:textSize="@dimen/fontSize_18sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:layout_marginRight="@dimen/dp_17"
+                android:background="@drawable/sel_tab_user_share_order_icon" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include layout="@layout/ly_line" />
+</LinearLayout>

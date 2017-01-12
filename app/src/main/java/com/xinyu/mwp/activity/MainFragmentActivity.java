@@ -75,13 +75,9 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         setSwipeBackEnable(false);
     }
 
-    @Event(value = {R.id.icon, R.id.login, R.id.register
-            , R.id.myAttention, R.id.myPushOrder, R.id.myShareOrder, R.id.dealDetail
-            , R.id.feedback, R.id.score, R.id.about})
     @Override
     protected void initListener() {
         super.initListener();
-
         leftFragment.setLeftClickListener(new LeftFragment.LeftClickListener() {
             @Override
             public void click(View v, int action, Object obj) {
@@ -110,6 +106,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(MyShareOrderActivity.class);
                         break;
                     case R.id.dealDetail:
+                        next(DealDetailFragmentActivity.class);
                         break;
                     case R.id.feedback:
                         break;

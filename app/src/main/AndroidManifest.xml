@@ -43,7 +43,10 @@
             android:name=".activity.UserAssetsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".activity.DealDetailFragmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".activity.UserShareOrderActivity" />
         <activity

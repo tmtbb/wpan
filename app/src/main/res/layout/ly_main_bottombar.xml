@@ -19,7 +19,7 @@
 
             <ImageView
                 style="@style/bottombar_item_icon_style"
-                android:background="@color/default_red" />
+                android:background="@drawable/sel_mainbottom_index" />
 
             <TextView
                 style="@style/bottombar_text_style"
@@ -32,7 +32,7 @@
 
             <ImageView
                 style="@style/bottombar_item_icon_style"
-                android:background="@color/default_red" />
+                android:background="@drawable/sel_mainbottom_deal" />
 
             <TextView
                 style="@style/bottombar_text_style"
@@ -45,7 +45,7 @@
 
             <ImageView
                 style="@style/bottombar_item_icon_style"
-                android:background="@color/default_red" />
+                android:background="@drawable/sel_mainbottom_shareorder" />
 
             <TextView
                 style="@style/bottombar_text_style"
