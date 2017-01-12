@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.DealDetailActivity;
 import com.xinyu.mwp.adapter.DealAllGoodsAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.DealAllGoodsEntity;
@@ -62,6 +63,7 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
             @Override
             public void onItemChildViewClick(View childView, int position, int action, Object obj) {
                 ToastUtils.show(context, "position = " + position + " | action = " + action);
+                next(DealDetailActivity.class);
             }
         });
     }

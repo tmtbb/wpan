@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/ly_space" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="请选择银行"
+                app:celledit_name="银行" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="请选择银行支行"
+                app:celledit_name="银行支行" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="请输入地址"
+                app:celledit_name="地址" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/cardNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="收款人卡号"
+                app:celledit_name="卡号" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/cardName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="收款人姓名"
+                app:celledit_name="姓名" />
+
+            <include layout="@layout/ly_space" />
+
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_cashall="true"
+                app:celledit_hint="全部提现"
+                app:celledit_name="金额" />
+
+            <include layout="@layout/ly_space" />
+
+            <com.xinyu.mwp.view.CheckCodeView
+                android:id="@+id/checkCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/cash"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_50"
+                android:background="@drawable/sel_common_view"
+                android:gravity="center"
+                android:text="提现"
+                android:textColor="@drawable/sel_common_view_text"
+                android:textSize="@dimen/fontSize_16sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
