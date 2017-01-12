@@ -86,7 +86,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
             @Override
             public void click(View v, int action, Object obj) {
                 toggleDrawer(false);
-                ToastUtils.show(context, action + "");
                 switch (action) {
                     case R.id.icon:
                         break;
@@ -95,6 +94,11 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         break;
                     case R.id.register:
                         ActivityUtil.nextRegister(context);
+                        break;
+                    case R.id.myAssetsLayout:
+                        next(UserAssetsActivity.class);
+                        break;
+                    case R.id.myScoreLayout:
                         break;
                     case R.id.myAttention:
                         next(MyAttentionActivity.class);
