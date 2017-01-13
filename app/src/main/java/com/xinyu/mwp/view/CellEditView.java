@@ -2,12 +2,16 @@ package com.xinyu.mwp.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.listener.OnTextChangeListener;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -16,7 +20,7 @@ import org.xutils.view.annotation.ViewInject;
  * Created by Benjamin on 17/1/12.
  */
 
-public class CellEditView extends BaseFrameLayout {
+public class CellEditView extends BaseFrameLayout implements OnTextChangeListener {
     @ViewInject(R.id.name)
     private TextView name;
     @ViewInject(R.id.edit)
@@ -59,5 +63,25 @@ public class CellEditView extends BaseFrameLayout {
     @Event(value = R.id.cashAll)
     private void click(View v) {
         onChildViewClick(v, 99);
+    }
+
+    @Override
+    public void addTextChangedListener(TextWatcher textWatcher) {
+        if (edit != null)
+            edit.addTextChangedListener(textWatcher);
+    }
+
+    @Override
+    public String getEditTextString() {
+        if (edit != null) {
+            return edit.getText().toString().trim();
+        }
+        return "";
+    }
+
+    public void setEditTextString(String str) {
+        if (edit != null && !TextUtils.isEmpty(str)) {
+            edit.setText(str);
+        }
     }
 }

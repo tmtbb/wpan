@@ -2,6 +2,7 @@ package com.xinyu.mwp.activity;
 
 import android.os.Handler;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
@@ -11,6 +12,7 @@ import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.UserAssetsEntity;
 import com.xinyu.mwp.entity.UserAssetsItemEntity;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.TestDataUtil;
 
 import org.xutils.view.annotation.Event;
@@ -28,6 +30,8 @@ public class UserAssetsActivity extends BaseRefreshAbsListControllerActivity<Use
     private TextView money;
     @ViewInject(R.id.bottomLayout)
     private View bottomLayout;
+    @ViewInject(R.id.contentViewLayout)
+    private View contentViewLayout;
 
     private UserAssetsAdapter adapter;
     private UserAssetsEntity entity;
@@ -46,6 +50,7 @@ public class UserAssetsActivity extends BaseRefreshAbsListControllerActivity<Use
     protected void initView() {
         super.initView();
         setTitle("我的资产");
+        toggleContentViewLayoutMarginTop(45);
     }
 
     @Event(value = {R.id.cash, R.id.recharge})
@@ -76,9 +81,18 @@ public class UserAssetsActivity extends BaseRefreshAbsListControllerActivity<Use
             @Override
             public void run() {
                 entity = TestDataUtil.getUserAssetsEntity();
+                toggleContentViewLayoutMarginTop(0);
                 money.setText(entity.getMoney());
+                moneyLayout.setVisibility(View.VISIBLE);
                 getRefreshController().refreshComplete(entity.getAssets());
+                bottomLayout.setVisibility(View.VISIBLE);
             }
         }, 2000);
+    }
+
+    private void toggleContentViewLayoutMarginTop(int topDp) {
+        RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) contentViewLayout.getLayoutParams();
+        rl.topMargin = DisplayUtil.dip2px(topDp, context);
+        contentViewLayout.setLayoutParams(rl);
     }
 }
