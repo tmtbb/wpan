@@ -17,6 +17,7 @@ public class DisplayImageOptionsUtil {
     }
 
     private DisplayImageOptions userHeaderOptions;
+    private DisplayImageOptions bannerOptions;
 
     private DisplayImageOptions.Builder getBuilder() {
         DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder()
@@ -31,5 +32,13 @@ public class DisplayImageOptionsUtil {
                     .showImageForEmptyUri(R.mipmap.icon_default_head)
                     .showImageOnFail(R.mipmap.icon_default_head).build();
         return userHeaderOptions;
+    }
+
+    public DisplayImageOptions getBannerOptions() {
+        if (bannerOptions == null)
+            bannerOptions = getBuilder().showImageOnLoading(R.mipmap.icon_banner_default)
+                    .showImageForEmptyUri(R.mipmap.icon_banner_default)
+                    .showImageOnFail(R.mipmap.icon_banner_default).build();
+        return bannerOptions;
     }
 }

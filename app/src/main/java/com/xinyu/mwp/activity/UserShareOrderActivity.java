@@ -33,8 +33,8 @@ public class UserShareOrderActivity extends BaseFragmentActivity {
 
     @ViewInject(R.id.headImage)
     private ImageView headImage;
-    @ViewInject(R.id.push)
-    private TextView push;
+    @ViewInject(R.id.pushCircleView)
+    private ImageView pushCircleView;
     @ViewInject(R.id.attentionIcon)
     private ImageView attentionIcon;
     @ViewInject(R.id.attention)
@@ -44,6 +44,7 @@ public class UserShareOrderActivity extends BaseFragmentActivity {
     @ViewInject(R.id.viewPager)
     private ViewPager viewPager;
     private List<Fragment> fragmentList = new ArrayList<>();
+    private boolean isPush = false;
 
     @Override
     protected int getLayoutID() {
@@ -97,8 +98,22 @@ public class UserShareOrderActivity extends BaseFragmentActivity {
         });
     }
 
-    @Event({R.id.itemLayout1, R.id.itemLayout2, R.id.itemLayout3})
+    @Event({R.id.attentionLayout, R.id.pushLayout, R.id.itemLayout1, R.id.itemLayout2, R.id.itemLayout3})
     private void onClick(View view){
-        viewPager.setCurrentItem(tabLayout.indexOfChild(view));
+        switch (view.getId()){
+            case R.id.attentionLayout:
+                attentionIcon.setSelected(!attentionIcon.isSelected());
+                attention.setText(attentionIcon.isSelected() ? "取消关注" : "关注");
+                break;
+            case R.id.pushLayout:
+                isPush = !isPush;
+                pushCircleView.setVisibility(isPush ? View.VISIBLE : View.GONE);
+                break;
+            case R.id.itemLayout1:
+            case R.id.itemLayout2:
+            case R.id.itemLayout3:
+                viewPager.setCurrentItem(tabLayout.indexOfChild(view));
+                break;
+        }
     }
 }

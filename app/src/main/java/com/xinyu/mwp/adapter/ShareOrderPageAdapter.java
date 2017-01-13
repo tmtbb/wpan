@@ -44,7 +44,7 @@ public class ShareOrderPageAdapter extends BaseListViewAdapter<ShareOrderPageEnt
         private TextView name;
         @ViewInject(R.id.content)
         private TextView content;
-        private int[] numberImages = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+        private int[] numberImages = {R.mipmap.icon_share_order_page_1, R.mipmap.icon_share_order_page_2, R.mipmap.icon_share_order_page_3};
 
         public ShareOrderPageViewHolder(Context context) {
             super(context);
