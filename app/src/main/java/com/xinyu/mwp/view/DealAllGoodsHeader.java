@@ -2,6 +2,7 @@ package com.xinyu.mwp.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
@@ -14,6 +15,8 @@ import org.xutils.view.annotation.ViewInject;
  */
 
 public class DealAllGoodsHeader extends BaseDataFrameLayout<DealAllGoodsEntity> {
+    @ViewInject(R.id.rootLayout)
+    private View rootLayout;
     @ViewInject(R.id.buyUp)
     private TextView buyUp;
     @ViewInject(R.id.buyDown)
@@ -37,6 +40,7 @@ public class DealAllGoodsHeader extends BaseDataFrameLayout<DealAllGoodsEntity> 
         buyDown.setText(data.getBuyDown());
         createDepot.setText(data.getCreateDepot());
         flatDepot.setText(data.getFlatDepot());
+        rootLayout.setVisibility(VISIBLE);
     }
 
     @Override

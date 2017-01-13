@@ -11,7 +11,7 @@ import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.CashRecordEntity;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshListener;
-import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.view.SpaceView;
 
 import org.xutils.view.annotation.ViewInject;
 
@@ -42,7 +42,7 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Cas
     protected void initView() {
         super.initView();
         setTitle("提现记录");
-        contentView.addHeaderView(View.inflate(context, R.layout.ly_space, null));
+        contentView.addHeaderView(new SpaceView(context));
     }
 
     @Override

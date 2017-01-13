@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/bankIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@color/default_red" />
+
+            <TextView
+                android:id="@+id/bankName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:text="1111111111"
+                android:textColor="@color/font_666"
+                android:textSize="@dimen/fontSize_16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_35"
+            android:text="2,333.00"
+            android:textColor="@color/font_333"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="提现申请已提交"
+            android:textColor="@color/default_red"
+            android:textSize="@dimen/fontSize_18sp" />
+    </LinearLayout>
+</LinearLayout>
