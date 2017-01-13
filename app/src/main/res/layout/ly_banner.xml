@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bannerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <com.xinyu.mwp.view.banner.SliderBannerLayout
+        android:id="@+id/sliderBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:slider_banner_indicator="@+id/banner_indicator"
+        app:slider_banner_pager="@+id/banner_pager">
+
+        <com.xinyu.mwp.view.banner.MyViewPager_1
+            android:id="@+id/banner_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_alignParentBottom="true">
+
+            <com.xinyu.mwp.view.banner.DotView
+                android:id="@+id/banner_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingRight="@dimen/dp_10"
+                app:dot_radius="4dp"
+                app:dot_selected_color="@mipmap/icon_index_banner_selected"
+                app:dot_span="5dp"
+                app:dot_unselected_color="@mipmap/icon_index_banner_normal" />
+
+        </RelativeLayout>
+    </com.xinyu.mwp.view.banner.SliderBannerLayout>
+
+</LinearLayout>

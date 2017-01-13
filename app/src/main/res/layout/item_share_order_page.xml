@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/layout"
     android:paddingLeft="@dimen/dp_12"
-    android:background="@drawable/sel_comm_action">
+    android:background="@drawable/sel_comm_action_1">
 
     <RelativeLayout
         android:layout_width="match_parent"

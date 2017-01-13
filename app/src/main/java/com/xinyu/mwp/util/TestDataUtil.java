@@ -1,5 +1,6 @@
 package com.xinyu.mwp.util;
 
+import com.xinyu.mwp.entity.IndexBannerEntity;
 import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
 import com.xinyu.mwp.entity.MyShareOrderEntity;
@@ -106,5 +107,49 @@ public class TestDataUtil {
         }
         entity.setAssets(list);
         return entity;
+    }
+
+    public static List<IndexBannerEntity> getIndexBanners(int size) {
+        List<IndexBannerEntity> banners = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+
+            IndexBannerEntity banner = new IndexBannerEntity();
+            banner.setJumpType("1");
+            banner.setJumpCategory(String.valueOf(i));
+
+
+            if (i == 0)// no skip
+            {
+                banner.setJumpType("0");
+            }
+
+
+            if (i == 1) { //game
+                banner.setJumpType("1");
+                banner.setJumpId("19");
+            }
+
+            if (i == 2) { //gift
+                banner.setJumpType("1");
+                banner.setJumpId("37");
+            }
+            if (i == 3) { //sociaty
+                banner.setJumpType("1");
+                banner.setJumpId("20");
+            }
+
+            if (i == 4) { //web
+                banner.setJumpType("2");
+                banner.setJumpUrl("http://baidu.com");
+            }
+            banner.setImg(ImageUtil.getRandomUrl());
+            banner.setLocation(String.valueOf(i));
+            banner.setTitle("title" + i);
+            banner.setContent("content" + i);
+            banner.setName("name" + i);
+            banner.setGname("gname" + i);
+            banners.add(banner);
+        }
+        return banners;
     }
 }
