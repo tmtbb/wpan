@@ -1,12 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.xinyu.mwp.view.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Deal" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <include layout="@layout/ly_title_bar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_32"
+            android:background="@color/default_red"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_14"
+                android:layout_marginLeft="@dimen/dp_13"
+                android:src="@mipmap/ic_exchange_assets" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:text="总资产 (元) "
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_exchange_assets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:text="0.00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <ImageView
+                android:id="@+id/iv_exchange_assets_add"
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:src="@mipmap/ic_exchange_add" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/rg_deal_product"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_marginRight="@dimen/dp_25"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_deal_product1"
+                style="@style/style_btn_deal_product"
+                android:background="@drawable/sel_btn_deal_product1"
+                android:checked="true"
+                android:text="白银" />
+
+            <RadioButton
+                android:id="@+id/rb_deal_product2"
+                style="@style/style_btn_deal_product"
+                android:background="@drawable/sel_btn_deal_product2"
+                android:text="原油" />
+
+            <RadioButton
+                android:id="@+id/rb_deal_product3"
+                style="@style/style_btn_deal_product"
+                android:background="@drawable/sel_btn_deal_product3"
+                android:text="咖啡" />
+        </RadioGroup>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_deal_product_info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+
+    </LinearLayout>
+
+</com.xinyu.mwp.view.MyScrollView>
+
+

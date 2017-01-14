@@ -35,4 +35,10 @@
 
     <color name="white">#ffffff</color>
     <color name="white_alpha_30">#51ffffff</color>
+
+    <color name="red_time_line">#FC6E51</color>
+    <color name="color_dbdbdb">#DBDBDB</color>
+    <color name="color_e6e9ed">#E6E9ED</color>
+    <color name="font_888">#888888</color>
+
 </resources>

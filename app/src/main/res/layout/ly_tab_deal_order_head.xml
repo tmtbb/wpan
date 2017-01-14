@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_exchange_product" />
+
+        <!--走势图-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="210dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_27"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_5"
+            android:checkedButton="@+id/rb_min_hour"
+            android:orientation="horizontal">
+
+            <!--分时线-->
+            <RadioButton
+                android:id="@+id/rb_min_hour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/sel_exchange_line_btn"
+                android:button="@null"
+                android:gravity="center"
+                android:text="分时线"
+                android:textColor="@drawable/sel_exchange_btn_text"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <RadioButton
+                android:id="@+id/rb_min_15"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_15"
+
+                android:layout_weight="1"
+                android:background="@drawable/sel_exchange_line_btn"
+                android:button="@null"
+                android:gravity="center"
+                android:text="15分钟线"
+                android:textColor="@drawable/sel_exchange_btn_text"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <RadioButton
+                android:id="@+id/rb_min_60"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_weight="1"
+                android:background="@drawable/sel_exchange_line_btn"
+                android:button="@null"
+                android:gravity="center"
+                android:text="60分钟线"
+                android:textColor="@drawable/sel_exchange_btn_text"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <RadioButton
+                android:id="@+id/rb_day_hour"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_weight="1"
+                android:background="@drawable/sel_exchange_line_btn"
+                android:button="@null"
+                android:gravity="center"
+                android:text="日时线"
+                android:textColor="@drawable/sel_exchange_btn_text"
+                android:textSize="@dimen/fontSize_12sp" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="买涨"
+                android:textColor="@color/font_444"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_buy_plus_per"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:text="30.00%"
+                        android:textColor="@color/default_green"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="今日交易大数据"
+                        android:textColor="@color/color_666666"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_minus_per"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="20dp"
+                        android:gravity="center"
+                        android:text="70.00%"
+                        android:textColor="@color/default_green"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+                <ProgressBar
+                    android:id="@+id/pb_buy_plus"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="2dp"
+                    android:max="100"
+                    android:progress="30"
+                    android:progressDrawable="@drawable/layer_list_progress_drawable" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="买跌"
+                android:textColor="@color/font_444"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_exchange_buy_plus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tv_exchange_plus_corner5"
+                android:gravity="center"
+                android:text="买涨"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_exchange_buy_minus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_tv_exchange_minus_corner5"
+                android:gravity="center"
+                android:text="买跌"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:drawableLeft="@mipmap/ic_exchange_bill3"
+                android:drawablePadding="5dp"
+                android:text="持仓盈亏"
+                android:textColor="@color/font_444"
+                android:textSize="@dimen/fontSize_15sp" />
+
+            <TextView
+                android:id="@+id/tv_hold_bill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:text="00.00"
+                android:textColor="@color/default_red"
+                android:textSize="@dimen/fontSize_15sp" />
+
+            <TextView
+                android:id="@+id/tv_exchange_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="5dp"
+                android:drawableRight="@mipmap/ic_drawer_right"
+                android:text="历史交易"
+                android:textColor="@color/font_888"
+                android:textSize="@dimen/fontSize_15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
