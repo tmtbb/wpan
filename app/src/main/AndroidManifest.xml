@@ -67,7 +67,10 @@
             android:name=".activity.CashResaultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".activity.RechargeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".activity.UserShareOrderActivity" />
         <activity

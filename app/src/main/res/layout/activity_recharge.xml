@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <in.srain.cube.views.ptr.PtrFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:core_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refreshFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        core_ptr:ptr_duration_to_close="100"
+        core_ptr:ptr_duration_to_close_header="100"
+        core_ptr:ptr_keep_header_when_refresh="true"
+        core_ptr:ptr_pull_to_fresh="false"
+        core_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        core_ptr:ptr_resistance="1.7">
+
+        <ScrollView
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/default_bg"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    core_ptr:cell_arrow_visible="false"
+                    core_ptr:cell_contentleft="EA"
+                    core_ptr:cell_contentleft_color="@color/font_333"
+                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_name="账户ID"
+                    core_ptr:cell_name_color="@color/font_666"
+                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    core_ptr:cell_arrow_visible="false"
+                    core_ptr:cell_contentleft="56.22元"
+                    core_ptr:cell_contentleft_color="@color/default_red"
+                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_name="余额"
+                    core_ptr:cell_name_color="@color/font_666"
+                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+
+                <include layout="@layout/ly_space" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/myBankCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    core_ptr:cell_content="请绑定银行卡"
+                    core_ptr:cell_content_color="@color/font_999"
+                    core_ptr:cell_content_size="14sp"
+                    core_ptr:cell_contentleft="3"
+                    core_ptr:cell_contentleft_color="@color/font_333"
+                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_name="我的银行卡"
+                    core_ptr:cell_name_color="@color/font_666"
+                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/rechargeMoney"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    core_ptr:cell_contentleft="100元"
+                    core_ptr:cell_contentleft_color="@color/font_333"
+                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_name="充值金额"
+                    core_ptr:cell_name_color="@color/font_666"
+                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/rechargeType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_name="充值方式"
+                    core_ptr:cell_name_color="@color/font_666"
+                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+
+                <TextView
+                    android:id="@+id/commit"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_55"
+                    android:background="@drawable/sel_common_view"
+                    android:gravity="center"
+                    android:text="确认提交"
+                    android:textColor="@drawable/sel_common_view_text"
+                    android:textSize="@dimen/fontSize_16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </in.srain.cube.views.ptr.PtrFrameLayout>
+</LinearLayout>

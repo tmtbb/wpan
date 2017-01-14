@@ -30,6 +30,9 @@
         <attr name="cell_content" format="reference|string" />
         <attr name="cell_content_size" format="dimension" />
         <attr name="cell_content_color" format="color" />
+        <attr name="cell_contentleft" format="reference|string" />
+        <attr name="cell_contentleft_size" format="dimension" />
+        <attr name="cell_contentleft_color" format="color" />
         <attr name="cell_arrow_visible" format="reference|boolean" />
     </declare-styleable>
 
