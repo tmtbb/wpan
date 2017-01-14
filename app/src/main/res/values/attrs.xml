@@ -53,4 +53,23 @@
         <attr name="edit_right_text" format="reference|string" />
     </declare-styleable>
 
+    <declare-styleable name="DotView">
+        <attr name="dot_radius" format="dimension" />
+        <attr name="dot_span" format="dimension" />
+        <attr name="dot_unselected_color" format="reference" />
+        <attr name="dot_selected_color" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SliderBanner">
+        <attr name="slider_banner_indicator" format="reference" />
+        <attr name="slider_banner_pager" format="reference" />
+        <attr name="slider_banner_time_interval" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="IndexRankingItem">
+        <attr name="index_ranking_item_title" format="reference|string" />
+        <attr name="index_ranking_item_description" format="reference|string" />
+        <attr name="index_ranking_item_icon" format="reference|integer" />
+    </declare-styleable>
+
 </resources>

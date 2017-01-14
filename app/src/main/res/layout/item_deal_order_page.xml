@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40"
+    android:layout_marginTop="@dimen/dp_5"
+    android:background="@drawable/sel_comm_action_1">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_deal_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_21"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="粤贵银"
+            android:textColor="@color/font_444"
+            android:textSize="@dimen/fontSize_12sp" />
+
+        <TextView
+            android:id="@+id/tv_deal_product_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_toRightOf="@id/tv_deal_name"
+            android:text="100G"
+            android:textColor="@color/font_444"
+            android:textSize="@dimen/fontSize_12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_deal_name"
+            android:layout_below="@id/tv_deal_name"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="建仓价"
+            android:textColor="@color/font_444"
+            android:textSize="@dimen/fontSize_12sp" />
+
+        <TextView
+            android:id="@+id/tv_deal_open_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_deal_product_weight"
+            android:layout_below="@id/tv_deal_product_weight"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="3086"
+            android:textColor="@color/color_009944"
+            android:textSize="@dimen/fontSize_12sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_35"
+        android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/tv_position_gross_profit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="持仓盈亏 (元)"
+            android:textColor="@color/font_444"
+            android:textSize="@dimen/fontSize_12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_deal_gross_profit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_position_gross_profit"
+            android:layout_below="@id/tv_position_gross_profit"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="40"
+            android:textColor="@color/default_red"
+            android:textSize="@dimen/fontSize_12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_60"
+            android:layout_marginRight="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_14"
+            android:gravity="center"
+            android:text="平仓"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/fontSize_15sp" />
+    </RelativeLayout>
+
+</LinearLayout>

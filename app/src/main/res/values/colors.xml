@@ -29,7 +29,16 @@
     <color name="font_ccc">#cccccc</color>
     <color name="font_666">#666666</color>
     <color name="font_999">#999</color>
+    <color name="color_eee">#eee</color>
+    <color name="color_fe0000">#fe0000</color>
+    <color name="color_009944">#009944</color>
 
     <color name="white">#ffffff</color>
     <color name="white_alpha_30">#51ffffff</color>
+
+    <color name="red_time_line">#FC6E51</color>
+    <color name="color_dbdbdb">#DBDBDB</color>
+    <color name="color_e6e9ed">#E6E9ED</color>
+    <color name="font_888">#888888</color>
+
 </resources>

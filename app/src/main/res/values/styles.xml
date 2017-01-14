@@ -60,8 +60,9 @@
     </style>
 
     <style name="tab_share_order_icon_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">7dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_alignParentBottom">true</item>
         <item name="android:background">@drawable/sel_tab_share_order_icon</item>
     </style>
@@ -87,6 +88,38 @@
         <item name="android:background">@drawable/login_selector</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/fontSize_16sp</item>
+    </style>
+
+    <style name="style_btn_deal_product">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/text_color_selector</item>
+        <item name="android:textSize">@dimen/fontSize_16sp</item>
+    </style>
+
+    <style name="style_radio_button1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/sel_bg_radio_btn</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/fontSize_12sp</item>
+        <item name="android:textColor">@drawable/sel_color_rbtn</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="style_rbtn_position">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/sel_exchange_line_btn</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_color_rbtn</item>
+        <item name="android:textSize">@dimen/fontSize_15sp</item>
     </style>
 
 </resources>
