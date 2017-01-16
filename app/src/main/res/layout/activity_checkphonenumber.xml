@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="@dimen/dp_12">
+
+        <TextView
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:lineSpacingExtra="@dimen/dp_5"
+            android:text="绑定银行卡需要短信确认，验证码已至预留手机号码上，请按提示操作。"
+            android:textColor="@color/font_999"
+            android:textSize="@dimen/fontSize_11sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:gravity="center_vertical">
+
+            <com.xinyu.mwp.view.ClearEditText
+                android:id="@+id/edit"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="200"
+                android:background="@drawable/bg_corner_rect"
+                android:hint="请输入验证码"
+                android:paddingLeft="@dimen/dp_15"
+                android:singleLine="true"
+                android:textColor="@color/font_333"
+                android:textColorHint="@color/font_ccc"
+                android:textCursorDrawable="@drawable/edit_cursor"
+                android:textSize="@dimen/dp_14" />
+
+            <TextView
+                android:id="@+id/send"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_weight="140"
+                android:background="@drawable/sel_common_view"
+                android:gravity="center"
+                android:text="获取验证码"
+                android:textColor="@drawable/sel_common_view_text"
+                android:textSize="@dimen/fontSize_14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginRight="@dimen/dp_12"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/sel_common_view"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="@drawable/sel_common_view_text"
+        android:textSize="@dimen/fontSize_16sp" />
+
+
+</LinearLayout>

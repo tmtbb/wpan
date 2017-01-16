@@ -112,6 +112,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(RechargeRecordActivity.class);
                         break;
                     case R.id.score:
+                        next(CheckPhoneNumberActivity.class);
                         break;
                     case R.id.about:
                         break;
