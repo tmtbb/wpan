@@ -115,6 +115,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(CheckPhoneNumberActivity.class);
                         break;
                     case R.id.about:
+                        next(AddBankInfoActivity.class);
                         break;
                 }
             }

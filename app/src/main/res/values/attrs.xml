@@ -38,6 +38,8 @@
 
     <declare-styleable name="CellEditView">
         <attr name="celledit_name" format="reference|string" />
+        <attr name="celledit_name_size" format="dimension" />
+        <attr name="celledit_name_color" format="color" />
         <attr name="celledit_hint" format="reference|string" />
         <attr name="celledit_cashall" format="reference|boolean" />
     </declare-styleable>
