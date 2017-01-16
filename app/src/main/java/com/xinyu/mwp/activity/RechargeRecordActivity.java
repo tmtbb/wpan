@@ -2,7 +2,6 @@ package com.xinyu.mwp.activity;
 
 import android.os.Handler;
 import android.view.View;
-import android.widget.ListView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
@@ -25,11 +24,11 @@ import java.util.List;
  */
 
 public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity<RechargeRecordItemEntity> {
-    @ViewInject(R.id.contentView)
-    private ListView contentView;
+    @ViewInject(R.id.header)
     private RechargeRecordHeader header;
     private RechargeRecordAdapter adapter;
     private List<RechargeRecordEntity> entities;
+    private int position;
 
     @Override
     protected IListAdapter<RechargeRecordItemEntity> createAdapter() {
@@ -38,15 +37,13 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_listview;
+        return R.layout.activity_rechargerecord;
     }
 
     @Override
     protected void initView() {
         super.initView();
         setTitle("充值记录");
-        header = new RechargeRecordHeader(context);
-        contentView.addHeaderView(header);
     }
 
     @Override
@@ -55,7 +52,7 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
         header.setOnChildViewClickListener(new OnChildViewClickListener() {
             @Override
             public void onChildViewClick(View childView, int action, Object obj) {
-                int position = (int) obj;
+                position = (int) obj;
                 header.updateTitle(entities.get(position).getTime());
                 adapter.setList(entities.get(position).getInfo());
                 adapter.notifyDataSetChanged();
@@ -65,7 +62,7 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
         adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
             @Override
             public void onItemChildViewClick(View childView, int position, int action, Object obj) {
-
+                showToast(adapter.getItem(position).getMoney());
             }
         });
         setOnRefreshListener(new OnRefreshListener() {
@@ -82,6 +79,7 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
             public void run() {
                 entities = TestDataUtil.getRechargeRecordEntities();
                 header.update(entities);
+                header.setVisibility(View.VISIBLE);
                 getRefreshController().refreshComplete(entities.get(0).getInfo());
             }
         }, 2000);

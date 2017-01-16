@@ -13,6 +13,7 @@ import com.xinyu.mwp.view.CellEditView;
 import com.xinyu.mwp.view.CellView;
 import com.xinyu.mwp.view.SimpleTextWatcher;
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -39,6 +40,11 @@ public class AddBankInfoActivity extends BaseActivity {
         super.initView();
         setTitle("填写银行卡号信息");
         agreement.setText(Html.fromHtml("同意<font color=\"#E9573E\">《用户协议》</font>"));
+    }
+
+    @Event(value = {R.id.next})
+    private void click(View v) {
+        next(AddBankInfoActivity_1.class);
     }
 
     @Override

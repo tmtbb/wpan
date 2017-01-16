@@ -83,6 +83,10 @@
             android:name=".activity.AddBankInfoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddBankInfoActivity_1"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".activity.UserShareOrderActivity" />
         <activity

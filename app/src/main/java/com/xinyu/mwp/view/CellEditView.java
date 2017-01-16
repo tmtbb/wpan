@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
@@ -29,6 +31,8 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
     private EditText edit;
     @ViewInject(R.id.cashAll)
     private TextView cashAll;
+    @ViewInject(R.id.rightImage)
+    private ImageView rightImage;
 
     public CellEditView(Context context) {
         super(context);
@@ -57,6 +61,17 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
             if (typedArray.hasValue(R.styleable.CellEditView_celledit_cashall))
                 cashAll.setVisibility(typedArray.getBoolean(R.styleable.CellEditView_celledit_cashall, false) ? VISIBLE : GONE);
 
+            if (typedArray.hasValue(R.styleable.CellEditView_celledit_right_visible)) {
+                boolean rightVisible = typedArray.getBoolean(R.styleable.CellEditView_celledit_right_visible, false);
+                rightImage.setVisibility(rightVisible ? VISIBLE : GONE);
+                RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) edit.getLayoutParams();
+                if (rightVisible) {
+                    rl.addRule(RelativeLayout.LEFT_OF, rightImage.getId());
+                } else {
+                    rl.addRule(RelativeLayout.LEFT_OF, cashAll.getId());
+                }
+                edit.setLayoutParams(rl);
+            }
             typedArray.recycle();
             typedArray = null;
         }
@@ -67,9 +82,16 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
         return R.layout.ly_celledit;
     }
 
-    @Event(value = R.id.cashAll)
+    @Event(value = {R.id.cashAll, R.id.rightImage})
     private void click(View v) {
-        onChildViewClick(v, 99);
+        switch (v.getId()) {
+            case R.id.cashAll:
+                onChildViewClick(v, 99);
+                break;
+            case R.id.rightImage:
+                onChildViewClick(v, 98);
+                break;
+        }
     }
 
     @Override

@@ -42,6 +42,7 @@
         <attr name="celledit_name_color" format="color" />
         <attr name="celledit_hint" format="reference|string" />
         <attr name="celledit_cashall" format="reference|boolean" />
+        <attr name="celledit_right_visible" format="reference|boolean" />
     </declare-styleable>
 
     <declare-styleable name="WPEditText">

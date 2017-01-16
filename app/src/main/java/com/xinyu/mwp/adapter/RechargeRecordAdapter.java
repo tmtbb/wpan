@@ -1,6 +1,7 @@
 package com.xinyu.mwp.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -53,6 +55,11 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
         @Override
         protected int layoutId() {
             return R.layout.item_rechargerecord;
+        }
+
+        @Event(value = R.id.rootLayout)
+        private void click(View v) {
+            onItemChildViewClick(v, 99);
         }
 
         @Override

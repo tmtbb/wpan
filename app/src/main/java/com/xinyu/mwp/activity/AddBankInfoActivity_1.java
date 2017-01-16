@@ -1,16 +1,17 @@
 package com.xinyu.mwp.activity;
 
 import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.Html;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseActivity;
+import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
-import com.xinyu.mwp.util.CountUtil;
 import com.xinyu.mwp.util.StringUtil;
+import com.xinyu.mwp.view.CellEditView;
+import com.xinyu.mwp.view.CellView;
 import com.xinyu.mwp.view.SimpleTextWatcher;
 
 import org.xutils.view.annotation.Event;
@@ -20,41 +21,42 @@ import org.xutils.view.annotation.ViewInject;
  * Created by Benjamin on 17/1/16.
  */
 
-public class CheckPhoneNumberActivity extends BaseActivity implements OnTextChangeListener {
-    @ViewInject(R.id.edit)
-    private EditText edit;
-    @ViewInject(R.id.send)
-    private TextView send;
+public class AddBankInfoActivity_1 extends BaseActivity {
+    @ViewInject(R.id.person)
+    private CellView person;
+    @ViewInject(R.id.cardNumber)
+    private CellEditView cardNumber;
     @ViewInject(R.id.next)
     private TextView next;
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_checkphonenumber;
+        return R.layout.activity_addbankinfo_1;
     }
 
     @Override
     protected void initView() {
         super.initView();
-        setTitle("验证手机号");
+        setTitle("填写银行卡号信息");
     }
 
-    @Event(value = {R.id.send, R.id.next})
+    @Event(value = {R.id.next})
     private void click(View v) {
-        switch (v.getId()) {
-            case R.id.send:
-                new CountUtil(send, "S", true).start();
-                break;
-            case R.id.next:
-                showToast("下一步");
-                break;
-        }
+        showToast("下一步");
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        checkButtonState(next, this);
+        checkButtonState(next, cardNumber);
+        cardNumber.setOnChildViewClickListener(new OnChildViewClickListener() {
+            @Override
+            public void onChildViewClick(View childView, int action, Object obj) {
+                if (action == 98) {
+                    showToast("扫描银行卡");
+                }
+            }
+        });
     }
 
     private void checkButtonState(final View button, final OnTextChangeListener... editText) {
@@ -80,19 +82,5 @@ public class CheckPhoneNumberActivity extends BaseActivity implements OnTextChan
                 }
             });
         }
-    }
-
-    @Override
-    public void addTextChangedListener(TextWatcher textWatcher) {
-        if (edit != null)
-            edit.addTextChangedListener(textWatcher);
-    }
-
-    @Override
-    public String getEditTextString() {
-        if (edit != null) {
-            return edit.getText().toString().trim();
-        }
-        return "";
     }
 }
