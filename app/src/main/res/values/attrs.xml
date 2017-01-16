@@ -30,13 +30,19 @@
         <attr name="cell_content" format="reference|string" />
         <attr name="cell_content_size" format="dimension" />
         <attr name="cell_content_color" format="color" />
+        <attr name="cell_contentleft" format="reference|string" />
+        <attr name="cell_contentleft_size" format="dimension" />
+        <attr name="cell_contentleft_color" format="color" />
         <attr name="cell_arrow_visible" format="reference|boolean" />
     </declare-styleable>
 
     <declare-styleable name="CellEditView">
         <attr name="celledit_name" format="reference|string" />
+        <attr name="celledit_name_size" format="dimension" />
+        <attr name="celledit_name_color" format="color" />
         <attr name="celledit_hint" format="reference|string" />
         <attr name="celledit_cashall" format="reference|boolean" />
+        <attr name="celledit_right_visible" format="reference|boolean" />
     </declare-styleable>
 
     <declare-styleable name="WPEditText">

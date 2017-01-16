@@ -33,12 +33,22 @@
             android:textSize="@dimen/fontSize_15sp"
             android:visibility="gone" />
 
+        <ImageView
+            android:id="@+id/rightImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_camera"
+            android:visibility="gone" />
+
         <com.xinyu.mwp.view.ClearEditText
             android:id="@+id/edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
             android:layout_toLeftOf="@id/cashAll"
             android:layout_toRightOf="@id/name"
             android:background="@null"
