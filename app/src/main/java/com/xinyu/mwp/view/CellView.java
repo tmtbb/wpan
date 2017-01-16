@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.DisplayUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -25,6 +27,8 @@ public class CellView extends BaseFrameLayout {
     private TextView contentLeft;
     @ViewInject(R.id.arrow)
     private ImageView arrow;
+    @ViewInject(R.id.contentRightImage)
+    private ImageView contentRightImage;
 
     public CellView(Context context) {
         super(context);
@@ -109,6 +113,11 @@ public class CellView extends BaseFrameLayout {
                 content.setLayoutParams(rl);
             }
 
+            if (typedArray.hasValue(R.styleable.CellView_cell_rightimage_visible)) {
+                boolean arrowVisible = typedArray.getBoolean(R.styleable.CellView_cell_rightimage_visible, false);
+                contentRightImage.setVisibility(arrowVisible ? VISIBLE : GONE);
+            }
+
             typedArray.recycle();
             typedArray = null;
         }
@@ -124,6 +133,10 @@ public class CellView extends BaseFrameLayout {
 
     public void updateContentLeft(String content) {
         this.contentLeft.setText(content);
+    }
+
+    public void updateContentRightImage(String url) {
+        ImageLoader.getInstance().displayImage(url, contentRightImage, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
     }
 
     public void updateNameAndContent(String name, String content) {

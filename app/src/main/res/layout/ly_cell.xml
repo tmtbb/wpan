@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_weight="230"
             android:paddingRight="@dimen/dp_16">
 
@@ -73,6 +74,20 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/font_333"
                 android:textSize="@dimen/fontSize_12sp" />
+
+            <com.xinyu.mwp.view.RoundImageView
+                android:id="@+id/contentRightImage"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_toLeftOf="@id/arrow"
+                android:scaleType="centerCrop"
+                android:src="@color/blue"
+                android:visibility="gone"
+                app:roundHeight="@dimen/dp_23"
+                app:roundWidth="@dimen/dp_23" />
         </RelativeLayout>
     </LinearLayout>
 

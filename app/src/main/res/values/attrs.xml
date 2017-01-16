@@ -34,6 +34,8 @@
         <attr name="cell_contentleft_size" format="dimension" />
         <attr name="cell_contentleft_color" format="color" />
         <attr name="cell_arrow_visible" format="reference|boolean" />
+        <attr name="cell_rightimage_visible" format="reference|boolean" />
+
     </declare-styleable>
 
     <declare-styleable name="CellEditView">
