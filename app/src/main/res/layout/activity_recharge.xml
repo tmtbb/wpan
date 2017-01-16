@@ -30,6 +30,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <com.xinyu.mwp.view.banner.IndexBannerView
+                    android:id="@+id/bannerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
                 <com.xinyu.mwp.view.CellView
                     android:id="@+id/account"
                     android:layout_width="match_parent"
@@ -38,7 +43,7 @@
                     core_ptr:cell_contentleft="EA"
                     core_ptr:cell_contentleft_color="@color/font_333"
                     core_ptr:cell_contentleft_size="18sp"
-                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_icon="@mipmap/icon_account"
                     core_ptr:cell_name="账户ID"
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
@@ -51,7 +56,7 @@
                     core_ptr:cell_contentleft="56.22元"
                     core_ptr:cell_contentleft_color="@color/default_red"
                     core_ptr:cell_contentleft_size="18sp"
-                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_icon="@mipmap/icon_recharge_money"
                     core_ptr:cell_name="余额"
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
@@ -68,7 +73,7 @@
                     core_ptr:cell_contentleft="3"
                     core_ptr:cell_contentleft_color="@color/font_333"
                     core_ptr:cell_contentleft_size="18sp"
-                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_icon="@mipmap/icon_bankcard"
                     core_ptr:cell_name="我的银行卡"
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
@@ -80,7 +85,7 @@
                     core_ptr:cell_contentleft="100元"
                     core_ptr:cell_contentleft_color="@color/font_333"
                     core_ptr:cell_contentleft_size="18sp"
-                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_icon="@mipmap/icon_recharge_money"
                     core_ptr:cell_name="充值金额"
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
@@ -89,7 +94,7 @@
                     android:id="@+id/rechargeType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    core_ptr:cell_icon="@mipmap/icon_flatdepot"
+                    core_ptr:cell_icon="@mipmap/icon_rechargetype"
                     core_ptr:cell_name="充值方式"
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />

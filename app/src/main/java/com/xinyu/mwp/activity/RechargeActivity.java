@@ -6,16 +6,22 @@ import android.view.View;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshActivity;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.view.CellView;
+import com.xinyu.mwp.view.banner.IndexBannerView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  * Created by Benjamin on 17/1/13.
  */
 
 public class RechargeActivity extends BaseRefreshActivity {
+    @ViewInject(R.id.refreshFrameLayout)
+    private PtrFrameLayout refreshFrameLayout;
     @ViewInject(R.id.account)
     private CellView account;
     @ViewInject(R.id.money)
@@ -26,10 +32,21 @@ public class RechargeActivity extends BaseRefreshActivity {
     private CellView rechargeMoney;
     @ViewInject(R.id.rechargeType)
     private CellView rechargeType;
+    @ViewInject(R.id.bannerView)
+    private IndexBannerView bannerView;
 
     @Override
     protected int getContentView() {
         return R.layout.activity_recharge;
+    }
+
+    @Override
+    protected void initView() {
+        super.initView();
+        setTitle("充值");
+        bannerView.centerDot();
+        bannerView.setRefreshLayout(refreshFrameLayout);
+        bannerView.update(TestDataUtil.getIndexBanners(3));
     }
 
     @Event(value = R.id.commit)
