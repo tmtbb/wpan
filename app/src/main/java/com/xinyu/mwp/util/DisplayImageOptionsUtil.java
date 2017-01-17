@@ -41,4 +41,12 @@ public class DisplayImageOptionsUtil {
                     .showImageOnFail(R.mipmap.icon_banner_default).build();
         return bannerOptions;
     }
+
+    public DisplayImageOptions getImageOptions(int loadingId, int emptyId, int failId) {
+        return getBuilder().showImageOnLoading(loadingId).showImageForEmptyUri(emptyId).showImageOnFail(failId).build();
+    }
+
+    public DisplayImageOptions getImageOptions() {
+        return getBuilder().build();
+    }
 }
