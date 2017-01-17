@@ -60,7 +60,7 @@ public class UserAssetsActivity extends BaseRefreshAbsListControllerActivity<Use
                 next(CashActivity.class);
                 break;
             case R.id.recharge:
-                showToast("Recharge");
+                next(RechargeActivity.class);
                 break;
         }
     }

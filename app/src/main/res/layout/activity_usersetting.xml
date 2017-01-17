@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <in.srain.cube.views.ptr.PtrFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:core_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refreshFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        core_ptr:ptr_duration_to_close="100"
+        core_ptr:ptr_duration_to_close_header="100"
+        core_ptr:ptr_keep_header_when_refresh="true"
+        core_ptr:ptr_pull_to_fresh="false"
+        core_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        core_ptr:ptr_resistance="1.7">
+
+        <ScrollView
+            android:id="@+id/contentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/default_bg"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/ly_space" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cell_icon_visible="false"
+                    app:cell_name="头像"
+                    app:cell_rightimage_visible="true" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cell_arrow_visible="false"
+                    app:cell_content="134****4456"
+                    app:cell_content_color="@color/font_666"
+                    app:cell_content_size="@dimen/fontSize_16sp"
+                    app:cell_icon_visible="false"
+                    app:cell_name="手机号" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/nickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cell_content="涨涨涨"
+                    app:cell_content_color="@color/font_666"
+                    app:cell_content_size="@dimen/fontSize_16sp"
+                    app:cell_icon_visible="false"
+                    app:cell_name="昵称" />
+
+                <include layout="@layout/ly_space" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/dealPsw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cell_content="更改密码"
+                    app:cell_content_color="@color/font_666"
+                    app:cell_content_size="@dimen/fontSize_16sp"
+                    app:cell_icon_visible="false"
+                    app:cell_name="交易密码" />
+
+                <com.xinyu.mwp.view.CellView
+                    android:id="@+id/loginPsw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cell_content="更改密码"
+                    app:cell_content_color="@color/font_666"
+                    app:cell_content_size="@dimen/fontSize_16sp"
+                    app:cell_icon_visible="false"
+                    app:cell_name="登录密码" />
+
+                <TextView
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_50"
+                    android:background="@drawable/sel_common_view"
+                    android:gravity="center"
+                    android:text="退出登录"
+                    android:textColor="@drawable/sel_common_view_text"
+                    android:textSize="@dimen/fontSize_16sp" />
+            </LinearLayout>
+        </ScrollView>
+    </in.srain.cube.views.ptr.PtrFrameLayout>
+</LinearLayout>

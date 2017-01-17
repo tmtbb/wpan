@@ -5,6 +5,8 @@ import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
 import com.xinyu.mwp.entity.MyShareOrderEntity;
 import com.xinyu.mwp.entity.MyShareOrderItemEntity;
+import com.xinyu.mwp.entity.RechargeRecordEntity;
+import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.entity.UnitEntity;
 import com.xinyu.mwp.entity.UserAssetsEntity;
 import com.xinyu.mwp.entity.UserAssetsItemEntity;
@@ -83,6 +85,29 @@ public class TestDataUtil {
 
         entity.setPushOrders(list);
         return entity;
+    }
+
+    public static List<RechargeRecordEntity> getRechargeRecordEntities() {
+        List<RechargeRecordEntity> rrEntities = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            RechargeRecordEntity entity = new RechargeRecordEntity();
+            entity.setTime("2017年" + (i + 1) + "月");
+            List<RechargeRecordItemEntity> itemEntities = new ArrayList<>();
+            for (int j = 0; j < 30; j++) {
+                RechargeRecordItemEntity itemEntity = new RechargeRecordItemEntity();
+                itemEntity.setMoney(String.valueOf(1999 + i));
+                itemEntity.setStatus(String.valueOf(new Random().nextInt(2)));
+                itemEntity.setIcon(ImageUtil.getRandomUrl());
+                itemEntity.setInfo("招商银行  尾号8898");
+                itemEntity.setTime("11:23:12");
+                itemEntity.setTimeDate("11-11");
+                itemEntity.setTimeWeek("周五");
+                itemEntities.add(itemEntity);
+            }
+            entity.setInfo(itemEntities);
+            rrEntities.add(entity);
+        }
+        return rrEntities;
     }
 
     public static UserAssetsEntity getUserAssetsEntity() {

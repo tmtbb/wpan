@@ -5,13 +5,17 @@ import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.listener.OnTextChangeListener;
+import com.xinyu.mwp.util.DisplayUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -27,6 +31,8 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
     private EditText edit;
     @ViewInject(R.id.cashAll)
     private TextView cashAll;
+    @ViewInject(R.id.rightImage)
+    private ImageView rightImage;
 
     public CellEditView(Context context) {
         super(context);
@@ -41,8 +47,13 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
         super.initAttributeSet(attrs);
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CellEditView);
+
             if (typedArray.hasValue(R.styleable.CellEditView_celledit_name))
                 name.setText(typedArray.getString(R.styleable.CellEditView_celledit_name));
+            if (typedArray.hasValue(R.styleable.CellEditView_celledit_name_size))
+                name.setTextSize(TypedValue.COMPLEX_UNIT_PX, typedArray.getDimension(R.styleable.CellEditView_celledit_name_size, DisplayUtil.dip2px(15, context)));
+            if (typedArray.hasValue(R.styleable.CellEditView_celledit_name_color))
+                name.setTextColor(typedArray.getColor(R.styleable.CellEditView_celledit_name_color, getResources().getColor(R.color.font_333)));
 
             if (typedArray.hasValue(R.styleable.CellEditView_celledit_hint))
                 edit.setHint(typedArray.getString(R.styleable.CellEditView_celledit_hint));
@@ -50,6 +61,17 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
             if (typedArray.hasValue(R.styleable.CellEditView_celledit_cashall))
                 cashAll.setVisibility(typedArray.getBoolean(R.styleable.CellEditView_celledit_cashall, false) ? VISIBLE : GONE);
 
+            if (typedArray.hasValue(R.styleable.CellEditView_celledit_right_visible)) {
+                boolean rightVisible = typedArray.getBoolean(R.styleable.CellEditView_celledit_right_visible, false);
+                rightImage.setVisibility(rightVisible ? VISIBLE : GONE);
+                RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) edit.getLayoutParams();
+                if (rightVisible) {
+                    rl.addRule(RelativeLayout.LEFT_OF, rightImage.getId());
+                } else {
+                    rl.addRule(RelativeLayout.LEFT_OF, cashAll.getId());
+                }
+                edit.setLayoutParams(rl);
+            }
             typedArray.recycle();
             typedArray = null;
         }
@@ -60,9 +82,16 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
         return R.layout.ly_celledit;
     }
 
-    @Event(value = R.id.cashAll)
+    @Event(value = {R.id.cashAll, R.id.rightImage})
     private void click(View v) {
-        onChildViewClick(v, 99);
+        switch (v.getId()) {
+            case R.id.cashAll:
+                onChildViewClick(v, 99);
+                break;
+            case R.id.rightImage:
+                onChildViewClick(v, 98);
+                break;
+        }
     }
 
     @Override
