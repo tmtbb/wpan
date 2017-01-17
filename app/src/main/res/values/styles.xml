@@ -99,10 +99,21 @@
         <item name="android:textColor">@drawable/text_color_selector</item>
         <item name="android:textSize">@dimen/fontSize_16sp</item>
     </style>
-
+    <!--买涨按钮样式 直角-->
     <style name="style_radio_button1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:background">@drawable/sel_bg_radio_btn</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/fontSize_12sp</item>
+        <item name="android:textColor">@drawable/sel_color_rbtn</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <!--买涨按钮样式 圆角-->
+    <style name="style_radio_button_round">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/sel_exchange_line_btn</item>
         <item name="android:layout_weight">1</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
@@ -116,6 +127,29 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@drawable/sel_exchange_line_btn</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_color_rbtn</item>
+        <item name="android:textSize">@dimen/fontSize_15sp</item>
+    </style>
+
+    <!--买跌button样式 圆角-->
+    <style name="style_rbtn_buy_minus_round">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/sel_bg_radio_btn_minus</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/fontSize_12sp</item>
+        <item name="android:textColor">@drawable/sel_color_rbtn</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <!--买涨按钮样式 直角-->
+    <style name="style_rbtn_buy_minus_rect">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/sel_btn_buy_minus</item>
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/sel_color_rbtn</item>

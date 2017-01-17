@@ -7,10 +7,12 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.ModifyPositionActivity;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.DealProductPageEntity;
 import com.xinyu.mwp.entity.ShareOrderPageEntity;
+import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.LogUtil;
 
@@ -55,15 +57,23 @@ public class DealProductPageAdapter extends BaseListViewAdapter<DealProductPageE
         protected void update(DealProductPageEntity data) {
             if (data != null) {
                 productName.setText(data.getProductName());
-                openPrice.setText(data.getOpenPrice()+"");
-                grossProfit.setText(data.getGrossProfit()+"");
+                openPrice.setText(data.getOpenPrice() + "");
+                grossProfit.setText(data.getGrossProfit() + "");
 
             }
         }
-        @Event(R.id.layout)
-        private void onClick(View view){
-            onItemChildViewClick(view, 99);
-            LogUtil.d("DealProductPageAdapter条目被点击了");
+
+        @Event({R.id.layout, R.id.tv_close_position})
+        private void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.layout:
+                    LogUtil.d("点击条目进入修改持仓参数");
+                    ActivityUtil.next(context, ModifyPositionActivity.class);
+                    break;
+                case R.id.tv_close_position:
+                    LogUtil.d("进入平仓界面");
+                    break;
+            }
         }
     }
 }

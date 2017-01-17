@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/tv_exchange_price"
             android:layout_below="@id/tv_exchange_price"
-            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginTop="@dimen/dp_3"
             android:text="白银 (元 / 千克)"
             android:textSize="@dimen/fontSize_12sp" />
 
