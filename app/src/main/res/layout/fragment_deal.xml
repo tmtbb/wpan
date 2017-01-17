@@ -52,42 +52,17 @@
                 android:src="@mipmap/ic_exchange_add" />
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/rg_deal_product"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_25"
-            android:layout_marginRight="@dimen/dp_25"
-            android:layout_marginTop="@dimen/dp_10"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_10" />
 
-            <RadioButton
-                android:id="@+id/rb_deal_product1"
-                style="@style/style_btn_deal_product"
-                android:background="@drawable/sel_btn_deal_product1"
-                android:checked="true"
-                android:text="白银" />
-
-            <RadioButton
-                android:id="@+id/rb_deal_product2"
-                style="@style/style_btn_deal_product"
-                android:background="@drawable/sel_btn_deal_product2"
-                android:text="原油" />
-
-            <RadioButton
-                android:id="@+id/rb_deal_product3"
-                style="@style/style_btn_deal_product"
-                android:background="@drawable/sel_btn_deal_product3"
-                android:text="咖啡" />
-        </RadioGroup>
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_deal_product_info"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            android:id="@+id/container_chart"/>
 
 
     </LinearLayout>

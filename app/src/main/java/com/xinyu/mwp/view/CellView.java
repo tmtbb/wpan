@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.DisplayUtil;
 
 import org.xutils.view.annotation.ViewInject;
@@ -21,8 +23,12 @@ public class CellView extends BaseFrameLayout {
     private TextView name;
     @ViewInject(R.id.content)
     private TextView content;
+    @ViewInject(R.id.contentLeft)
+    private TextView contentLeft;
     @ViewInject(R.id.arrow)
     private ImageView arrow;
+    @ViewInject(R.id.contentRightImage)
+    private ImageView contentRightImage;
 
     public CellView(Context context) {
         super(context);
@@ -73,6 +79,13 @@ public class CellView extends BaseFrameLayout {
             if (typedArray.hasValue(R.styleable.CellView_cell_content_color))
                 content.setTextColor(typedArray.getColor(R.styleable.CellView_cell_content_color, getResources().getColor(R.color.font_333)));
 
+            if (typedArray.hasValue(R.styleable.CellView_cell_contentleft))
+                contentLeft.setText(typedArray.getString(R.styleable.CellView_cell_contentleft));
+            if (typedArray.hasValue(R.styleable.CellView_cell_contentleft_size))
+                contentLeft.setTextSize(TypedValue.COMPLEX_UNIT_PX, typedArray.getDimension(R.styleable.CellView_cell_contentleft_size, DisplayUtil.dip2px(12, context)));
+            if (typedArray.hasValue(R.styleable.CellView_cell_contentleft_color))
+                contentLeft.setTextColor(typedArray.getColor(R.styleable.CellView_cell_contentleft_color, getResources().getColor(R.color.font_333)));
+
             if (typedArray.hasValue(R.styleable.CellView_cell_icon_visible)) {
                 boolean iconVisible = typedArray.getBoolean(R.styleable.CellView_cell_icon_visible, true);
                 RelativeLayout.LayoutParams rl = (RelativeLayout.LayoutParams) name.getLayoutParams();
@@ -100,6 +113,11 @@ public class CellView extends BaseFrameLayout {
                 content.setLayoutParams(rl);
             }
 
+            if (typedArray.hasValue(R.styleable.CellView_cell_rightimage_visible)) {
+                boolean arrowVisible = typedArray.getBoolean(R.styleable.CellView_cell_rightimage_visible, false);
+                contentRightImage.setVisibility(arrowVisible ? VISIBLE : GONE);
+            }
+
             typedArray.recycle();
             typedArray = null;
         }
@@ -111,6 +129,14 @@ public class CellView extends BaseFrameLayout {
 
     public void updateContent(String content) {
         this.content.setText(content);
+    }
+
+    public void updateContentLeft(String content) {
+        this.contentLeft.setText(content);
+    }
+
+    public void updateContentRightImage(String url) {
+        ImageLoader.getInstance().displayImage(url, contentRightImage, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
     }
 
     public void updateNameAndContent(String name, String content) {

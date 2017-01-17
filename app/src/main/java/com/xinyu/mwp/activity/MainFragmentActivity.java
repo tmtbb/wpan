@@ -1,5 +1,6 @@
 package com.xinyu.mwp.activity;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -84,6 +85,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                 toggleDrawer(false);
                 switch (action) {
                     case R.id.icon:
+                        next(UserSettingActivity.class);
                         break;
                     case R.id.login:
                         ActivityUtil.nextLogin(context);
@@ -109,10 +111,13 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(DealDetailFragmentActivity.class);
                         break;
                     case R.id.feedback:
+                        next(RechargeRecordActivity.class);
                         break;
                     case R.id.score:
+                        next(CheckPhoneNumberActivity.class);
                         break;
                     case R.id.about:
+                        next(AddBankInfoActivity.class);
                         break;
                 }
             }

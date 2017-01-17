@@ -19,7 +19,7 @@
             android:name=".activity.MainFragmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoTranslucent">
+            android:theme="@style/AppThemeNoTranslucent" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,7 +67,30 @@
             android:name=".activity.CashResaultActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".activity.RechargeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.RechargeRecordActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CheckPhoneNumberActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddBankInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.AddBankInfoActivity_1"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.UserSettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".activity.UserShareOrderActivity" />
         <activity
@@ -96,6 +119,14 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PositionHistoryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyPlusActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BuyMinusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
 
