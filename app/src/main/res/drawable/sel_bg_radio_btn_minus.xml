@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_tv_exchange_minus_corner5" android:state_checked="true" />
+    <item android:drawable="@drawable/bg_rbtn_normal" android:state_checked="false" />
+</selector>

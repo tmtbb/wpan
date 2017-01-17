@@ -11,12 +11,15 @@
 
         <include layout="@layout/layout_exchange_product" />
 
-        <!--走势图-->
-        <ImageView
+        <!--走势图 K线图-->
+        <com.github.mikephil.charting.charts.CombinedChart
+            android:layout_marginTop="@dimen/dp_5"
+            android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="210dp" />
+            android:layout_height="210dp"/>
 
         <RadioGroup
+            android:id="@+id/radiogroup_chart"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_27"
             android:layout_marginLeft="@dimen/dp_8"
@@ -43,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_15"
-
                 android:layout_weight="1"
                 android:background="@drawable/sel_exchange_line_btn"
                 android:button="@null"
