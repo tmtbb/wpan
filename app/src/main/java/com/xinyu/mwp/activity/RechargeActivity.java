@@ -49,9 +49,16 @@ public class RechargeActivity extends BaseRefreshActivity {
         bannerView.update(TestDataUtil.getIndexBanners(3));
     }
 
-    @Event(value = R.id.commit)
+    @Event(value = {R.id.commit, R.id.myBankCard})
     private void click(View v) {
-        showToast("Commit");
+        switch (v.getId()){
+            case R.id.commit:
+                showToast("Commit");
+                break;
+            case R.id.myBankCard:
+                next(BindBankCardActivity.class);
+                break;
+        }
     }
 
     @Override

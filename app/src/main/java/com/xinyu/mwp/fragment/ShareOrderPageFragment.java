@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.activity.BindBankCardActivity;
+import com.xinyu.mwp.activity.UserShareOrderActivity;
 import com.xinyu.mwp.adapter.ShareOrderPageAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.ShareOrderPageEntity;
@@ -71,7 +71,7 @@ public class ShareOrderPageFragment extends BaseRefreshAbsListControllerFragment
         adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
             @Override
             public void onItemChildViewClick(View childView, int position, int action, Object obj) {
-                next(BindBankCardActivity.class);
+                next(UserShareOrderActivity.class);
             }
         });
     }
