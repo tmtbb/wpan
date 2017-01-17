@@ -63,10 +63,10 @@ public class UserSettingActivity extends BaseRefreshActivity {
                 showToast("修改昵称");
                 break;
             case R.id.dealPsw:
-                showToast("修改交易密码");
+                next(ModifyDealPasswordActivity.class);
                 break;
             case R.id.loginPsw:
-                showToast("修改登录密码");
+                next(ModifyLoginPasswordActivity.class);
                 break;
             case R.id.logout:
                 showToast("退出登录");

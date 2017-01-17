@@ -95,7 +95,7 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
     }
 
     @Override
-    public void addTextChangedListener(TextWatcher textWatcher) {
+    public void addITextChangedListener(TextWatcher textWatcher) {
         if (edit != null)
             edit.addTextChangedListener(textWatcher);
     }
