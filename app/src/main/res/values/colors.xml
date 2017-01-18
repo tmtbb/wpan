@@ -32,6 +32,8 @@
     <color name="color_eee">#eee</color>
     <color name="color_fe0000">#fe0000</color>
     <color name="color_009944">#009944</color>
+    <color name="color_fefefe">#fefefe</color>
+    <color name="color_f98d8d">#f98d8d</color>
 
     <color name="white">#ffffff</color>
     <color name="white_alpha_30">#51ffffff</color>
