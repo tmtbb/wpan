@@ -1,6 +1,7 @@
 package com.xinyu.mwp.fragment;
 
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 
 import android.support.v4.app.FragmentTransaction;
@@ -15,16 +16,21 @@ import android.widget.TextView;
 
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.RechargeActivity;
+import com.xinyu.mwp.activity.UserAssetsActivity;
 import com.xinyu.mwp.adapter.GalleryAdapter;
 
 import com.xinyu.mwp.fragment.base.BaseFragment;
 
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -79,10 +85,13 @@ public class DealFragment extends BaseFragment {
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
         mRecyclerView.setLayoutManager(linearLayoutManager);
         //设置适配器
         mAdapter = new GalleryAdapter(context, mTitleList);
+
         mRecyclerView.setAdapter(mAdapter);
+
 
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(new DealProductPageFragment(), "sss");
@@ -95,6 +104,7 @@ public class DealFragment extends BaseFragment {
 
     }
 
+
     @Override
     protected void initListener() {
         super.initListener();
@@ -103,16 +113,15 @@ public class DealFragment extends BaseFragment {
             @Override
             public void OnClick(View view, int position) {
                 ToastUtils.show(context, mTitleList.get(position) + "刷新数据");
+                //调用方法,传递数据到dealProductPageFragment界面,更新数据
+                dealProductPageFragment.setData(mTitleList.get(position));
+
                 dealProductPageFragment.loadChartData(); //刷新数据
                 dealProductPageFragment.createAdapter().notifyDataSetChanged(); //刷新持仓
-                for (int i = 0; i < mRecyclerView.getChildCount(); i++) {
-                    if (position == i) {
-                        view.setSelected(true);
-                    } else {
-                        view.setSelected(false);
-                    }
-                }
 
+                LogUtil.d("当前点击的条目位置是:" + mTitleList.get(position));
+                mAdapter.setPosition(position);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -121,5 +130,22 @@ public class DealFragment extends BaseFragment {
                 return false;
             }
         });
+    }
+
+    @Event(value = {R.id.iv_exchange_assets_add, R.id.tv_exchange_assets})
+    private void click(View v) {
+        switch (v.getId()) {
+            case R.id.iv_exchange_assets_add:
+                showToast("充值");
+                next(RechargeActivity.class);
+                break;
+            case R.id.tv_exchange_assets:
+                showToast("个人资产");
+                next(UserAssetsActivity.class);
+                break;
+
+            default:
+                break;
+        }
     }
 }

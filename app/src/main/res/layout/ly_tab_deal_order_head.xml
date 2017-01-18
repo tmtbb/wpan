@@ -12,11 +12,12 @@
         <include layout="@layout/layout_exchange_product" />
 
         <!--走势图 K线图-->
-        <com.github.mikephil.charting.charts.CombinedChart
-            android:layout_marginTop="@dimen/dp_5"
+        <com.xinyu.mwp.view.MyCombinedChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="210dp"/>
+            android:layout_height="210dp"
+            android:layout_marginTop="@dimen/dp_5" />
+
 
         <RadioGroup
             android:id="@+id/radiogroup_chart"
@@ -199,6 +200,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_history_record"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

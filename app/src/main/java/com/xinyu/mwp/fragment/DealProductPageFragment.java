@@ -6,7 +6,9 @@ import android.graphics.Paint;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -44,6 +46,8 @@ import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
 
+import org.xutils.view.annotation.ViewInject;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private int colorMa5;
     private int colorMa10;
     private int colorMa20;
+    private TextView productName;
 
     @Override
     protected int getLayoutID() {
@@ -84,6 +89,11 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         return adapter = new DealProductPageAdapter(context);
     }
 
+    protected void setData(String title) {
+        LogUtil.d("得到的:" + title);
+        productName.setText(title + "(元 / 千克)");
+    }
+
     @Override
     protected void initView() {
         super.initView();
@@ -93,6 +103,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         listView.addHeaderView(headView);
 
         LinearLayout dealInfoModify = (LinearLayout) headView.findViewById(R.id.ll_deal_info_modify);
+        LinearLayout historyRecord = (LinearLayout) headView.findViewById(R.id.ll_history_record);  //持仓盈亏,历史记录
+
         TextView exchangeHistory = (TextView) headView.findViewById(R.id.tv_exchange_history);//仓位历史记录
         TextView buyPlus = (TextView) headView.findViewById(R.id.tv_exchange_buy_plus);
         TextView buyMinus = (TextView) headView.findViewById(R.id.tv_exchange_buy_minus);
@@ -104,6 +116,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         RadioButton rbMinHour15 = (RadioButton) headView.findViewById(R.id.rb_min_15); //15分时线
         RadioButton rbMinHour60 = (RadioButton) headView.findViewById(R.id.rb_min_60); //60分时线
         RadioButton rbMinHourDay = (RadioButton) headView.findViewById(R.id.rb_day_hour); //日时线
+        //日时线
+        productName = (TextView) headView.findViewById(R.id.deal_product_name);
 
         dealInfoModify.setOnClickListener(this);
         exchangeHistory.setOnClickListener(this);
@@ -113,10 +127,47 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         rbMinHour15.setOnClickListener(this);
         rbMinHour60.setOnClickListener(this);
         rbMinHourDay.setOnClickListener(this);
+        historyRecord.setOnClickListener(this);
+
 
         //设置K线图属性
         initChart();
         loadChartData();
+        mChart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    if (!mChart.isFullyZoomedOut()) {
+                        LogUtil.d("当前的状态"+mChart.isFullyZoomedOut());
+                        getRefreshController().setPullDownRefreshEnabled(false);
+                    }else{
+                        //如果图表是等比例,触摸图表可以下拉刷新
+                        getRefreshController().setPullDownRefreshEnabled(true);
+                    }
+
+
+                  break;
+                case MotionEvent.ACTION_MOVE:
+                    if (!mChart.isFullyZoomedOut()) {//手指移动,并且在缩放状态,不可以响应下拉刷新
+                        LogUtil.d("当前的状态"+mChart.isFullyZoomedOut());
+                        getRefreshController().setPullDownRefreshEnabled(false);
+                    }else{
+                        getRefreshController().setPullDownRefreshEnabled(true);
+                    }
+                  break;
+                case MotionEvent.ACTION_UP:
+                    getRefreshController().setPullDownRefreshEnabled(true);
+                   break;
+                }
+
+
+
+                return false;
+            }
+        });
+
+
     }
 
 
@@ -151,7 +202,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             case R.id.ll_deal_info_modify:   //点击第一个条目
 
                 break;
-            case R.id.tv_exchange_history:  //仓位历史记录
+
+            case R.id.ll_history_record:  //仓位历史记录
                 next(PositionHistoryActivity.class);
                 LogUtil.d("仓位历史记录");
                 break;
@@ -181,6 +233,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 ToastUtils.show(context, "日时线,加载数据");
                 loadChartData();
                 break;
+
+
         }
     }
 
@@ -298,6 +352,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         combinedData.setData(lineData); //加入MA5\MA10\MA20三种折线图数据
         mChart.setData(combinedData);//当前屏幕会显示所有的数据
         mChart.invalidate();
+
+
     }
 
     private LineDataSet generateLineDataSet(List<Entry> entries, int color, String label) {

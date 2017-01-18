@@ -24,6 +24,13 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
     private OnClickListener mOnItemClickListener;
 
+    //默认第0项被选中
+    private int mPosition = 0;
+
+    public void setPosition(int position) {
+        mPosition = position;
+    }
+
     /**
      * 回调
      */
@@ -54,6 +61,12 @@ public class GalleryAdapter extends RecyclerView.Adapter {
         final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.textview.setText(list.get(position));
 
+
+        if (mPosition == position) {
+            viewHolder.textview.setSelected(true);
+        } else {
+            viewHolder.textview.setSelected(false);
+        }
 
         //监听回调
         if (mOnItemClickListener != null) {
