@@ -13,6 +13,7 @@ import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.HistoryPositionEntity;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.view.SpaceView;
 
@@ -20,6 +21,7 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -31,6 +33,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
     @ViewInject(R.id.contentView)
     private ListView contentView;
     private HistoryPositionAdapter adapter;
+    private List<HistoryPositionEntity> list;
 
     @Override
     protected IListAdapter<HistoryPositionEntity> createAdapter() {
@@ -47,6 +50,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
         super.initView();
         setTitle("仓位历史记录");
         contentView.addHeaderView(new SpaceView(context));
+
     }
 
     @Override
@@ -58,24 +62,22 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
                 doRefresh();
             }
         });
-
     }
 
     private void doRefresh() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                List<HistoryPositionEntity> list = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
+                list = new ArrayList<>();
+                for (int i = 0; i < 30; i++) {
                     HistoryPositionEntity entity = new HistoryPositionEntity();
-                    entity.setName("白银" + 3680 + i + "(元/千克)");
+                    entity.setName("白银" + new Random().nextInt(3680) + i + "(元/千克)");
                     entity.setTime("2016.12.25 12:20:" + i);
                     entity.setPrice(i + "元/100克");
                     entity.setStop("止损无");
                     entity.setLimit("止盈" + i + "%");
                     list.add(entity);
                 }
-
                 getRefreshController().refreshComplete(list);
             }
         }, 1000);
