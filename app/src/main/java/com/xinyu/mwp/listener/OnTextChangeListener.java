@@ -7,7 +7,7 @@ import android.text.TextWatcher;
  */
 
 public interface OnTextChangeListener {
-    void addTextChangedListener(TextWatcher textWatcher);
+    void addITextChangedListener(TextWatcher textWatcher);
 
     String getEditTextString();
 }

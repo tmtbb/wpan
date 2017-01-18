@@ -19,7 +19,7 @@
             android:name=".activity.MainFragmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoTranslucent" >
+            android:theme="@style/AppThemeNoTranslucent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -89,6 +89,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.UserSettingActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ChooseUploadImgsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ModifyLoginPasswordActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ModifyDealPasswordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
 

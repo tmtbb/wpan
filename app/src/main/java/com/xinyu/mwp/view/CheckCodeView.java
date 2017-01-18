@@ -43,7 +43,7 @@ public class CheckCodeView extends BaseFrameLayout implements OnTextChangeListen
     }
 
     @Override
-    public void addTextChangedListener(TextWatcher textWatcher) {
+    public void addITextChangedListener(TextWatcher textWatcher) {
         if (edit != null)
             edit.addTextChangedListener(textWatcher);
     }

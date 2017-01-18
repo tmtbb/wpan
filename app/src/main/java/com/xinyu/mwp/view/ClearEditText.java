@@ -12,10 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.listener.OnTextChangeListener;
 
 
 public class ClearEditText extends EditText implements
-        View.OnFocusChangeListener, TextWatcher {
+        View.OnFocusChangeListener, TextWatcher, OnTextChangeListener {
     /**
      * 删除按钮的引用
      */
@@ -151,5 +152,15 @@ public class ClearEditText extends EditText implements
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    public void addITextChangedListener(TextWatcher textWatcher) {
+        addTextChangedListener(textWatcher);
+    }
+
+    @Override
+    public String getEditTextString() {
+        return getText().toString().trim();
     }
 }

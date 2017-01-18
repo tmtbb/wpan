@@ -80,7 +80,7 @@ public class CashActivity extends BaseControllerActivity {
         button.setEnabled(false);
         for (int i = 0; i < editText.length; i++) {
             final int positon = i;
-            editText[i].addTextChangedListener(new SimpleTextWatcher() {
+            editText[i].addITextChangedListener(new SimpleTextWatcher() {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     super.afterTextChanged(editable);

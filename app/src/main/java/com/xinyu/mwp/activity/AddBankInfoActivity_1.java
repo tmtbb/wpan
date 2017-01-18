@@ -1,7 +1,6 @@
 package com.xinyu.mwp.activity;
 
 import android.text.Editable;
-import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -63,7 +62,7 @@ public class AddBankInfoActivity_1 extends BaseActivity {
         button.setEnabled(false);
         for (int i = 0; i < editText.length; i++) {
             final int positon = i;
-            editText[i].addTextChangedListener(new SimpleTextWatcher() {
+            editText[i].addITextChangedListener(new SimpleTextWatcher() {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     super.afterTextChanged(editable);
