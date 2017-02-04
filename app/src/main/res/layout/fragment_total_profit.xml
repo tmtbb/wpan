@@ -52,11 +52,8 @@
             android:textColor="@color/font_444"
             android:textSize="@dimen/fontSize_16sp" />
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChartView"
-            android:layout_width="match_parent"
-            android:layout_height="243dp" />
-
+        <!--最近五单柱状图-->
+        <include layout="@layout/ll_near_five_total_profit_chart" />
     </LinearLayout>
 
 </ScrollView>
