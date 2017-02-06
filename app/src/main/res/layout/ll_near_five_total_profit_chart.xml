@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?><!--最近五单收益统计柱状图-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_243"
+    android:layout_marginLeft="@dimen/dp_40"
+    android:orientation="vertical"
+    tools:showIn="@layout/fragment_total_profit">
+
+    <!--上-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_121">
+
+        <!--第一个柱子 上-->
+        <LinearLayout
+            android:id="@+id/ll_column_up1"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_near1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="12-25"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_time_near1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_3"
+                android:text="10:15:23"
+                android:textColor="@color/font_999"
+                android:textSize="@dimen/fontSize_9sp" />
+        </LinearLayout>
+
+        <!--第2个柱子 上-->
+        <LinearLayout
+            android:id="@+id/ll_column_up2"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_up1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_column_percent2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="53.02%"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_14sp" />
+            <!--竖直的柱状图-->
+            <com.xinyu.mwp.view.CustomView
+                android:layout_marginTop="@dimen/dp_5"
+                android:id="@+id/cv_column_chart2"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+        <!--第3个柱子 上-->
+        <LinearLayout
+            android:id="@+id/ll_column_up3"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_up2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_column_percent3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="53.02%"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_14sp" />
+            <!--竖直的柱状图-->
+            <com.xinyu.mwp.view.CustomView
+                android:id="@+id/cv_column_chart3"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5" />
+        </LinearLayout>
+
+
+        <!--第4个柱子 上-->
+        <LinearLayout
+            android:id="@+id/ll_column_up4"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_up3"
+
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_near4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="12-28"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_time_near4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_3"
+                android:text="10:15:23"
+                android:textColor="@color/font_999"
+                android:textSize="@dimen/fontSize_9sp" />
+        </LinearLayout>
+
+        <!--第5个柱子 上-->
+        <LinearLayout
+            android:id="@+id/ll_column_up5"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_up4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_column_percent5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="53.02%"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_14sp" />
+            <!--竖直的柱状图-->
+            <com.xinyu.mwp.view.CustomView
+                android:id="@+id/cv_column_chart5"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!--下-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_121">
+        <!--第一个柱子 下-->
+        <LinearLayout
+            android:id="@+id/ll_column_down1"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--竖直的柱状图-->
+            <com.xinyu.mwp.view.CustomView
+                android:id="@+id/cv_column_chart1"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_column_percent1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="53.02%"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_14sp" />
+        </LinearLayout>
+
+        <!--第2个柱子 下-->
+        <LinearLayout
+            android:id="@+id/ll_column_down2"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_down1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_near2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="12-26"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_time_near2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_3"
+                android:text="10:15:23"
+                android:textColor="@color/font_999"
+                android:textSize="@dimen/fontSize_9sp" />
+
+        </LinearLayout>
+
+
+        <!--第3个柱子 下-->
+        <LinearLayout
+            android:id="@+id/ll_column_down3"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_down2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_near3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="12-27"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_time_near3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_3"
+                android:text="10:15:23"
+                android:textColor="@color/font_999"
+                android:textSize="@dimen/fontSize_9sp" />
+        </LinearLayout>
+
+        <!--第4个柱子 下-->
+        <LinearLayout
+            android:id="@+id/ll_column_down4"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_down3"
+            android:orientation="vertical">
+            <!--竖直的柱状图-->
+            <com.xinyu.mwp.view.CustomView
+                android:id="@+id/cv_column_chart4"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_column_percent4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="53.02%"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_14sp" />
+
+        </LinearLayout>
+
+
+        <!--第5个柱子 下-->
+        <LinearLayout
+            android:id="@+id/ll_column_down5"
+            android:layout_width="@dimen/dp_47"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@id/ll_column_down4"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_date_near5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="12-29"
+                android:textColor="@color/color_666666"
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_time_near5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_3"
+                android:text="10:15:23"
+                android:textColor="@color/font_999"
+                android:textSize="@dimen/fontSize_9sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

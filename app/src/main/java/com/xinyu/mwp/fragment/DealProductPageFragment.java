@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -36,20 +37,31 @@ import com.xinyu.mwp.activity.ModifyPositionActivity;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
+import com.xinyu.mwp.entity.BankCardEntity;
+import com.xinyu.mwp.entity.BaseEntity;
 import com.xinyu.mwp.entity.DealProductPageEntity;
 
 import com.xinyu.mwp.entity.Model;
 import com.xinyu.mwp.entity.StockListBean;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.listener.OnErrorListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
+import com.xinyu.mwp.listener.OnSuccessListener;
+import com.xinyu.mwp.networkapi.SocializeAPI;
+import com.xinyu.mwp.networkapi.http.NetworkHttpAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.http.SocializeAPIImpl;
+import com.xinyu.mwp.networkapi.http.XUtilsHttpReqeustImpl;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
 
-import org.xutils.view.annotation.ViewInject;
+
+
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -78,6 +90,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private int colorMa10;
     private int colorMa20;
     private TextView productName;
+    private ListView listView;
 
     @Override
     protected int getLayoutID() {
@@ -92,6 +105,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     protected void setData(String title) {
         LogUtil.d("得到的:" + title);
         productName.setText(title + "(元 / 千克)");
+        // new DealProductPageAdapter(context).notifyDataSetChanged();
+        listView.setSelection(0); //自动跳转到顶部
     }
 
     @Override
@@ -99,7 +114,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         super.initView();
         View headView = LayoutInflater.from(context).inflate(R.layout.ly_tab_deal_order_head, null);
 
-        ListView listView = (ListView) getRefreshController().getContentView();
+        listView = (ListView) getRefreshController().getContentView();
         listView.addHeaderView(headView);
 
         LinearLayout dealInfoModify = (LinearLayout) headView.findViewById(R.id.ll_deal_info_modify);
@@ -136,31 +151,29 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mChart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()){
-                case MotionEvent.ACTION_DOWN:
-                    if (!mChart.isFullyZoomedOut()) {
-                        LogUtil.d("当前的状态"+mChart.isFullyZoomedOut());
-                        getRefreshController().setPullDownRefreshEnabled(false);
-                    }else{
-                        //如果图表是等比例,触摸图表可以下拉刷新
-                        getRefreshController().setPullDownRefreshEnabled(true);
-                    }
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (!mChart.isFullyZoomedOut()) {
+                            LogUtil.d("当前的状态" + mChart.isFullyZoomedOut());
+                            getRefreshController().setPullDownRefreshEnabled(false);
+                        } else {
+                            //如果图表是等比例,触摸图表可以下拉刷新
+                            getRefreshController().setPullDownRefreshEnabled(true);
+                        }
 
-
-                  break;
-                case MotionEvent.ACTION_MOVE:
-                    if (!mChart.isFullyZoomedOut()) {//手指移动,并且在缩放状态,不可以响应下拉刷新
-                        LogUtil.d("当前的状态"+mChart.isFullyZoomedOut());
-                        getRefreshController().setPullDownRefreshEnabled(false);
-                    }else{
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (!mChart.isFullyZoomedOut()) {//手指移动,并且在缩放状态,不可以响应下拉刷新
+                            LogUtil.d("当前的状态" + mChart.isFullyZoomedOut());
+                            getRefreshController().setPullDownRefreshEnabled(false);
+                        } else {
+                            getRefreshController().setPullDownRefreshEnabled(true);
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
                         getRefreshController().setPullDownRefreshEnabled(true);
-                    }
-                  break;
-                case MotionEvent.ACTION_UP:
-                    getRefreshController().setPullDownRefreshEnabled(true);
-                   break;
+                        break;
                 }
-
 
 
                 return false;

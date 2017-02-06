@@ -2,7 +2,10 @@ package com.xinyu.mwp.fragment;
 
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -16,6 +19,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.fragment.base.BaseFragment;
 import com.xinyu.mwp.util.DisplayUtil;
+import com.xinyu.mwp.view.CustomView;
 
 import org.xutils.view.annotation.ViewInject;
 
@@ -34,9 +38,19 @@ public class TotalProfitFragment extends BaseFragment {
     private PieChart pieChartView;
     @ViewInject(R.id.pieDescriptionLayout)
     private LinearLayout pieDescriptionLayout;
-    @ViewInject(R.id.barChartView)
-    private BarChart barChartView;
-    
+
+    @ViewInject(R.id.cv_column_chart1)
+    private CustomView cv_column_chart1; //柱状图-1
+    @ViewInject(R.id.cv_column_chart2)
+    private CustomView cv_column_chart2; //柱状图-2
+    @ViewInject(R.id.cv_column_chart3)
+    private CustomView cv_column_chart3; //柱状图-3
+    @ViewInject(R.id.cv_column_chart4)
+    private CustomView cv_column_chart4; //柱状图-4
+    @ViewInject(R.id.cv_column_chart5)
+    private CustomView cv_column_chart5; //柱状图-5
+
+
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_total_profit;
@@ -47,9 +61,24 @@ public class TotalProfitFragment extends BaseFragment {
         super.initView();
         initPieChart();
         initPieDescription();
+
+        initPillarChart();  //设置柱状图高度
+
+
     }
-    
-    private void initPieChart(){
+
+    //设置柱状图的高度
+    private void initPillarChart() {
+        cv_column_chart1.setPercentage(160, 1);
+        cv_column_chart2.setPercentage(180, 2);
+        cv_column_chart3.setPercentage(92, 3);
+        cv_column_chart4.setPercentage(56, 4);
+        cv_column_chart5.setPercentage(100, 5);
+
+    }
+
+
+    private void initPieChart() {
         pieChartView.setUsePercentValues(false);
         pieChartView.setDescription("");
         pieChartView.setExtraOffsets(5, 10, 5, 5);
@@ -75,7 +104,7 @@ public class TotalProfitFragment extends BaseFragment {
         pieChartView.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     }
 
-    private void setPieChartData(){
+    private void setPieChartData() {
         ArrayList<Entry> entries = new ArrayList<Entry>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
@@ -114,21 +143,21 @@ public class TotalProfitFragment extends BaseFragment {
         pieChartView.invalidate();
     }
 
-    private void initPieDescription(){
-        for (int i = 0; i < 3; i++){
+    private void initPieDescription() {
+        for (int i = 0; i < 3; i++) {
             TextView textView = new TextView(context);
             textView.setTextColor(getResources().getColor(R.color.font_333));
             textView.setTextSize(16);
-            if(i == 0){
+            if (i == 0) {
                 textView.setText("总收益    15.05%");
-            } else if(i == 1){
+            } else if (i == 1) {
                 textView.setText("本月收益    12.00%");
-            } else if(i == 2){
+            } else if (i == 2) {
                 textView.setText("本周收益    101.20%");
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.gravity = Gravity.CENTER_HORIZONTAL;
-            if(i > 0){
+            if (i > 0) {
                 params.topMargin = DisplayUtil.dip2px(5, context);
             }
             pieDescriptionLayout.addView(textView, params);
