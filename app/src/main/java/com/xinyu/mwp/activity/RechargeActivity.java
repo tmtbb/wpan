@@ -1,15 +1,31 @@
 package com.xinyu.mwp.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
+import com.unionpay.UPPayAssistEx;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.base.BaseActivity;
 import com.xinyu.mwp.activity.base.BaseRefreshActivity;
+import com.xinyu.mwp.activity.unionpay.APKActivity;
+import com.xinyu.mwp.activity.unionpay.BaseUnionPayActivity;
+import com.xinyu.mwp.activity.unionpay.JARActivity;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.view.CellView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
@@ -49,12 +65,22 @@ public class RechargeActivity extends BaseRefreshActivity {
         bannerView.update(TestDataUtil.getIndexBanners(3));
     }
 
+
     @Event(value = {R.id.commit, R.id.myBankCard})
     private void click(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.commit:
                 showToast("Commit");
+                if (UPPayAssistEx.checkInstalled(this)) {
+                    //当判断用户手机上已安装银联Apk，商户客户端可以做相应个性化处理
+                    next(APKActivity.class);//APK接入
+                    LogUtil.d("已经安装了apk客户端");
+                } else {
+                    next(JARActivity.class);//JAR接入
+                    LogUtil.d("没有安装apk客户端,jar接入");
+                }
                 break;
+
             case R.id.myBankCard:
                 next(BindBankCardActivity.class);
                 break;
