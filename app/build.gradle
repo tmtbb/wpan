@@ -11,6 +11,18 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    // 将 .so 文件打包为 Native_Libs.jar 包文件
+    task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+        destinationDir file("$projectDir/libs")
+        baseName "Native_Libs"
+        extension "jar"
+        from fileTree(dir: "libs", include: "**/*.so")
+        into "lib"
+    }
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn(nativeLibsToJar)
+    }
     /** 配置so加载 **/
     sourceSets {
         main {
@@ -53,4 +65,7 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.code.gson:gson:2.8.0'
+    provided files('libs/UPPayAssistEx.jar')
+    provided files('libs/UPPayPluginExPro.jar')  //银联相关
+    compile files('libs/Native_Libs.jar') // 加载上方 .so 生成的该文件
 }

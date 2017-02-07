@@ -8,6 +8,18 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+    <!--银联权限-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature android:name="android.hardware.nfc.hce" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
+
     <application
         android:name="com.xinyu.mwp.application.MyApplication"
         android:allowBackup="true"
@@ -147,5 +159,31 @@
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
 
+        <!--银联相关-->
+        <uses-library
+            android:name="org.simalliance.openmobileapi"
+            android:required="false" />
+
+        <activity
+            android:name=".activity.unionpay.JARActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".activity.unionpay.APKActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.unionpay.UPPayWapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>
