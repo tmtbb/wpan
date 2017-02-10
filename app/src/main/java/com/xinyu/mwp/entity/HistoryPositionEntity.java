@@ -13,10 +13,7 @@ public class HistoryPositionEntity extends BaseEntity {
     private String time;
     @FieldJsonKey("price")
     private String price;
-    @FieldJsonKey("stop")
-    private String stop; //止损
-    @FieldJsonKey("limit")
-    private String limit; //止盈
+
 
     public String getName() {
         return name;
@@ -42,19 +39,5 @@ public class HistoryPositionEntity extends BaseEntity {
         this.price = price;
     }
 
-    public String getStop() {
-        return stop;
-    }
 
-    public void setStop(String stop) {
-        this.stop = stop;
-    }
-
-    public String getLimit() {
-        return limit;
-    }
-
-    public void setLimit(String limit) {
-        this.limit = limit;
-    }
 }

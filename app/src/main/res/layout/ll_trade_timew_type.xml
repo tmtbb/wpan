@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_trade_time_price"
+    android:layout_width="@dimen/dp_140"
+    android:layout_height="@dimen/dp_80"
+    android:background="@mipmap/bg_trade_min_normal"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_trade_min60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="60分时"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/fontSize_15sp" />
+
+    <TextView
+        android:id="@+id/tv_trade_price60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_6"
+        android:text="7.1013/手"
+        android:textColor="@color/default_assist_color"
+        android:textSize="@dimen/fontSize_18sp" />
+
+    <TextView
+        android:id="@+id/tv_trade_service_price60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_6"
+        android:text="运费55%  手续费15%"
+        android:textColor="@color/color_666666"
+        android:textSize="@dimen/fontSize_11sp" />
+
+</LinearLayout>
+

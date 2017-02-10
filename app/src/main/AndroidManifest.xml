@@ -138,10 +138,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ModifyPositionActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.PositionHistoryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />

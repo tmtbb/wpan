@@ -71,11 +71,9 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
                 list = new ArrayList<>();
                 for (int i = 0; i < 30; i++) {
                     HistoryPositionEntity entity = new HistoryPositionEntity();
-                    entity.setName("白银" + new Random().nextInt(3680) + i + "(元/千克)");
+                    entity.setName("上海-法兰克福" + i );
                     entity.setTime("2016.12.25 12:20:" + i);
-                    entity.setPrice(i + "元/100克");
-                    entity.setStop("止损无");
-                    entity.setLimit("止盈" + i + "%");
+                    entity.setPrice(" ¥ " + new Random().nextInt(200));
                     list.add(entity);
                 }
                 getRefreshController().refreshComplete(list);

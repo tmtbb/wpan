@@ -1,6 +1,7 @@
 package com.xinyu.mwp.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,13 +43,13 @@ public class GalleryAdapter extends RecyclerView.Adapter {
 
     public void setOnItemClick(OnClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
-
     }
 
 
     public GalleryAdapter(Context context, List<String> list) {
         this.list = list;
         inflater = LayoutInflater.from(context);
+
     }
 
     @Override
@@ -86,7 +87,6 @@ public class GalleryAdapter extends RecyclerView.Adapter {
                 }
             });
         }
-
     }
 
     @Override

@@ -46,7 +46,7 @@ public class TimeUtil {
         return getTime(temp, timesamp, isDynamic);
     }
 
-    private static String getTime(int temp, long timesamp, boolean isDynamic){
+    private static String getTime(int temp, long timesamp, boolean isDynamic) {
         String result = "";
         switch (temp) {
             case 0:
@@ -59,13 +59,18 @@ public class TimeUtil {
                 result = "前天 " + getHourAndMin(timesamp);
                 break;
             default:
-                if(isDynamic) {
+                if (isDynamic) {
                     result = temp + "天前 ";
-                }else {
+                } else {
                     result = getNewFormatTime(timesamp);
                 }
                 break;
         }
         return result;
+    }
+
+    public static String getMinuteAndSecond(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+        return format.format(new Date(time));
     }
 }

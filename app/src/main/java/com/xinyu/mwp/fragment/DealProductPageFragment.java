@@ -1,20 +1,36 @@
 package com.xinyu.mwp.fragment;
 
 
+import android.content.Context;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -33,37 +49,27 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.BuyMinusActivity;
 import com.xinyu.mwp.activity.BuyPlusActivity;
-import com.xinyu.mwp.activity.ModifyPositionActivity;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
+import com.xinyu.mwp.adapter.LoopPagerAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
-import com.xinyu.mwp.entity.BankCardEntity;
-import com.xinyu.mwp.entity.BaseEntity;
 import com.xinyu.mwp.entity.DealProductPageEntity;
 
 import com.xinyu.mwp.entity.Model;
 import com.xinyu.mwp.entity.StockListBean;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
-import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.listener.OnErrorListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
-import com.xinyu.mwp.listener.OnSuccessListener;
-import com.xinyu.mwp.networkapi.SocializeAPI;
-import com.xinyu.mwp.networkapi.http.NetworkHttpAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.http.SocializeAPIImpl;
-import com.xinyu.mwp.networkapi.http.XUtilsHttpReqeustImpl;
+import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
-
-
-
+import com.xinyu.mwp.view.MyTransformation;
 
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
 
 /**
  * @describe : 交易界面 白银/原油/咖啡 详情
@@ -89,8 +95,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private int colorMa5;
     private int colorMa10;
     private int colorMa20;
-    private TextView productName;
     private ListView listView;
+    private ViewPager mViewPager;
+    private RelativeLayout mViewPagerContainer;
+    private int halfScreenWidth;
 
     @Override
     protected int getLayoutID() {
@@ -104,23 +112,30 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
     protected void setData(String title) {
         LogUtil.d("得到的:" + title);
-        productName.setText(title + "(元 / 千克)");
         // new DealProductPageAdapter(context).notifyDataSetChanged();
         listView.setSelection(0); //自动跳转到顶部
     }
 
+    private List<View> mViewList = new ArrayList<>();
+
     @Override
     protected void initView() {
         super.initView();
+        View view;
+        for (int i = 0; i < 10; i++) {
+            view = LayoutInflater.from(context).inflate(R.layout.ll_trade_timew_type, null);
+            TextView tv = (TextView) view.findViewById(R.id.tv_trade_min60);
+            tv.setText(i + "分时");
+            mViewList.add(view);
+        }
+
         View headView = LayoutInflater.from(context).inflate(R.layout.ly_tab_deal_order_head, null);
 
         listView = (ListView) getRefreshController().getContentView();
         listView.addHeaderView(headView);
 
-        LinearLayout dealInfoModify = (LinearLayout) headView.findViewById(R.id.ll_deal_info_modify);
         LinearLayout historyRecord = (LinearLayout) headView.findViewById(R.id.ll_history_record);  //持仓盈亏,历史记录
 
-        TextView exchangeHistory = (TextView) headView.findViewById(R.id.tv_exchange_history);//仓位历史记录
         TextView buyPlus = (TextView) headView.findViewById(R.id.tv_exchange_buy_plus);
         TextView buyMinus = (TextView) headView.findViewById(R.id.tv_exchange_buy_minus);
 
@@ -131,11 +146,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         RadioButton rbMinHour15 = (RadioButton) headView.findViewById(R.id.rb_min_15); //15分时线
         RadioButton rbMinHour60 = (RadioButton) headView.findViewById(R.id.rb_min_60); //60分时线
         RadioButton rbMinHourDay = (RadioButton) headView.findViewById(R.id.rb_day_hour); //日时线
-        //日时线
-        productName = (TextView) headView.findViewById(R.id.deal_product_name);
 
-        dealInfoModify.setOnClickListener(this);
-        exchangeHistory.setOnClickListener(this);
         buyMinus.setOnClickListener(this);
         buyPlus.setOnClickListener(this);
         rbMinHour.setOnClickListener(this);
@@ -144,45 +155,48 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         rbMinHourDay.setOnClickListener(this);
         historyRecord.setOnClickListener(this);
 
+        mViewPager = (ViewPager) headView.findViewById(R.id.vp_trade_time_mins);
+        mViewPagerContainer = (RelativeLayout) headView.findViewById(R.id.rl_viewPagerContainer);
+
+        initViewPager();
 
         //设置K线图属性
         initChart();
         loadChartData();
-        mChart.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (!mChart.isFullyZoomedOut()) {
-                            LogUtil.d("当前的状态" + mChart.isFullyZoomedOut());
-                            getRefreshController().setPullDownRefreshEnabled(false);
-                        } else {
-                            //如果图表是等比例,触摸图表可以下拉刷新
-                            getRefreshController().setPullDownRefreshEnabled(true);
-                        }
-
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if (!mChart.isFullyZoomedOut()) {//手指移动,并且在缩放状态,不可以响应下拉刷新
-                            LogUtil.d("当前的状态" + mChart.isFullyZoomedOut());
-                            getRefreshController().setPullDownRefreshEnabled(false);
-                        } else {
-                            getRefreshController().setPullDownRefreshEnabled(true);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        getRefreshController().setPullDownRefreshEnabled(true);
-                        break;
-                }
-
-
-                return false;
-            }
-        });
-
-
     }
 
+
+    private void initViewPager() {
+        halfScreenWidth = DisplayUtil.getScreenWidth(context) / 2;
+
+        //设置ViewPager切换效果
+        mViewPager.setPageTransformer(true, new MyTransformation());
+        //为ViewPager设置PagerAdapter
+        mViewPager.setAdapter(new LoopPagerAdapter(mViewList));
+
+        //设置每页之间的左右间隔
+        mViewPager.setPageMargin(0);
+
+        //将容器的触摸事件反馈给ViewPager
+        mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                int ex = (int) event.getX();
+                LogUtil.d("点击的X轴坐标" + ex + "当前条目的位置:" + mViewPager.getCurrentItem());
+                if (ex < halfScreenWidth) {
+                    //左侧点击
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
+                }
+                if (ex > halfScreenWidth) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                }
+
+                return mViewPager.dispatchTouchEvent(event);
+            }
+        });
+        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);//默认在中间
+    }
 
     @Override
     protected void initListener() {
@@ -234,6 +248,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 ToastUtils.show(context, "分时线,加载数据");
                 loadChartData();
                 break;
+            case R.id.rb_min_5:
+                ToastUtils.show(context, "5分线,加载数据");
+                loadChartData();
+                break;
             case R.id.rb_min_15:
                 ToastUtils.show(context, "15分时线,加载数据");
                 loadChartData();
@@ -246,8 +264,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 ToastUtils.show(context, "日时线,加载数据");
                 loadChartData();
                 break;
-
-
         }
     }
 
@@ -268,8 +284,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mChart.setPinchZoom(true); //如果禁用,扩展可以在x轴和y轴分别完成
         mChart.setDrawValueAboveBar(false);
         mChart.setNoDataText("加载中...");
-        mChart.setAutoScaleMinMaxEnabled(true);
-        mChart.setDragEnabled(true); //可以拖拽
+        mChart.setAutoScaleMinMaxEnabled(false);
+        mChart.setDragEnabled(false); //可以拖拽
+        mChart.setScaleEnabled(false);
         //设置绘制顺序
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});
 
@@ -421,6 +438,5 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
         return candleData;
     }
-
 }
 

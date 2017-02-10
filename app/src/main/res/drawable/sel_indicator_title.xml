@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@mipmap/bg_middle_selected" android:state_selected="true" />
-    <item android:drawable="@mipmap/bg_middle_normal" />
+    <item android:drawable="@drawable/trade_title_bg" android:state_selected="true" />
+    <item android:drawable="@color/white" />
+
 </selector>

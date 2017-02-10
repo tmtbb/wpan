@@ -3,18 +3,15 @@ package com.xinyu.mwp.activity.unionpay;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Handler.Callback;
 import android.os.Message;
-import android.util.Log;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseActivity;
-import com.xinyu.mwp.activity.base.BaseControllerActivity;
+
 import com.xinyu.mwp.util.LogUtil;
 
 import org.json.JSONException;
@@ -88,6 +85,7 @@ public abstract class BaseUnionPayActivity extends BaseActivity implements Callb
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            finish();
                         }
                     });
             builder.create().show();

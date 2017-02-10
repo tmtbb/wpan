@@ -1,122 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:Android="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
+    <!--标题栏-->
     <include layout="@layout/ly_title_bar" />
 
+    <!--用户总资产-->
+    <include layout="@layout/ll_user_total_assets" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_25"
-        android:layout_marginTop="@dimen/dp_5"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="@dimen/dp_3"
-            android:layout_height="@dimen/dp_19"
-            android:layout_marginLeft="@dimen/dp_9"
-            android:src="@mipmap/rule2" />
-
-        <TextView
-            android:id="@+id/tv_deal_product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="白银 "
-            android:textColor="@color/color_666666"
-            android:textSize="@dimen/fontSize_15sp" />
-
-        <TextView
-            android:id="@+id/tv_deal_product_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3780"
-            android:textColor="@color/color_009944"
-            android:textSize="@dimen/fontSize_15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=" (元 / 千克)"
-            android:textColor="@color/color_666666"
-            android:textSize="@dimen/fontSize_15sp" />
-
-    </LinearLayout>
-    <!--购买金额,数量-->
-    <RadioGroup
-        android:id="@+id/radiogroup_unit_price"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_44"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
+        android:layout_height="@dimen/dp_60"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_unit_price8"
-            style="@style/style_rbtn_buy_minus_round"
-            android:checked="true"
-            android:text="8元\n100g"
-            android:textSize="@dimen/dp_15" />
-
-        <RadioButton
-            android:layout_marginLeft="@dimen/dp_21"
-            android:id="@+id/rb_unit_price80"
-            style="@style/style_rbtn_buy_minus_round"
-            android:text="80元\n1000g" />
-
-        <RadioButton
-            android:layout_marginLeft="@dimen/dp_21"
-            android:id="@+id/rb_unit_price800"
-            style="@style/style_rbtn_buy_minus_round"
-            android:text="2000元\n4000g" />
-
-        <RadioButton
-            android:layout_marginLeft="@dimen/dp_21"
-            android:id="@+id/rb_unit_price_full"
-            style="@style/style_rbtn_buy_minus_round"
-            android:text="满仓" />
-
-    </RadioGroup>
-
-
-    <!--<include layout="@layout/layout_deal_common" />-->
-
-    <!--盈动波亏-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_27">
-
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:text="盈动波亏:"
-            android:textColor="@color/font_444"
-            android:textSize="@dimen/fontSize_12sp" />
+            android:src="@mipmap/icon_common_back" />
 
         <TextView
-            android:id="@+id/tv_profit_loss"
+            android:id="@+id/tv_trade_product_name"
+            style="@style/style_trade_product_name"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="上海-法兰克福五分时"
+            android:textColor="@color/color_00ADB4" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="1 元"
-            android:textColor="@color/color_009944"
-            android:textSize="@dimen/fontSize_12sp" />
-
+            android:layout_marginLeft="@dimen/dp_20"
+            android:src="@mipmap/icon_arrow_right" />
     </LinearLayout>
+
+    <TextView
+        style="@style/style_trade_product_name"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_11"
+        android:text="手数"
+        android:textColor="@color/font_444" />
 
     <RadioGroup
         android:id="@+id/radiogroup1"
         android:layout_width="match_parent"
-        android:layout_height="27dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_4"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
         android:orientation="horizontal">
 
         <RadioButton
@@ -150,6 +84,7 @@
             style="@style/style_rbtn_buy_minus_rect"
             android:text="6" />
 
+
         <RadioButton
             android:id="@+id/rb_7"
             style="@style/style_rbtn_buy_minus_rect"
@@ -165,9 +100,11 @@
             style="@style/style_rbtn_buy_minus_rect"
             android:text="9" />
 
+
         <RadioButton
             android:id="@+id/rb_10"
             style="@style/style_rbtn_buy_minus_rect"
+            android:background="@drawable/sel_btn_buy_minus_normal"
             android:text="10" />
 
     </RadioGroup>
@@ -176,206 +113,125 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dp_9">
+        android:layout_marginTop="@dimen/dp_60"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="成交额"
-            android:textColor="@color/font_444"
-            android:textSize="@dimen/fontSize_9sp" />
+            style="@style/style_trade_product_name"
+            android:text="还有" />
 
         <TextView
+            android:id="@+id/tv_buy_countdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="337 元"
+            android:text="5:45"
             android:textColor="@color/default_red"
-            android:textSize="@dimen/dp_9" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:text="订单金额"
-            android:textColor="@color/font_444"
-            android:textSize="@dimen/fontSize_9sp" />
+            android:textSize="@dimen/fontSize_20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="8 元"
-            android:textColor="@color/default_red"
-            android:textSize="@dimen/dp_9" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_30"
-            android:text="手续费"
-            android:textColor="@color/font_444"
-            android:textSize="@dimen/fontSize_9sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="1 元"
-            android:textColor="@color/default_red"
-            android:textSize="@dimen/dp_9" />
+            android:text="系统开始自动平仓"
+            android:textColor="@color/font_333"
+            android:textSize="@dimen/fontSize_14sp" />
     </LinearLayout>
 
-    <!--止损-->
-    <RadioGroup
-        android:id="@+id/radiogroup_stop_limit"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_27"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_6"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_50"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_stop1"
-            style="@style/style_radio_button1"
-            android:clickable="false"
-            android:text="止损"
-            android:textSize="@dimen/dp_15" />
+        <TextView
+            android:id="@+id/tv_earnest_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:text="标的定金 ¥ 25"
+            android:textColor="@color/font_333"
+            android:textSize="@dimen/fontSize_14sp" />
 
-        <RadioButton
-            android:id="@+id/rb_none"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:checked="true"
-            android:text="无" />
 
-        <RadioButton
-            android:id="@+id/rb_stop10"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="10%" />
+        <TextView
+            android:id="@+id/tv_earnest_money_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="为当前运费(定金)的25%"
+            android:textColor="@color/font_333"
+            android:textSize="@dimen/fontSize_14sp" />
+    </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/rb_stop20"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="20%" />
-
-        <RadioButton
-            android:id="@+id/rb_stop30"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="30%" />
-
-        <RadioButton
-            android:id="@+id/rb_stop40"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="40%" />
-
-        <RadioButton
-            android:id="@+id/rb_stop50"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="50%" />
-
-    </RadioGroup>
-    <!--止盈-->
-    <RadioGroup
-        android:id="@+id/radiogroup_stop_profit"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_27"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_6"
+        android:layout_height="@dimen/dp_50"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb_profit"
-            style="@style/style_rbtn_buy_minus_round"
-            android:clickable="false"
-            android:text="止盈"
-            android:textSize="@dimen/dp_15" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:text="此次成交额"
+            android:textColor="@color/font_333"
+            android:textSize="@dimen/fontSize_16sp" />
 
-        <RadioButton
-            android:id="@+id/rb_none_profit"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:checked="true"
-            android:text="无" />
+        <TextView
+            android:id="@+id/tv_turnover_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" ¥ 85"
+            android:textColor="@color/color_009944"
+            android:textSize="@dimen/fontSize_20sp" />
 
-        <RadioButton
-            android:id="@+id/rb_profit10"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="10%" />
+        <TextView
+            android:id="@+id/tv_trade_service_charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="手续费 ¥ 15"
+            android:textColor="@color/font_666"
+            android:textSize="@dimen/fontSize_16sp" />
+    </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/rb_profit20"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="20%" />
 
-        <RadioButton
-            android:id="@+id/rb_profit30"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="30%" />
-
-        <RadioButton
-            android:id="@+id/rb_profit40"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="40%" />
-
-        <RadioButton
-            android:id="@+id/rb_profit50"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:text="50%" />
-
-    </RadioGroup>
-
-    <ImageView
-        android:layout_width="@dimen/dp_10"
-        android:layout_height="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_9"
-        android:layout_marginLeft="@dimen/dp_9"
-        android:layout_marginTop="@dimen/dp_17"
-        android:src="@mipmap/icon_lock" />
-
-    <!--建仓推单,止盈晒单,立即充值-->
+    <!--货运,双倍返还,立即充值-->
     <RadioGroup
         android:id="@+id/radiogroup3"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_30"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_16"
-        android:gravity="center"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginLeft="@dimen/dp_25"
+        android:layout_marginRight="@dimen/dp_25"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <!--分时线-->
         <RadioButton
-            android:id="@+id/rb_position_push_bill"
+            android:id="@+id/rb_trade_freight"
             style="@style/style_rbtn_buy_minus_round"
+            android:button="@drawable/bg_rb_buy_minus"
             android:checked="true"
-            android:text="建仓推单" />
+            android:text="货运" />
 
         <RadioButton
-            android:id="@+id/rb_stop_share_bill"
+            android:id="@+id/rb_trade_return_double"
             style="@style/style_rbtn_buy_minus_round"
             android:layout_marginLeft="@dimen/dp_16"
-            android:text="止盈晒单" />
+            android:button="@drawable/bg_rb_buy_minus"
+            android:text="双倍返还" />
 
-        <RadioButton
-            android:id="@+id/rb_position_recharge"
-            style="@style/style_rbtn_buy_minus_round"
-            android:layout_marginLeft="@dimen/dp_16"
-            android:text="立即充值" />
+        <TextView
+            android:id="@+id/rb_trade_recharge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp_50"
+            android:drawablePadding="@dimen/dp_5"
+            android:drawableRight="@mipmap/ic_drawer_right"
+            android:gravity="center_vertical"
+            android:text="立即充值"
+            android:textColor="@color/font_333"
+            android:textSize="@dimen/fontSize_14sp" />
 
     </RadioGroup>
 
@@ -383,21 +239,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_9"
-        android:layout_marginTop="@dimen/dp_5"
-        android:text="注意事项:"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:text="投资有风险，交易需谨慎"
         android:textColor="@color/default_red"
-        android:textSize="@dimen/fontSize_9sp" />
+        android:textSize="@dimen/fontSize_13sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginLeft="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_5"
-        android:text="1.不支持持仓过夜，收盘后将自动平仓。 \n2.每类商品只能持仓1笔，需平仓后才可新建。"
-        android:textColor="@color/color_cccccc"
-        android:textSize="@dimen/fontSize_9sp" />
-
+        android:text="本平台收取本金15%的建仓手续费，平仓不收取"
+        android:textColor="@color/font_999"
+        android:textSize="@dimen/fontSize_12sp" />
 
 
     <TextView
@@ -407,7 +262,6 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="@dimen/dp_50"
         android:layout_gravity="bottom">
 

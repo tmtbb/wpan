@@ -34,35 +34,25 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionE
         private TextView name;
         @ViewInject(R.id.tv_history_time)
         private TextView time;
-        @ViewInject(R.id.tv_history_price)
+        @ViewInject(R.id.tv_trade_history_turnover)
         private TextView price;
-        @ViewInject(R.id.tv_history_stop_loss)
-        private TextView stop; //止损
-        @ViewInject(R.id.tv_history_profit)
-        private TextView profit; //止盈
-
 
         public HistoryPositionViewHolder(Context context) {
             super(context);
         }
-
 
         @Override
         protected int layoutId() {
             return R.layout.item_position_history;
         }
 
-
         @Override
         protected void update(HistoryPositionEntity data) {
             if (data != null) {
                 name.setText(data.getName());
-                price.setText(data.getPrice());
-                stop.setText(data.getStop());
-                profit.setText(data.getLimit());
+                price.setText(data.getPrice()); //如果是买跌的,价格颜色设置为绿色
                 time.setText(data.getTime());
             }
-
         }
     }
 }

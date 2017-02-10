@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/dp_40"
-    android:gravity="center_vertical">
+    android:layout_height="@dimen/dp_50">
 
     <TextView
         android:id="@+id/text_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:text="hello"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginRight="@dimen/dp_15"
         android:background="@drawable/sel_indicator_title"
+        android:gravity="center"
+        android:text="上海-法兰克福"
         android:textColor="@drawable/sel_indicator_fount"
         android:textSize="@dimen/fontSize_16sp" />
 
