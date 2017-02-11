@@ -74,13 +74,13 @@ public class DealFragment extends BaseFragment {
     protected void initView() {
         super.initView();
 
-        mTitleList.add("白银");
-        mTitleList.add("原油");
-        mTitleList.add("咖啡");
-        mTitleList.add("黄金");
-        mTitleList.add("大豆");
-        mTitleList.add("棉花");
-        mTitleList.add("钢铁");
+        mTitleList.add("上海-法兰克福");
+        mTitleList.add("上海-纽约");
+        mTitleList.add("上海-东京");
+        mTitleList.add("上海-北京");
+        mTitleList.add("北京-上海");
+        mTitleList.add("北京-法兰克福");
+        mTitleList.add("北京-纽约");
 
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -92,7 +92,6 @@ public class DealFragment extends BaseFragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(new DealProductPageFragment(), "sss");
         fragmentTransaction.commit();
@@ -100,10 +99,7 @@ public class DealFragment extends BaseFragment {
         fragmentTransaction.replace(R.id.container_chart, dealProductPageFragment);
         leftImage.setVisibility(View.INVISIBLE);
         titleText.setText("交易");
-
-
     }
-
 
     @Override
     protected void initListener() {

@@ -11,58 +11,20 @@
 
         <include layout="@layout/ly_title_bar" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_32"
-            android:background="@color/default_red"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/dp_12"
-                android:layout_height="@dimen/dp_14"
-                android:layout_marginLeft="@dimen/dp_13"
-                android:src="@mipmap/ic_exchange_assets" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_3"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:text="总资产 (元) "
-                android:textColor="@color/white"
-                android:textSize="@dimen/fontSize_12sp" />
-
-            <TextView
-                android:id="@+id/tv_exchange_assets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_3"
-                android:text="0.00"
-                android:textColor="@color/white"
-                android:textSize="@dimen/fontSize_12sp" />
-
-            <ImageView
-                android:id="@+id/iv_exchange_assets_add"
-                android:layout_width="@dimen/dp_12"
-                android:layout_height="@dimen/dp_12"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:src="@mipmap/ic_exchange_add" />
-        </LinearLayout>
+        <!--用户总资产-->
+        <include layout="@layout/ll_user_total_assets" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="@dimen/dp_50"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/dp_10" />
+            android:background="@color/white" />
 
         <FrameLayout
+            android:id="@+id/container_chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container_chart"/>
+            android:layout_height="match_parent" />
 
 
     </LinearLayout>
