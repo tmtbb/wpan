@@ -13,7 +13,7 @@
     <color name="newgame_operate_bg_yellow">#ffcc00</color>
 
     <color name="default_bg">#f5f5f5</color>
-    <color name="default_red">#E9573E</color>
+    <color name="default_red">#E9573F</color>
     <color name="default_red_light">#F05F46</color>
     <color name="default_green">#0EAF56</color>  //买跌色调
     <color name="default_view_select">#f1f1f1</color>
@@ -48,5 +48,7 @@
 
     <color name="color_ef8455">#ef8455</color>
     <color name="color_00ADB4">#00ADB4</color>
+    <color name="font_e6e6e6">#e6e6e6</color>
+
 
 </resources>
