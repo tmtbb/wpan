@@ -2,6 +2,7 @@ package com.xinyu.mwp.fragment;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -47,8 +48,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.activity.BuyMinusActivity;
-import com.xinyu.mwp.activity.BuyPlusActivity;
+
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
 import com.xinyu.mwp.adapter.LoopPagerAdapter;
@@ -62,6 +62,7 @@ import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.MyTransformation;
 
 
@@ -100,6 +101,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private RelativeLayout mViewPagerContainer;
     private int halfScreenWidth;
 
+    public static final int TYPE_BUY_MINUS = 0; //买跌
+    public static final int TYPE_BUY_PLUS = 1; //买跌
+
     @Override
     protected int getLayoutID() {
         return R.layout.ly_listview;
@@ -123,7 +127,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         super.initView();
         View view;
         for (int i = 0; i < 10; i++) {
-            view = LayoutInflater.from(context).inflate(R.layout.ll_trade_timew_type, null);
+            view = LayoutInflater.from(context).inflate(R.layout.ll_trade_time_type, null);
             TextView tv = (TextView) view.findViewById(R.id.tv_trade_min60);
             tv.setText(i + "分时");
             mViewList.add(view);
@@ -143,6 +147,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mChart = (CombinedChart) headView.findViewById(R.id.chart);
 
         RadioButton rbMinHour = (RadioButton) headView.findViewById(R.id.rb_min_hour); //分时线
+        RadioButton rbMinHour5 = (RadioButton) headView.findViewById(R.id.rb_min_5); //分时线
         RadioButton rbMinHour15 = (RadioButton) headView.findViewById(R.id.rb_min_15); //15分时线
         RadioButton rbMinHour60 = (RadioButton) headView.findViewById(R.id.rb_min_60); //60分时线
         RadioButton rbMinHourDay = (RadioButton) headView.findViewById(R.id.rb_day_hour); //日时线
@@ -150,6 +155,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         buyMinus.setOnClickListener(this);
         buyPlus.setOnClickListener(this);
         rbMinHour.setOnClickListener(this);
+        rbMinHour5.setOnClickListener(this);
         rbMinHour15.setOnClickListener(this);
         rbMinHour60.setOnClickListener(this);
         rbMinHourDay.setOnClickListener(this);
@@ -226,22 +232,18 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_deal_info_modify:   //点击第一个条目
-
-                break;
-
             case R.id.ll_history_record:  //仓位历史记录
                 next(PositionHistoryActivity.class);
                 LogUtil.d("仓位历史记录");
                 break;
 
             case R.id.tv_exchange_buy_plus:
-                LogUtil.d("买涨");
-                next(BuyPlusActivity.class);
+                ToastUtils.show(context, "买涨");
+                showDialog(TYPE_BUY_PLUS);
                 break;
             case R.id.tv_exchange_buy_minus:
-                LogUtil.d("买跌");
-                next(BuyMinusActivity.class);
+                ToastUtils.show(context, "买跌");
+                showDialog(TYPE_BUY_MINUS);
                 break;
 
             case R.id.rb_min_hour:
@@ -267,6 +269,35 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         }
     }
 
+    private void showDialog(int type) {
+        String buyType = null;
+        if (type == TYPE_BUY_MINUS) {
+            buyType = "买跌";
+        } else if (type == TYPE_BUY_PLUS) {
+            buyType = "买涨";
+        }
+        CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
+
+        builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //买涨点击后操作
+                ToastUtils.show(context, "买涨");
+            }
+        });
+
+        builder.setNegativeButton("取消",
+                new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        //取消点击后操作
+                        ToastUtils.show(context, "取消");
+                    }
+                });
+
+        builder.create().show();
+    }
+
     private void initChart() {
         colorHomeBg = getResources().getColor(R.color.white); //背景色
         colorLine = getResources().getColor(R.color.white);//分割线
@@ -274,7 +305,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         colorMa5 = getResources().getColor(R.color.yellow);//条目1
         colorMa10 = getResources().getColor(R.color.red);//条目2
         colorMa20 = getResources().getColor(R.color.color_f05f46);//条目3
-
 
         mChart.setDescription("");//描述信息
         mChart.setDrawGridBackground(false); //是否显示表格颜色
@@ -335,7 +365,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         });
     }
-
 
     protected void loadChartData() {
         mChart.resetTracking();

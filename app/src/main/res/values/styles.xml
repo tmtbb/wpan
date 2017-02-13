@@ -137,7 +137,7 @@
     <style name="style_rbtn_buy_minus_round">
         <item name="android:layout_width">wrap_content</item>
         <!--<item name="android:background">@drawable/sel_bg_radio_btn_minus</item>-->
-        <item name="android:layout_weight">1</item>
+        <!--<item name="android:layout_weight">1</item>-->
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/fontSize_14sp</item>
@@ -164,5 +164,11 @@
         <item name="android:textSize">@dimen/fontSize_16sp</item>
     </style>
 
+    <style name="custom_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:background">#00000000</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 
 </resources>
