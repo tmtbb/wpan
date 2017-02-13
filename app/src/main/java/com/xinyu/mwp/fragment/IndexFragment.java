@@ -1,11 +1,17 @@
 package com.xinyu.mwp.fragment;
 
 import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.MainFragmentActivity;
 import com.xinyu.mwp.entity.IndexItemEntity;
 import com.xinyu.mwp.fragment.base.BaseControllerFragment;
 import com.xinyu.mwp.fragment.base.BaseRefreshFragment;
@@ -13,10 +19,13 @@ import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.ImageUtil;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TestDataUtil;
+import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.IndexItemView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.List;
@@ -37,6 +46,10 @@ public class IndexFragment extends BaseRefreshFragment {
     private LinearLayout itemLayout;
     @ViewInject(R.id.bottomImageView)
     private ImageView bottomImageView;
+    @ViewInject(R.id.leftImage)
+    private ImageView leftImage;
+    @ViewInject(R.id.titleText)
+    private TextView titleText;
 
     @Override
     protected int getLayoutID() {
@@ -46,6 +59,9 @@ public class IndexFragment extends BaseRefreshFragment {
     @Override
     protected void initView() {
         super.initView();
+        titleText.setText("微盘");
+        leftImage.setImageResource(R.mipmap.icon_head);
+
         bannerView.centerDot();
         bannerView.setRefreshLayout(refreshFrameLayout);
         bannerView.update(TestDataUtil.getIndexBanners(3));
@@ -62,34 +78,31 @@ public class IndexFragment extends BaseRefreshFragment {
                     @Override
                     public void run() {
                         itemLayout.removeAllViews();
-                        for (int i = 0; i < 3; i++){
+                        for (int i = 0; i < 3; i++) {
                             IndexItemEntity indexItemEntity = new IndexItemEntity();
-                            if(i == 0){
-                                indexItemEntity.setTitle("白银");
-                                indexItemEntity.setUnit("(元/千克)");
+                            if (i == 0) {
+                                indexItemEntity.setTitle("上海-法兰克福");
                                 indexItemEntity.setPrice("3780");
                                 indexItemEntity.setPercent("-0.47%");
-                                indexItemEntity.setValue("-18");
+                                indexItemEntity.setPriceChange("0.5659");
                                 indexItemEntity.setHighPrice("3900");
                                 indexItemEntity.setLowPrice("3650");
                                 indexItemEntity.setTodayPrice("3755");
                                 indexItemEntity.setYesterdayPrice("3600");
-                            }else if(i == 1){
-                                indexItemEntity.setTitle("原油");
-                                indexItemEntity.setUnit("(元/千克)");
+                            } else if (i == 1) {
+                                indexItemEntity.setTitle("上海-纽约");
+                                indexItemEntity.setPriceChange("0.1235");
                                 indexItemEntity.setPrice("3780");
                                 indexItemEntity.setPercent("+0.47%");
-                                indexItemEntity.setValue("+18");
                                 indexItemEntity.setHighPrice("3900");
                                 indexItemEntity.setLowPrice("3650");
                                 indexItemEntity.setTodayPrice("3755");
                                 indexItemEntity.setYesterdayPrice("3600");
-                            }else {
-                                indexItemEntity.setTitle("咖啡");
-                                indexItemEntity.setUnit("(元/千克)");
+                            } else {
+                                indexItemEntity.setTitle("上海-东京");
+                                indexItemEntity.setPriceChange("0.5454");
                                 indexItemEntity.setPrice("3780");
                                 indexItemEntity.setPercent("-0.47%");
-                                indexItemEntity.setValue("-18");
                                 indexItemEntity.setHighPrice("3900");
                                 indexItemEntity.setLowPrice("3650");
                                 indexItemEntity.setTodayPrice("3755");
@@ -108,4 +121,5 @@ public class IndexFragment extends BaseRefreshFragment {
             }
         });
     }
+
 }

@@ -28,6 +28,8 @@ public class IndexItemEntity extends BaseEntity {
     private String todayPrice;
     @FieldJsonKey("yesterdayPrice")
     private String yesterdayPrice;
+    @FieldJsonKey("priceChange")
+    private String priceChange;
 
     public String getTitle() {
         return title;
@@ -51,6 +53,14 @@ public class IndexItemEntity extends BaseEntity {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getPriceChange() {
+        return priceChange;
+    }
+
+    public void setPriceChange(String priceChange) {
+        this.priceChange = priceChange;
     }
 
     public String getPercent() {

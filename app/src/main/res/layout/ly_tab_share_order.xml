@@ -3,7 +3,7 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="50dp"
     android:id="@+id/tabLayout"
-    android:background="@color/default_red">
+    android:background="@color/default_main_color">
 
     <RelativeLayout
         android:id="@+id/itemLayout1"

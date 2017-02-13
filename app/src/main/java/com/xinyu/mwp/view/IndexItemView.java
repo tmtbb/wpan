@@ -19,15 +19,15 @@ public class IndexItemView extends BaseDataFrameLayout<IndexItemEntity> {
 
     @ViewInject(R.id.titleView)
     private TextView titleView;
-    @ViewInject(R.id.unitView)
-    private TextView unitView;
+
     @ViewInject(R.id.priceView)
     private TextView priceView;
     @ViewInject(R.id.percentView)
     private TextView percentView;
-    @ViewInject(R.id.valueView)
-    private TextView valueView;
-    @ViewInject(R.id.highPriceView)
+    @ViewInject(R.id.price_change)
+    private TextView priceChange;
+
+    @ViewInject(R.id.high_priceView)
     private TextView highPriceView;
     @ViewInject(R.id.todayPriceView)
     private TextView todayPriceView;
@@ -51,16 +51,16 @@ public class IndexItemView extends BaseDataFrameLayout<IndexItemEntity> {
 
     @Override
     public void update(IndexItemEntity data) {
-        if(data != null){
+        if (data != null) {
             titleView.setText(data.getTitle());
-            unitView.setText(data.getUnit());
+
             priceView.setText(data.getPrice());
             percentView.setText(data.getPercent());
-            valueView.setText(data.getValue());
-            highPriceView.setText("最高 " + data.getHighPrice());
-            todayPriceView.setText("今开" + data.getTodayPrice());
-            lowPriceView.setText("最低" + data.getLowPrice());
-            yesterdayPriceView.setText("昨开" + data.getYesterdayPrice());
+            priceChange.setText("+" + data.getPriceChange());  //正+ 负-
+            highPriceView.setText(data.getHighPrice());
+            todayPriceView.setText(data.getTodayPrice());
+            lowPriceView.setText(data.getLowPrice());
+            yesterdayPriceView.setText(data.getYesterdayPrice());
         }
     }
 }

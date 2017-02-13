@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     private long exitNow;
     private long first = 0;
 
+
     @Override
     public int getFragmentContainerId() {
         return R.id.contentContainer;
@@ -62,6 +64,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         pushFragmentToBackStack(0);
 
     }
+
 
     @Override
     public void pushFragmentToBackStack(int selectIndex) {
@@ -209,4 +212,5 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         UserManager.getInstance().unregisterUserUpdateListener(this);
         LogUtil.e("test");
     }
+
 }
