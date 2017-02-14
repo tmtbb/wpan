@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="45dp"
-        android:background="@color/default_red"
+        android:background="@color/default_main_color"
         android:visibility="gone">
 
         <LinearLayout
@@ -75,7 +75,7 @@
                 android:background="@drawable/bg_default_red_rect"
                 android:gravity="center"
                 android:text="提现"
-                android:textColor="@color/default_red"
+                android:textColor="@color/default_main_color"
                 android:textSize="@dimen/fontSize_16sp" />
 
             <TextView

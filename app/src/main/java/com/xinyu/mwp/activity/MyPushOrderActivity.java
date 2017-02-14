@@ -12,7 +12,6 @@ import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
 import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.util.TestDataUtil;
-
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -75,5 +74,4 @@ public class MyPushOrderActivity extends BaseRefreshAbsListControllerActivity<My
             }
         }, 2000);
     }
-
 }

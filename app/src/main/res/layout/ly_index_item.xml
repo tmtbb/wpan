@@ -1,130 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:gravity="center_vertical"
-    android:background="@color/white">
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_9"
+        android:text="上海到法兰克福"
+        android:textColor="@color/font_333"
+        android:textSize="@dimen/dp_14" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1.5">
+        android:layout_marginTop="@dimen/dp_17"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/titleView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/fontSize_18sp"
-            android:textColor="@color/font_333"
-            android:text="白银"/>
-
-        <TextView
-            android:id="@+id/unitView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_5"
-            android:textSize="@dimen/fontSize_13sp"
-            android:textColor="@color/font_666"
-            android:text="(元/千克)"/>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.5">
-
+        <!--第一个-->
         <TextView
             android:id="@+id/priceView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3780"
-            android:textSize="@dimen/fontSize_25sp"
-            android:textColor="@drawable/sel_index_item_text"
-            android:layout_centerHorizontal="true"/>
+            android:layout_marginLeft="@dimen/dp_9"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:text="7.2890"
+            android:textColor="@color/default_green"
+            android:textSize="@dimen/fontSize_32sp" />
 
+
+        <!--第二个-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@id/priceView"
-            android:layout_centerHorizontal="true">
+            android:layout_weight="0.4"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/percentView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+0.47%"
-                android:textSize="@dimen/fontSize_13sp"
-                android:textColor="@drawable/sel_index_item_text"/>
+                android:text="-0.47%"
+                android:textColor="@drawable/sel_index_item_text"
+                android:textSize="@dimen/fontSize_12sp" />
 
             <TextView
-                android:id="@+id/valueView"
+                android:id="@+id/price_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+18"
-                android:textSize="@dimen/fontSize_13sp"
+                android:layout_marginTop="@dimen/dp_13"
+                android:text="-0.0033"
                 android:textColor="@drawable/sel_index_item_text"
-                android:layout_marginLeft="@dimen/dp_10"/>
+                android:textSize="@dimen/fontSize_12sp" />
 
         </LinearLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
+        <!--第三个-->
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_weight="1"
+            android:gravity="center">
+
 
             <TextView
-                android:id="@+id/highPriceView"
+                android:id="@+id/tv_desc_high_priceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="最高 3900"
-                android:textSize="@dimen/fontSize_13sp"
-                android:textColor="@color/font_333"/>
+                android:text="最高:"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/dp_12" />
+
+            <TextView
+                android:id="@+id/high_priceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_toRightOf="@id/tv_desc_high_priceView"
+                android:text="7.3090"
+                android:textColor="@color/default_red"
+                android:textSize="@dimen/fontSize_12sp" />
+
+
+            <TextView
+                android:id="@+id/tv_desc_todayPriceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_toRightOf="@id/high_priceView"
+                android:text="今开:"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_12sp" />
 
             <TextView
                 android:id="@+id/todayPriceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="今开 3755"
-                android:textSize="@dimen/fontSize_13sp"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_toRightOf="@id/tv_desc_todayPriceView"
+                android:text="7.3755"
                 android:textColor="@color/font_333"
-                android:layout_marginLeft="@dimen/dp_15"
-                android:layout_toRightOf="@id/highPriceView"/>
+                android:textSize="@dimen/fontSize_12sp" />
+
+            <TextView
+                android:id="@+id/tv_desc_lowPriceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/high_priceView"
+                android:layout_marginTop="@dimen/dp_12"
+                android:text="最低:"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_13sp" />
+
 
             <TextView
                 android:id="@+id/lowPriceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/highPriceView"
-                android:layout_marginTop="@dimen/dp_5"
-                android:text="最低 3650"
-                android:textSize="@dimen/fontSize_13sp"
-                android:textColor="@color/font_333"/>
+                android:layout_below="@id/high_priceView"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_toRightOf="@id/tv_desc_lowPriceView"
+                android:text="7.3650"
+                android:textColor="@color/default_green"
+                android:textSize="@dimen/fontSize_13sp" />
+
+            <TextView
+                android:id="@+id/tv_desc_yesterdayPriceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tv_desc_todayPriceView"
+                android:layout_alignTop="@id/lowPriceView"
+                android:layout_below="@id/tv_desc_todayPriceView"
+                android:text="昨开:"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_12sp" />
 
             <TextView
                 android:id="@+id/yesterdayPriceView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/lowPriceView"
-                android:layout_marginLeft="@dimen/dp_15"
-                android:layout_toRightOf="@id/lowPriceView"
-                android:text="昨开 3600"
-                android:textSize="@dimen/fontSize_13sp"
-                android:textColor="@color/font_333"/>
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_toRightOf="@id/tv_desc_yesterdayPriceView"
+                android:text="7.3600"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_12sp" />
 
         </RelativeLayout>
-
-    </RelativeLayout>
-
+    </LinearLayout>
 </LinearLayout>

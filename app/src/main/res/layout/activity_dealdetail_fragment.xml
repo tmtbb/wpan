@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_centerInParent="true"
-        android:background="@color/default_red"
+        android:background="@color/default_main_color"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -34,7 +34,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="71dp"
-        android:background="@color/default_red_light"
+        android:background="@color/default_main_color_light"
         android:orientation="horizontal">
 
         <LinearLayout
