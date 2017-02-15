@@ -1,5 +1,6 @@
 package com.xinyu.mwp.fragment;
 
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.MainFragmentActivity;
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.IndexItemEntity;
 import com.xinyu.mwp.fragment.base.BaseControllerFragment;
 import com.xinyu.mwp.fragment.base.BaseRefreshFragment;
@@ -22,6 +24,7 @@ import com.xinyu.mwp.util.ImageUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.IndexItemView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
 
@@ -122,4 +125,35 @@ public class IndexFragment extends BaseRefreshFragment {
         });
     }
 
+    @Event(value = R.id.followView)
+    private void click(View v) {
+        //跟单,需要判断被点击的是买涨,买跌,然后跟单
+        showDialog(Constant.TYPE_BUY_MINUS);
+    }
+    private void showDialog(int type) {
+        String buyType = null;
+        if (type == Constant.TYPE_BUY_MINUS) {
+            buyType = "买跌";
+        } else if (type == Constant.TYPE_BUY_PLUS) {
+            buyType = "买涨";
+        }
+        CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
+        builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //买涨点击后操作
+                ToastUtils.show(context, "买跌");
+            }
+        });
+
+        builder.setNegativeButton("取消",
+                new android.content.DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        //取消点击后操作
+                        ToastUtils.show(context, "取消");
+                    }
+                });
+        builder.create().show();
+    }
 }

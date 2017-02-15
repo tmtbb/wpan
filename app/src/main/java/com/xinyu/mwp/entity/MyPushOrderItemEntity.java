@@ -13,6 +13,36 @@ public class MyPushOrderItemEntity extends BaseEntity {
     private String profit;
     @FieldJsonKey("sucCount")
     private String sucCount;
+    @FieldJsonKey("orderNname")
+    private String orderNname;
+    @FieldJsonKey("time")
+    private String time;
+    @FieldJsonKey("orderPrice")
+    private String orderPrice;
+
+    public String getOrderNname() {
+        return orderNname;
+    }
+
+    public void setOrderNname(String orderNname) {
+        this.orderNname = orderNname;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(String orderPrice) {
+        this.orderPrice = orderPrice;
+    }
 
     public String getSucOdds() {
         return sucOdds;

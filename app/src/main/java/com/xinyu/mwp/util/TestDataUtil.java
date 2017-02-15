@@ -177,4 +177,18 @@ public class TestDataUtil {
         }
         return banners;
     }
+
+    //模拟的 我的/好友 推单详情数据
+    public static List<MyPushOrderItemEntity> getMyPushOrderInfoEntity() {
+        MyPushOrderItemEntity itemEntity;
+        List<MyPushOrderItemEntity> orderList = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            itemEntity = new MyPushOrderItemEntity();
+            itemEntity.setOrderNname("上海-法兰克福" + new Random().nextInt(10));
+            itemEntity.setTime("17-01-25 17:"+ new Random().nextInt(60));
+            itemEntity.setOrderPrice("" + new Random().nextInt(10000));
+            orderList.add(itemEntity);
+        }
+        return orderList;
+    }
 }

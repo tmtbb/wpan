@@ -13,28 +13,35 @@
     core_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
     core_ptr:ptr_resistance="1.7">
 
-    <ScrollView
-        android:id="@+id/contentView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_eee">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include layout="@layout/ly_title_bar" />
+
+        <ScrollView
+            android:id="@+id/contentView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@color/color_eee">
 
-            <include layout="@layout/ly_title_bar" />
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <com.xinyu.mwp.view.banner.IndexBannerView
-                    android:id="@+id/bannerView"
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="161dp" />
+                    android:layout_height="wrap_content">
 
-                <!--<com.xinyu.mwp.view.RoundImageView-->
+                    <com.xinyu.mwp.view.banner.IndexBannerView
+                        android:id="@+id/bannerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="161dp" />
+
+                    <!--<com.xinyu.mwp.view.RoundImageView-->
                     <!--android:layout_width="@dimen/dp_36"-->
                     <!--android:layout_height="@dimen/dp_36"-->
                     <!--android:layout_margin="@dimen/dp_7"-->
@@ -42,110 +49,111 @@
                     <!--app:roundHeight="@dimen/dp_18"-->
                     <!--app:roundWidth="@dimen/dp_18" />-->
 
-            </RelativeLayout>
+                </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:paddingLeft="@dimen/dp_15"
-                android:background="@color/white"
-                android:paddingRight="@dimen/dp_15">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_15">
 
-                <TextView
-                    android:id="@+id/followView"
-                    android:layout_width="71dp"
-                    android:layout_height="36dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/fontSize_14sp"
-                    android:text="跟单"
-                    android:gravity="center"
-                    android:background="@drawable/bg_default_red_fill_1"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    <TextView
+                        android:id="@+id/followView"
+                        android:layout_width="71dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_default_red_fill_1"
+                        android:gravity="center"
+                        android:text="跟单"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/fontSize_14sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/dp_9"
+                        android:layout_toLeftOf="@id/followView"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/dp_20"
+                            android:layout_height="@dimen/dp_20"
+                            android:layout_marginLeft="@dimen/dp_12"
+                            android:src="@mipmap/horn" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_12"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="用户001买涨白银价3666"
+                            android:textColor="@color/font_333"
+                            android:textSize="@dimen/fontSize_15sp" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/itemLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/followView"
-                    android:layout_marginRight="@dimen/dp_9"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:src="@mipmap/horn"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:text="用户001买涨白银价3666"
-                        android:textColor="@color/font_333"
-                        android:textSize="@dimen/fontSize_15sp"
-                        android:maxLines="1"
-                        android:ellipsize="end"/>
+                    android:layout_marginTop="@dimen/dp_11"
+                    android:orientation="vertical">
 
                 </LinearLayout>
 
-            </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:text="高手排行榜"
+                    android:textColor="@color/font_666"
+                    android:textSize="@dimen/fontSize_16sp" />
 
-            <LinearLayout
-                android:layout_marginTop="@dimen/dp_11"
-                android:id="@+id/itemLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="121dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <com.xinyu.mwp.view.IndexRankingItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:index_ranking_item_description="当前收益最高的牛人"
+                        app:index_ranking_item_icon="@mipmap/icon_index_ranking_item_1"
+                        app:index_ranking_item_title="即时高手" />
+
+                    <com.xinyu.mwp.view.IndexRankingItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:index_ranking_item_description="高手操作实战跟单"
+                        app:index_ranking_item_icon="@mipmap/icon_index_ranking_item_2"
+                        app:index_ranking_item_title="历史高手" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bottomImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="106dp"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_banner_default" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="34dp"
-                android:background="@color/white"
-                android:paddingLeft="@dimen/dp_16"
-                android:paddingRight="@dimen/dp_16"
-                android:gravity="center_vertical"
-                android:text="高手排行榜"
-                android:textColor="@color/font_666"
-                android:textSize="@dimen/fontSize_16sp"
-                android:layout_marginTop="@dimen/dp_10"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="121dp"
-                android:orientation="horizontal"
-                android:background="@color/white">
-
-                <com.xinyu.mwp.view.IndexRankingItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:index_ranking_item_title="即时高手"
-                    app:index_ranking_item_description="当前收益最高的牛人"
-                    app:index_ranking_item_icon="@mipmap/icon_index_ranking_item_1"/>
-
-                <com.xinyu.mwp.view.IndexRankingItemView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:index_ranking_item_title="历史高手"
-                    app:index_ranking_item_description="高手操作实战跟单"
-                    app:index_ranking_item_icon="@mipmap/icon_index_ranking_item_2"/>
-
-            </LinearLayout>
-            
-            <ImageView
-                android:id="@+id/bottomImageView"
-                android:layout_width="match_parent"
-                android:layout_height="106dp"
-                android:layout_marginTop="@dimen/dp_10"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/icon_banner_default"/>
-
-        </LinearLayout>
-
-    </ScrollView>
-
+        </ScrollView>
+    </LinearLayout>
 </in.srain.cube.views.ptr.PtrFrameLayout>

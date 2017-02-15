@@ -53,6 +53,7 @@ import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
 import com.xinyu.mwp.adapter.LoopPagerAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.DealProductPageEntity;
 
 import com.xinyu.mwp.entity.Model;
@@ -100,9 +101,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private ViewPager mViewPager;
     private RelativeLayout mViewPagerContainer;
     private int halfScreenWidth;
-
-    public static final int TYPE_BUY_MINUS = 0; //买跌
-    public static final int TYPE_BUY_PLUS = 1; //买跌
 
     @Override
     protected int getLayoutID() {
@@ -239,11 +237,11 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
             case R.id.tv_exchange_buy_plus:
                 ToastUtils.show(context, "买涨");
-                showDialog(TYPE_BUY_PLUS);
+                showDialog(Constant.TYPE_BUY_PLUS);
                 break;
             case R.id.tv_exchange_buy_minus:
                 ToastUtils.show(context, "买跌");
-                showDialog(TYPE_BUY_MINUS);
+                showDialog(Constant.TYPE_BUY_MINUS);
                 break;
 
             case R.id.rb_min_hour:
@@ -271,9 +269,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
     private void showDialog(int type) {
         String buyType = null;
-        if (type == TYPE_BUY_MINUS) {
+        if (type == Constant.TYPE_BUY_MINUS) {
             buyType = "买跌";
-        } else if (type == TYPE_BUY_PLUS) {
+        } else if (type == Constant.TYPE_BUY_PLUS) {
             buyType = "买涨";
         }
         CustomDialog.Builder builder = new CustomDialog.Builder(context, type);

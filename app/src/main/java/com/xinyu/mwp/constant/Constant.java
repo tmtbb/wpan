@@ -9,4 +9,7 @@ public interface Constant {
         String IMGS_LIST = "IMGS_LIST";
         String IMGS_POSITION = "IMGS_POSITION";
     }
+
+    int TYPE_BUY_MINUS = 0; //买跌
+    int TYPE_BUY_PLUS = 1; //买跌
 }
