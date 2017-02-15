@@ -2,16 +2,21 @@ package com.xinyu.mwp.activity;
 
 import android.os.Handler;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
 import com.xinyu.mwp.adapter.MyPushOrderAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
+import com.xinyu.mwp.entity.IndexItemEntity;
 import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.TestDataUtil;
+import com.xinyu.mwp.view.IndexItemView;
+
 import org.xutils.view.annotation.ViewInject;
 
 /**

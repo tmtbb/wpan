@@ -84,5 +84,5 @@
     </LinearLayout>
 
     <include layout="@layout/ly_listview" />
-
+    
 </LinearLayout>
