@@ -1,9 +1,14 @@
 package com.xinyu.mwp.fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.widget.DrawerLayout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,11 +31,13 @@ import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.IndexItemView;
+import com.xinyu.mwp.view.MarqueeView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -53,6 +60,8 @@ public class IndexFragment extends BaseRefreshFragment {
     private ImageView leftImage;
     @ViewInject(R.id.titleText)
     private TextView titleText;
+    @ViewInject(R.id.marqueeView)
+    private MarqueeView marqueeView;
 
     @Override
     protected int getLayoutID() {
@@ -69,6 +78,30 @@ public class IndexFragment extends BaseRefreshFragment {
         bannerView.setRefreshLayout(refreshFrameLayout);
         bannerView.update(TestDataUtil.getIndexBanners(3));
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), bottomImageView, DisplayImageOptionsUtil.getInstance().getBannerOptions());
+        initMarqueeView();
+    }
+
+    private void initMarqueeView() {
+        List<CharSequence> list = new ArrayList<>();
+        SpannableString ss1 = new SpannableString("用户001买涨 【上海-东京】赚999999999999999元");
+        ss1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        list.add(ss1);
+        SpannableString ss2 = new SpannableString("用户002买跌 【上海-东京】赚1元");
+        ss2.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        list.add(ss2);
+        SpannableString ss3 = new SpannableString("用户003买涨 【上海-东京】赚100000000元");
+        ss3.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        list.add(ss3);
+        SpannableString ss4 = new SpannableString("用户014买跌 【上海-东京】赚9999999999999999999999999999元");
+        ss4.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        list.add(ss4);
+        marqueeView.startWithList(list);
+        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, TextView textView) {
+                ToastUtils.show(context,textView.getText()+"");
+            }
+        });
     }
 
     @Override
