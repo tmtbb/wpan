@@ -60,15 +60,16 @@
         android:textColor="@color/color_666666"
         android:textSize="@dimen/fontSize_11sp" />
 
-    <Button
-        android:layout_marginTop="@dimen/dp_13"
-        android:id="@+id/btn_follow_order"
-        android:layout_width="@dimen/dp_70"
-        android:layout_height="@dimen/dp_40"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_15"
-        android:background="@drawable/sel_common_view"
-        android:text="跟单"
-        android:textColor="@color/white"
-        android:layout_marginBottom="@dimen/dp_13"/>
+    <!--隐藏跟单功能-->
+    <!--<Button-->
+        <!--android:layout_marginTop="@dimen/dp_13"-->
+        <!--android:id="@+id/btn_follow_order"-->
+        <!--android:layout_width="@dimen/dp_70"-->
+        <!--android:layout_height="@dimen/dp_40"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="@dimen/dp_15"-->
+        <!--android:background="@drawable/sel_common_view"-->
+        <!--android:text="跟单"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:layout_marginBottom="@dimen/dp_13"/>-->
 </RelativeLayout>

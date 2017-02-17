@@ -119,8 +119,7 @@ public class MyPushOrderAdapter extends BaseListViewAdapter<MyPushOrderItemEntit
         private TextView time;
         @ViewInject(R.id.tv_push_order_price)
         private TextView orderPrice;
-        @ViewInject(R.id.btn_follow_order)
-        private Button followOrder;
+
 
         public MyPushOrderInfoViewHolder(Context context) {
             super(context);
@@ -138,38 +137,38 @@ public class MyPushOrderAdapter extends BaseListViewAdapter<MyPushOrderItemEntit
             orderNname.setText(data.getOrderNname());
         }
 
-        @Event(value = R.id.btn_follow_order)
-        private void click(View v) {
-           //需要判断被点击的是买涨,买跌,然后跟单
-            showDialog(Constant.TYPE_BUY_MINUS);
-        }
-
-        private void showDialog(int type) {
-            String buyType = null;
-            if (type == Constant.TYPE_BUY_MINUS) {
-                buyType = "买跌";
-            } else if (type == Constant.TYPE_BUY_PLUS) {
-                buyType = "买涨";
-            }
-            CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
-
-            builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    //买涨点击后操作
-                    ToastUtils.show(context, "买跌");
-                }
-            });
-
-            builder.setNegativeButton("取消",
-                    new android.content.DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            //取消点击后操作
-                            ToastUtils.show(context, "取消");
-                        }
-                    });
-            builder.create().show();
-        }
+//        去掉跟单功能
+//        @Event(value = R.id.btn_follow_order)
+//        private void click(View v) {
+//           //需要判断被点击的是买涨,买跌,然后跟单
+//            showDialog(Constant.TYPE_BUY_MINUS);
+//        }
+//        private void showDialog(int type) {
+//            String buyType = null;
+//            if (type == Constant.TYPE_BUY_MINUS) {
+//                buyType = "买跌";
+//            } else if (type == Constant.TYPE_BUY_PLUS) {
+//                buyType = "买涨";
+//            }
+//            CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
+//
+//            builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                    //买涨点击后操作
+//                    ToastUtils.show(context, "买跌");
+//                }
+//            });
+//
+//            builder.setNegativeButton("取消",
+//                    new android.content.DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            //取消点击后操作
+//                            ToastUtils.show(context, "取消");
+//                        }
+//                    });
+//            builder.create().show();
+//        }
     }
 }

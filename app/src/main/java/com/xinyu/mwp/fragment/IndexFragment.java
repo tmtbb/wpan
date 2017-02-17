@@ -4,19 +4,26 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.CashRecordActivity;
+import com.xinyu.mwp.activity.CashResaultActivity;
 import com.xinyu.mwp.activity.MainFragmentActivity;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.IndexItemEntity;
@@ -60,8 +67,10 @@ public class IndexFragment extends BaseRefreshFragment {
     private ImageView leftImage;
     @ViewInject(R.id.titleText)
     private TextView titleText;
-    @ViewInject(R.id.marqueeView)
-    private MarqueeView marqueeView;
+    //    @ViewInject(R.id.marqueeView)
+//    private MarqueeView marqueeView;
+    @ViewInject(R.id.container)
+    private RelativeLayout tittleBar;
 
     @Override
     protected int getLayoutID() {
@@ -71,6 +80,7 @@ public class IndexFragment extends BaseRefreshFragment {
     @Override
     protected void initView() {
         super.initView();
+        initStatusBar();
         titleText.setText("微盘");
         leftImage.setImageResource(R.mipmap.icon_head);
 
@@ -78,31 +88,32 @@ public class IndexFragment extends BaseRefreshFragment {
         bannerView.setRefreshLayout(refreshFrameLayout);
         bannerView.update(TestDataUtil.getIndexBanners(3));
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), bottomImageView, DisplayImageOptionsUtil.getInstance().getBannerOptions());
-        initMarqueeView();
-    }
+        // initMarqueeView();
 
-    private void initMarqueeView() {
-        List<CharSequence> list = new ArrayList<>();
-        SpannableString ss1 = new SpannableString("用户001买涨 【上海-东京】赚999999999999999元");
-        ss1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        list.add(ss1);
-        SpannableString ss2 = new SpannableString("用户002买跌 【上海-东京】赚1元");
-        ss2.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        list.add(ss2);
-        SpannableString ss3 = new SpannableString("用户003买涨 【上海-东京】赚100000000元");
-        ss3.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        list.add(ss3);
-        SpannableString ss4 = new SpannableString("用户014买跌 【上海-东京】赚9999999999999999999999999999元");
-        ss4.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        list.add(ss4);
-        marqueeView.startWithList(list);
-        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, TextView textView) {
-                ToastUtils.show(context,textView.getText()+"");
-            }
-        });
     }
+//头条滚动效果
+//    private void initMarqueeView() {
+//        List<CharSequence> list = new ArrayList<>();
+//        SpannableString ss1 = new SpannableString("用户001买涨 【上海-东京】赚999999999999999元");
+//        ss1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        list.add(ss1);
+//        SpannableString ss2 = new SpannableString("用户002买跌 【上海-东京】赚1元");
+//        ss2.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        list.add(ss2);
+//        SpannableString ss3 = new SpannableString("用户003买涨 【上海-东京】赚100000000元");
+//        ss3.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_red)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        list.add(ss3);
+//        SpannableString ss4 = new SpannableString("用户014买跌 【上海-东京】赚9999999999999999999999999999元");
+//        ss4.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.default_green)), 5, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        list.add(ss4);
+//        marqueeView.startWithList(list);
+//        marqueeView.setOnItemClickListener(new MarqueeView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position, TextView textView) {
+//                ToastUtils.show(context, textView.getText() + "");
+//            }
+//        });
+//    }
 
     @Override
     protected void initListener() {
@@ -158,11 +169,23 @@ public class IndexFragment extends BaseRefreshFragment {
         });
     }
 
-    @Event(value = R.id.followView)
+
+    @Event(value = {R.id.followView, R.id.leftImage})
     private void click(View v) {
-        //跟单,需要判断被点击的是买涨,买跌,然后跟单
-        showDialog(Constant.TYPE_BUY_MINUS);
+        switch (v.getId()) {
+            case R.id.leftImage:
+                DrawerLayout drawer = (DrawerLayout) getActivity().findViewById(R.id.drawer);
+                drawer.openDrawer(Gravity.LEFT);
+                break;
+            case R.id.followView:
+                //跟单,判断是否登录,需要判断被点击的是买涨,买跌,然后跟单
+                showDialog(Constant.TYPE_BUY_MINUS);
+                break;
+            default:
+                break;
+        }
     }
+
     private void showDialog(int type) {
         String buyType = null;
         if (type == Constant.TYPE_BUY_MINUS) {
@@ -188,5 +211,12 @@ public class IndexFragment extends BaseRefreshFragment {
                     }
                 });
         builder.create().show();
+    }
+
+    @Override
+    public void initStatusBar() {
+        StatusBarUtil.setColorForDrawerLayout(getActivity(),
+                (DrawerLayout) getActivity().findViewById(R.id.drawer),
+                getResources().getColor(R.color.default_main_color), 0);
     }
 }

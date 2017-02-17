@@ -51,8 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_19"
             app:edit_hint="请设置您的登录密码"
-            app:edit_show_eye="true"
             app:edit_pwd="true"
+            app:edit_show_eye="true"
             app:edit_show_icon="false"
             app:edit_show_right_text="false" />
 

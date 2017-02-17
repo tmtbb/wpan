@@ -1,20 +1,17 @@
 package com.xinyu.mwp.fragment;
 
-
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import android.widget.TextView;
 
-
+import com.jaeger.library.StatusBarUtil;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.RechargeActivity;
 import com.xinyu.mwp.activity.UserAssetsActivity;
@@ -122,7 +119,6 @@ public class DealFragment extends BaseFragment {
 
             @Override
             public boolean OnLongClick(RecyclerView.ViewHolder viewHolder, View view, int position) {
-                // ToastUtils.show(context,(position + 1) + "onLongClick");
                 return false;
             }
         });
@@ -143,5 +139,12 @@ public class DealFragment extends BaseFragment {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void initStatusBar() {
+        StatusBarUtil.setColorForDrawerLayout(getActivity(),
+                (DrawerLayout) getActivity().findViewById(R.id.drawer),
+                getResources().getColor(R.color.default_main_color), 0);
     }
 }

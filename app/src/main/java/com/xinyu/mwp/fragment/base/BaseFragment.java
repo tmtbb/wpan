@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
+import com.xinyu.mwp.R;
 import com.xinyu.mwp.networkapi.NetworkAPIException;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
@@ -38,8 +41,13 @@ public abstract class BaseFragment extends Fragment {
         rootView = inflater.inflate(getLayoutID(), container, false);
         onInit();
         initView();
+        initStatusBar();  //设置状态栏颜色
         initListener();
+
         return rootView;
+    }
+
+    public void initStatusBar() {
     }
 
     protected void onInit() {

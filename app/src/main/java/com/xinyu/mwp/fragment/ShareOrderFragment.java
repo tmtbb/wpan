@@ -3,11 +3,14 @@ package com.xinyu.mwp.fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.jaeger.library.StatusBarUtil;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.fragment.base.BaseFragment;
+
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -80,5 +83,12 @@ public class ShareOrderFragment extends BaseFragment {
     @Event({R.id.itemLayout1, R.id.itemLayout2, R.id.itemLayout3})
     private void onClick(View view){
         viewPager.setCurrentItem(tabLayout.indexOfChild(view));
+    }
+
+    @Override
+    public void initStatusBar() {
+        StatusBarUtil.setColorForDrawerLayout(getActivity(),
+                (DrawerLayout) getActivity().findViewById(R.id.drawer),
+                getResources().getColor(R.color.default_main_color), 0);
     }
 }

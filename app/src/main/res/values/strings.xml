@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">wpan</string>
+    <string name="app_name">航空运费定盘</string>
     <string name="confirm_exit_app">再按一次退出%s</string>
 
     <string name="permission_get_accounts_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_GET_ACCOUNTS</string>

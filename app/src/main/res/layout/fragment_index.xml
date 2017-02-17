@@ -43,13 +43,14 @@
 
                 </RelativeLayout>
 
+                <!--隐藏头条推送,推单-->
                 <RelativeLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/white"
                     android:paddingLeft="@dimen/dp_12"
-                    android:paddingRight="@dimen/dp_12">
+                    android:paddingRight="@dimen/dp_12"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/followView"
@@ -84,10 +85,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_12"
                             android:ellipsize="end"
-                            app:mvSingleLine="true"
                             app:mvAnimDuration="1000"
                             app:mvGravity="left"
                             app:mvInterval="3000"
+                            app:mvSingleLine="true"
                             app:mvTextColor="@color/font_666"
                             app:mvTextSize="@dimen/fontSize_12sp" />
 
@@ -115,13 +116,15 @@
                     android:paddingRight="@dimen/dp_16"
                     android:text="高手排行榜"
                     android:textColor="@color/font_666"
-                    android:textSize="@dimen/fontSize_16sp" />
+                    android:textSize="@dimen/fontSize_16sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="121dp"
                     android:background="@color/white"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.xinyu.mwp.view.IndexRankingItemView
                         android:layout_width="match_parent"
