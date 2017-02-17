@@ -157,10 +157,10 @@ public class CustomDialog extends Dialog {
             mTurnoverMoney = (TextView) layout.findViewById(R.id.tv_turnover_money);
             //手续费
             mServiceCharge = (TextView) layout.findViewById(R.id.tv_trade_service_charge);
-            //货运
-            mFreight = (RadioButton) layout.findViewById(R.id.rb_trade_freight);
-            //双倍返还
-            mReturnDouble = (RadioButton) layout.findViewById(R.id.rb_trade_return_double);
+//            //货运
+//            mFreight = (RadioButton) layout.findViewById(R.id.rb_trade_freight);
+//            //双倍返还
+//            mReturnDouble = (RadioButton) layout.findViewById(R.id.rb_trade_return_double);
         }
 
 

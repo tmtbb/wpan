@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.networkapi.NetworkAPIException;
 import com.xinyu.mwp.swipeback.ScrollFinishListener;
@@ -75,12 +76,17 @@ public abstract class BaseFragmentActivity extends SwipeBackFragmentActivity {
         context = this;
         rootView = LayoutInflater.from(this).inflate(getLayoutID(), null);
         setContentView(rootView);
+        initStatusBar(); //设置状态栏颜色
         fragmentManager = this.getSupportFragmentManager();
         MyApplication.getApplication().register(this);
         onInit();
         initView();
         initListener();
         initData();
+    }
+
+    public void initStatusBar() {
+        StatusBarUtil.setColor(this,getResources().getColor(R.color.default_main_color),0);
     }
 
     @Override

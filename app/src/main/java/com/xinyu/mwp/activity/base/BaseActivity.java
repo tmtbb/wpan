@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.networkapi.NetworkAPIException;
@@ -82,11 +83,18 @@ public abstract class BaseActivity extends SwipeBackActivity {
         context = this;
         rootView = LayoutInflater.from(this).inflate(getContentView(), null);
         setContentView(rootView);
+        initStatusBar();
+
         MyApplication.getApplication().register(this);
         onInit();
         initView();
         initListener();
         initData();
+    }
+
+    //设置标题栏颜色
+    public void initStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.default_main_color), 0);
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.xinyu.mwp.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,12 +13,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
+import com.unionpay.tsmservice.request.GetTransRecordRequestParams;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.fragment.DealFragment;
 import com.xinyu.mwp.fragment.IndexFragment;
 import com.xinyu.mwp.fragment.LeftFragment;
+import com.xinyu.mwp.fragment.ShareOrderExpectFragment;
 import com.xinyu.mwp.fragment.ShareOrderFragment;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
@@ -54,17 +60,15 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
     @Override
     public void createFragmentsToBackStack() {
-
         fragments.add(new IndexFragment());
         fragments.add(new DealFragment());
-        fragments.add(new ShareOrderFragment());
+       // fragments.add(new ShareOrderFragment());  //隐藏晒单界面
+        fragments.add(new ShareOrderExpectFragment());
 
         leftFragment = new LeftFragment();
         pushFragmentToContainer(R.id.leftContainer, leftFragment);
         pushFragmentToBackStack(0);
-
     }
-
 
     @Override
     public void pushFragmentToBackStack(int selectIndex) {
@@ -142,7 +146,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
             }
         });
     }

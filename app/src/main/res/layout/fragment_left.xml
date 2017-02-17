@@ -6,6 +6,11 @@
     android:background="@color/default_bg"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_35"
+        android:background="@color/default_main_color" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,7 +75,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="71dp"
+        android:layout_height="@dimen/dp_70"
         android:background="@color/default_main_color_light"
         android:orientation="horizontal">
 
