@@ -15,5 +15,8 @@ public interface SocketAPIConstant {
 
     interface OperateCode {
         Short Login = 3003;
+
+
+        Short Products = 5001;
     }
 }

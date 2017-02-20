@@ -41,6 +41,6 @@ public class SocketAPIFactoryImpl implements NetworkAPIFactory {
 
     @Override
     public DealAPI getDealAPI() {
-        return null;
+        return new SocketDealAPI();
     }
 }

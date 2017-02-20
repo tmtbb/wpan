@@ -36,7 +36,9 @@ public class SocketAPINettyBootstrap {
 
 
     public void writeAndFlush(Object object) {
-        socketChannel.writeAndFlush(object);
+        if( object != null ) {
+            socketChannel.writeAndFlush(object);
+        }
     }
 
     public void connect() {
