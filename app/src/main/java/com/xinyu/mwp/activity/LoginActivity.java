@@ -6,14 +6,19 @@ import android.widget.Button;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.view.WPEditText;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import io.netty.channel.nio.NioEventLoopGroup;
 
 /**
  * @author : created by chuangWu
@@ -64,7 +69,17 @@ public class LoginActivity extends BaseControllerActivity {
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(view);
+                    NetworkAPIFactoryImpl.getUserAPI().login(userNameEditText.getEditTextString(), passwordEditText.getEditTextString(), new OnAPIListener<LoginReturnEntity>() {
+                        @Override
+                        public void onError(Throwable ex) {
 
+                        }
+
+                        @Override
+                        public void onSuccess(LoginReturnEntity loginReturnEntity) {
+
+                        }
+                    });
                 } else {
                     showToast(exception.getErrorMsg());
                 }

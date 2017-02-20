@@ -65,6 +65,7 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.github.PhilJay:MPAndroidChart:v2.1.6'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'io.netty:netty-all:5.0.0.Alpha2'
     provided files('libs/UPPayAssistEx.jar')
     provided files('libs/UPPayPluginExPro.jar')  //银联相关
     compile files('libs/Native_Libs.jar') // 加载上方 .so 生成的该文件

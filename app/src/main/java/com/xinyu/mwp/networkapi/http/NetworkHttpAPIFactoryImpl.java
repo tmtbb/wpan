@@ -1,15 +1,17 @@
 package com.xinyu.mwp.networkapi.http;
 
+import com.xinyu.mwp.networkapi.DealAPI;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.SocializeAPI;
+import com.xinyu.mwp.networkapi.UserAPI;
 
 public class NetworkHttpAPIFactoryImpl implements NetworkAPIFactory {
     private NetworkAPIConfig config;
     private SocializeAPI socializeAPI;
     private static NetworkHttpAPIFactoryImpl networkHttpAPIFactory = null;
 
-    public static NetworkAPIFactory getInstance() {
+    public static synchronized NetworkAPIFactory getInstance() {
         if (networkHttpAPIFactory == null) {
             networkHttpAPIFactory = new NetworkHttpAPIFactoryImpl();
         }
@@ -18,6 +20,16 @@ public class NetworkHttpAPIFactoryImpl implements NetworkAPIFactory {
 
     private NetworkHttpAPIFactoryImpl() {
 
+    }
+
+    @Override
+    public UserAPI getUserAPI() {
+        return null;
+    }
+
+    @Override
+    public DealAPI getDealAPI() {
+        return null;
     }
 
     @Override
@@ -30,10 +42,10 @@ public class NetworkHttpAPIFactoryImpl implements NetworkAPIFactory {
     public NetworkAPIConfig getConfig() {
         return config;
     }
-
-    @Override
-    public SocializeAPI getSocializeAPI() {
-        return socializeAPI;
-    }
+//
+//    @Override
+//    public SocializeAPI getSocializeAPI() {
+//        return socializeAPI;
+//    }
 
 }

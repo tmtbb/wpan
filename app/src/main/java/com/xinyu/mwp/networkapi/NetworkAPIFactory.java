@@ -5,6 +5,18 @@ public interface NetworkAPIFactory {
 
     NetworkAPIConfig getConfig();
 
-    SocializeAPI getSocializeAPI();
+//    SocializeAPI getSocializeAPI();
+
+    /**
+     * 用户相关接口
+     * @return
+     */
+    UserAPI getUserAPI();
+
+    /**
+     * 交易 行情相关接口
+     * @return
+     */
+    DealAPI getDealAPI();
 
 }
