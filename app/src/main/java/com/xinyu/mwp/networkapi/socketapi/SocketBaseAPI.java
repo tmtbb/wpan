@@ -1,5 +1,8 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BaseEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -30,18 +33,36 @@ public class SocketBaseAPI {
         SocketAPIRequestManage.getInstance().startJsonRequest(socketDataPacket, new OnAPIListener<SocketAPIResponse>() {
             @Override
             public void onError(Throwable ex) {
-                if( listener != null ) {
-                    listener.onError(ex);
-                }
+                SocketBaseAPI.this.onError(listener,ex);
             }
 
             @Override
             public void onSuccess(SocketAPIResponse socketAPIResponse) {
-                if( listener != null ) {
-                    listener.onSuccess(socketAPIResponse.jsonObject());
-                }
+                SocketBaseAPI.this.onSuccess(listener,socketAPIResponse.jsonObject());
             }
         });
+    }
+
+    protected void onError(final OnAPIListener listener, final Throwable ex) {
+        if( listener != null ) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onError(ex);
+                }
+            });
+        }
+    }
+
+    protected void onSuccess(final OnAPIListener listener, final Object object) {
+        if( listener != null ) {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onSuccess(object);
+                }
+            });
+        }
     }
 
     /**
@@ -54,16 +75,15 @@ public class SocketBaseAPI {
         SocketAPIRequestManage.getInstance().startJsonRequest(socketDataPacket, new OnAPIListener<SocketAPIResponse>() {
             @Override
             public void onError(Throwable ex) {
-                if( listener != null ) {
-                    listener.onError(ex);
-                }
+                SocketBaseAPI.this.onError(listener,ex);
             }
 
             @Override
             public void onSuccess(SocketAPIResponse socketAPIResponse) {
                 if( listener != null ) {
                     Object object = JSONEntityUtil.JSONToEntity(cls,socketAPIResponse.jsonObject());
-                    listener.onSuccess(object);
+                    SocketBaseAPI.this.onSuccess(listener,object);
+
                 }
             }
         });
@@ -80,9 +100,7 @@ public class SocketBaseAPI {
         SocketAPIRequestManage.getInstance().startJsonRequest(socketDataPacket, new OnAPIListener<SocketAPIResponse>() {
             @Override
             public void onError(Throwable ex) {
-                if( listener != null ) {
-                    listener.onError(ex);
-                }
+                SocketBaseAPI.this.onError(listener,ex);
             }
 
             @Override
@@ -91,7 +109,7 @@ public class SocketBaseAPI {
                     try {
                         JSONArray jsonArray = socketAPIResponse.jsonObject().getJSONArray(listName);
                         List<BaseEntity> list = (List<BaseEntity>) JSONEntityUtil.JSONToEntitys(cls,jsonArray);
-                        listener.onSuccess(list);
+                        SocketBaseAPI.this.onSuccess(listener,list);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         onError(e);
