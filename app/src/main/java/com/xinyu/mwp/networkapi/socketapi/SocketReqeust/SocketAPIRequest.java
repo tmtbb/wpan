@@ -19,7 +19,7 @@ public class SocketAPIRequest {
     }
 
     public boolean isReqeustTimeout() {
-        return  (new Date().getTime() -  timestamp) > SocketAPIFactoryImpl.getInstance().getConfig().getSocketTimeout() * 1000;
+        return  (new Date().getTime() -  timestamp) > SocketAPIFactoryImpl.getInstance().getConfig().getSocketTimeout();
     }
 
 

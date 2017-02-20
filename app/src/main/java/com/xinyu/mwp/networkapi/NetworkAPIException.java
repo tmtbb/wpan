@@ -3,7 +3,7 @@ package com.xinyu.mwp.networkapi;
 
 public class NetworkAPIException extends Exception {
 
-    public static final int INITCONFIG_ERROR = 1000;
+    public static final int INITCONFIG_ERROR = 100000;
     public static final int TOKEN_ERROR = INITCONFIG_ERROR + 1;
     public static final int NOTNETWORK_ERROR = TOKEN_ERROR + 1;
     public static final int NETWORK_ERROR = NOTNETWORK_ERROR + 1;
@@ -11,9 +11,10 @@ public class NetworkAPIException extends Exception {
     public static final int JSON_ERROR = SYSTEM_ERROR + 1;
     public static final int HINT_ERROR = JSON_ERROR + 1;
     public static final int CREATE_UNION_ERROR = HINT_ERROR + 1;
+    public static final int SOCKET_REQEUST_TIMEOUT = CREATE_UNION_ERROR + 1;
     public static final int SERVER_ERROR = -1;
     private int errorCode;
-    private static boolean Debug = false;
+    private static boolean Debug = true;
 
     public NetworkAPIException(int errorCode, String detailMessage) {
         super(detailMessage);
@@ -60,6 +61,14 @@ public class NetworkAPIException extends Exception {
                 case NetworkAPIException.SERVER_ERROR:
                     if (!Debug) {
                         message = "服务器异常，请稍后再试!";
+                        break;
+                    }
+                case NetworkAPIException.SOCKET_REQEUST_TIMEOUT:
+                    message = "timeout!";
+                    break;
+                case NetworkAPIException.JSON_ERROR:
+                    if (!Debug) {
+                        message = "JSON解析失败!";
                         break;
                     }
 

@@ -1,5 +1,7 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
+import com.xinyu.mwp.networkapi.NetworkAPIException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +34,7 @@ public class SocketAPIResponse {
         jsonObject();
         try {
             if( jsonObject == null ) {
-                return -11012;
+                return NetworkAPIException.JSON_ERROR;
             }
             else if( ! jsonObject.isNull("errorCode") ) {
                 return jsonObject.getInt("errorCode");

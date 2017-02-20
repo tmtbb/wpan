@@ -1,9 +1,14 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
 
+import android.os.Handler;
+
 import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIException;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by yaowang on 2017/2/20.
@@ -14,6 +19,36 @@ public class SocketAPIRequestManage {
     private static SocketAPIRequestManage socketAPIRequestManage = null;
     private HashMap<Long, SocketAPIRequest> socketAPIRequestHashMap = new HashMap<Long, SocketAPIRequest>();
     private long sessionId = 10000;
+    private Handler handler = new Handler();
+    private  Runnable runnable = new Runnable(){
+        @Override
+        public void run() {
+            checkReqeustTimeout();
+            handler.postDelayed(this, 1000);
+        }
+    };
+
+    public static synchronized SocketAPIRequestManage getInstance() {
+        if (socketAPIRequestManage == null) {
+            socketAPIRequestManage = new SocketAPIRequestManage();
+        }
+        return socketAPIRequestManage;
+    }
+
+
+
+
+    public void start() {
+        stop();
+        SocketAPINettyBootstrap.getInstance().connect();
+        handler.postDelayed(runnable, 1000);// 打开定时器，执行操作
+    }
+
+
+    public void  stop() {
+        handler.removeCallbacks(runnable);// 关闭定时器处理
+        SocketAPINettyBootstrap.getInstance().closeChannel();
+    }
 
     private synchronized long getSessionId() {
         if (sessionId > 2000000000) {
@@ -21,13 +56,6 @@ public class SocketAPIRequestManage {
         }
         sessionId += 1;
         return sessionId;
-    }
-
-    public static synchronized SocketAPIRequestManage getInstance() {
-        if (socketAPIRequestManage == null) {
-            socketAPIRequestManage = new SocketAPIRequestManage();
-        }
-        return socketAPIRequestManage;
     }
 
     public synchronized void  notifyResponsePacket(SocketDataPacket socketDataPacket) {
@@ -56,6 +84,18 @@ public class SocketAPIRequestManage {
             socketDataPacket.setTimestamp((int)(socketAPIRequest.getTimestamp()/1000));
             socketAPIRequestHashMap.put(sessionId, socketAPIRequest);
             SocketAPINettyBootstrap.getInstance().writeAndFlush(socketDataPacket);
+        }
+    }
+
+    private synchronized void checkReqeustTimeout() {
+        for (HashMap.Entry<Long, SocketAPIRequest> entry : socketAPIRequestHashMap.entrySet()) {
+
+            if( entry.getValue().isReqeustTimeout() ) {
+                socketAPIRequestHashMap.remove(entry.getKey());
+                entry.getValue().onErrorCode(NetworkAPIException.SOCKET_REQEUST_TIMEOUT);
+                break;
+            }
+
         }
     }
 }
