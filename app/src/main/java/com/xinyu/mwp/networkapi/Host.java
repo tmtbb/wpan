@@ -60,7 +60,7 @@ public enum Host {
     }
 
     public static short getSocketServerPort() {
-        return (short)160001;
+        return (short)16001;
     }
 
 }
