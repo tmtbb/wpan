@@ -5,6 +5,7 @@ import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.UserAPI;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
 
 /**
  * Created by yaowang on 2017/2/20.
@@ -26,7 +27,7 @@ public class SocketAPIFactoryImpl implements NetworkAPIFactory {
     @Override
     public void initConfig(NetworkAPIConfig config) {
         this.config = config;
-        SocketAPINettyBootstrap.getInstance().connect();
+        SocketAPIRequestManage.getInstance().start();
     }
 
     @Override

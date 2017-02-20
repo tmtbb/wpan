@@ -17,7 +17,7 @@ public class NetworkAPIConfig {
     public NetworkAPIConfig() {
         config.put(UserIdKey,0);
         config.put(UserTokenKey,"");
-        config.put(SocketTimeoutKey,10000);
+        config.put(SocketTimeoutKey,5000);
     }
 
 
