@@ -36,7 +36,7 @@ public class SocketAPINettyBootstrap {
 
 
     public void writeAndFlush(Object object) {
-        if( object != null && isOpen() ) {
+        if( object != null && socketChannel != null ) {
             socketChannel.writeAndFlush(object);
         }
     }
@@ -100,7 +100,7 @@ public class SocketAPINettyBootstrap {
      */
     public boolean isOpen() {
         if (socketChannel != null) {
-            System.out.println(socketChannel.isOpen());
+            System.out.println(" isOpen " + socketChannel.isOpen());
             return socketChannel.isOpen();
         }
         return false;
