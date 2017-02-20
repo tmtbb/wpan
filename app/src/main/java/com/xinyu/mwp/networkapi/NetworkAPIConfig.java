@@ -2,41 +2,80 @@ package com.xinyu.mwp.networkapi;
 
 import android.content.Context;
 
+import java.util.HashMap;
+
 public class NetworkAPIConfig {
-    private Context context;
-    private String userToken;
-    private int timeout = 10000;
-    private int upfileloadTimeout = 60000;
+    public static String ContextKey = "ConfigContextKey";
+    public static String UserIdKey = "ConfigUserIdKey";
+    public static String UserTokenKey = "ConfigUserTokenKey";
+    public static String SocketTimeoutKey = "ConfigSocketTimeoutKey";
+    public static String SocketServerIpKey = "ConfigSocketServerIpKey";
+    public static String SocketServerPortKey = "ConfigSocketServerPortKey";
+    private HashMap<String,Object> config =  new HashMap<String,Object>();
 
-    public int getTimeout() {
-        return timeout;
+
+    public NetworkAPIConfig() {
+        config.put(UserIdKey,0);
+        config.put(UserTokenKey,"");
+        config.put(SocketTimeoutKey,10000);
     }
 
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
+
+    public void putConfig(String key,Object value) {
+        config.put(key,value);
     }
+
+    public <T> T getConfig(String key) {
+        return (T)config.get(key);
+    }
+
+
+    public void setSocketTimeout(int timeout) {
+        config.put(SocketTimeoutKey,timeout);
+    }
+
+    public int getSocketTimeout() {
+        return getConfig(SocketTimeoutKey);
+    }
+
 
     public Context getContext() {
-        return context;
+        return  getConfig(ContextKey);
     }
 
     public void setContext(Context context) {
-        this.context = context;
+        config.put(ContextKey,context);
     }
 
     public String getUserToken() {
-        return userToken;
+       return getConfig(UserTokenKey);
     }
 
     public void setUserToken(String userToken) {
-        this.userToken = userToken;
+        config.put(UserTokenKey,userToken);
+
     }
 
-    public void setUpfileloadTimeout(int upfileloadTimeout) {
-        this.upfileloadTimeout = upfileloadTimeout;
+    public int getUserId() {
+        return getConfig(UserIdKey);
     }
 
-    public int getUpfileloadTimeout() {
-        return upfileloadTimeout;
+    public void setUserId(int userId) {
+        config.put(UserIdKey,userId);
+    }
+
+    public void setSocketServerIp(String serverIp) {
+        config.put(SocketServerIpKey,serverIp);
+    }
+
+    public void setSocketServerPort(short port) {
+        config.put(SocketServerPortKey,port);
+    }
+
+    public String getSocketServerIp() {
+        return getConfig(SocketServerIpKey);
+    }
+    public short getSocketServerPort() {
+        return getConfig(SocketServerPortKey);
     }
 }

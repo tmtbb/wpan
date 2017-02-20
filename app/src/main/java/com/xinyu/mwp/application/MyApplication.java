@@ -41,8 +41,8 @@ public class MyApplication extends Application implements OnUserUpdateListener {
     private void initNetworkAPIConfig() {
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
         networkAPIConfig.setContext(getApplicationContext());
-        networkAPIConfig.setTimeout(15000);//15秒
-        networkAPIConfig.setUpfileloadTimeout(120000);//2分钟
+        networkAPIConfig.setSocketServerIp("61.147.114.87");
+        networkAPIConfig.setSocketServerPort((short) 16001);
         NetworkAPIFactoryImpl.initConfig(networkAPIConfig);
         x.Ext.init(this);
         x.Ext.setDebug(true);

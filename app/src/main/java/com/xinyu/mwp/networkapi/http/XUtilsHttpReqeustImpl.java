@@ -115,8 +115,8 @@ public class XUtilsHttpReqeustImpl extends BaseReqeustAbstract {
                                HashMap<String, Object> map,
                                OnSuccessListener<?> onSuccessListener,
                                OnErrorListener onErrorListener, OnProgressListener onProgressListener) {
-        int timeout = isUpfileload(map) ? NetworkHttpAPIFactoryImpl.getInstance().getConfig().getUpfileloadTimeout()
-                : NetworkHttpAPIFactoryImpl.getInstance().getConfig().getTimeout();
+        int timeout = isUpfileload(map) ? 100000
+                : 10000;
         JsonRequestCallBack jsonRequestCallBack = new JsonRequestCallBack();
         jsonRequestCallBack.setOnErrorListener(onErrorListener);
         jsonRequestCallBack.setOnSuccessListener(onSuccessListener);
@@ -217,7 +217,7 @@ public class XUtilsHttpReqeustImpl extends BaseReqeustAbstract {
 
 
     protected void getRequest(String url, HashMap<String, String> map, final OnAPIListener<JSONObject> listener) {
-        int timeout = NetworkHttpAPIFactoryImpl.getInstance().getConfig().getTimeout();
+        int timeout = 10000;//NetworkHttpAPIFactoryImpl.getInstance().getConfig().getTimeout();
         RequestParams requestParams = mapToGetRequestParams(url, map);
         requestParams.setConnectTimeout(timeout);
         x.http().get(requestParams, new Callback.CommonCallback<String>() {

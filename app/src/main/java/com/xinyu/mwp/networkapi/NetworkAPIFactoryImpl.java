@@ -1,15 +1,16 @@
 package com.xinyu.mwp.networkapi;
 
 
-import com.xinyu.mwp.networkapi.http.NetworkHttpAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
 
-public class NetworkAPIFactoryImpl {
+public class NetworkAPIFactoryImpl  {
     private static NetworkAPIFactory networkAPIFactory = null;
 
 
     static {
-        networkAPIFactory = NetworkHttpAPIFactoryImpl.getInstance();
+        networkAPIFactory = SocketAPIFactoryImpl.getInstance();
     }
+
 
 
     public static void initConfig(NetworkAPIConfig config) {
@@ -20,8 +21,12 @@ public class NetworkAPIFactoryImpl {
         return networkAPIFactory.getConfig();
     }
 
-    public static SocializeAPI getSocializeAPI() {
-        return networkAPIFactory.getSocializeAPI();
+    public static UserAPI getUserAPI() {
+        return networkAPIFactory.getUserAPI();
     }
 
+
+    public static DealAPI getDealAPI() {
+        return networkAPIFactory.getDealAPI();
+    }
 }
