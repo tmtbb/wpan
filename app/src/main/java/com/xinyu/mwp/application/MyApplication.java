@@ -10,6 +10,7 @@ import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGener
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.OnUserUpdateListener;
@@ -41,8 +42,8 @@ public class MyApplication extends Application implements OnUserUpdateListener {
     private void initNetworkAPIConfig() {
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
         networkAPIConfig.setContext(getApplicationContext());
-        networkAPIConfig.setSocketServerIp("61.147.114.87");
-        networkAPIConfig.setSocketServerPort((short) 16001);
+        networkAPIConfig.setSocketServerIp(Host.getSocketServerIp());
+        networkAPIConfig.setSocketServerPort(Host.getSocketServerPort());
         NetworkAPIFactoryImpl.initConfig(networkAPIConfig);
         x.Ext.init(this);
         x.Ext.setDebug(true);
