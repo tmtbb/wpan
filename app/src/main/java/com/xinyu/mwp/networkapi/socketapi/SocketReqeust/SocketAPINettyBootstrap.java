@@ -28,7 +28,7 @@ public class SocketAPINettyBootstrap {
 
 
     private SocketChannel socketChannel;
-    private static final EventExecutorGroup group = new DefaultEventExecutorGroup(20);
+//    private static final EventExecutorGroup group = new DefaultEventExecutorGroup(20);
 
     public static SocketAPINettyBootstrap getInstance() {
         return bootstrap;
@@ -36,7 +36,7 @@ public class SocketAPINettyBootstrap {
 
 
     public void writeAndFlush(Object object) {
-        if( object != null ) {
+        if( object != null && isOpen() ) {
             socketChannel.writeAndFlush(object);
         }
     }

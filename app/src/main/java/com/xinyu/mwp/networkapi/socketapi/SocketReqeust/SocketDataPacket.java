@@ -137,7 +137,7 @@ public class SocketDataPacket implements Serializable {
         this.dataBody = dataBody;
     }
 
-    public void writeSerializable(OutputStream outputStream) throws IOException {
+    public boolean writeSerializable(OutputStream outputStream) throws IOException {
         ByteBuffer byteBuffer = ByteBuffer.allocate(26);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         byteBuffer.putShort(packetLength);
@@ -151,9 +151,10 @@ public class SocketDataPacket implements Serializable {
         byteBuffer.putInt(requestId);
         outputStream.write(byteBuffer.array());
         outputStream.write(dataBody);
+        return true;
     }
 
-    public void readSerializable(ByteBufInputStream in) throws IOException {
+    public boolean readSerializable(ByteBufInputStream in) throws IOException {
         packetLength = in.readShort();
         isZipEncrypt = in.readByte();
         type = in.readByte();
@@ -163,7 +164,11 @@ public class SocketDataPacket implements Serializable {
         timestamp = in.readInt();
         sessionId = in.readLong();
         requestId = in.readInt();
+        if( dataLength > packetLength - 26  ) {
+            return false;
+        }
         dataBody = new byte[dataLength];
         in.read(dataBody);
+        return true;
     }
 }

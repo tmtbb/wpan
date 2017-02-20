@@ -46,10 +46,15 @@ public class SocketAPIDecoder extends ByteToMessageDecoder {
             return null;
         }
         readerIndex = in.readerIndex();
+
         ByteBuf byteBuf = in.order(ByteOrder.LITTLE_ENDIAN);
-        SocketDataPacket socketDataPacket = new SocketDataPacket();
-        ByteBufInputStream inputStream = new ByteBufInputStream(byteBuf);
-        socketDataPacket.readSerializable(inputStream);
+        SocketDataPacket socketDataPacket = null;
+        if( frameLength - 26 == byteBuf.getUnsignedShort(readerIndex + 8) )
+        {
+            socketDataPacket = new SocketDataPacket();
+            ByteBufInputStream inputStream = new ByteBufInputStream(byteBuf);
+            socketDataPacket.readSerializable(inputStream);
+        }
         in.readerIndex(readerIndex + frameLength);
 
         return socketDataPacket;
