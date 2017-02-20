@@ -34,7 +34,7 @@ public class SocketAPIResponse {
             if( jsonObject == null ) {
                 return -11012;
             }
-            else if( jsonObject.isNull("errorCode") ) {
+            else if( ! jsonObject.isNull("errorCode") ) {
                 return jsonObject.getInt("errorCode");
             }
         } catch (JSONException e) {

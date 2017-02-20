@@ -1,5 +1,6 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
+import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BaseEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
@@ -10,6 +11,8 @@ import com.xinyu.mwp.util.JSONEntityUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,5 +99,15 @@ public class SocketBaseAPI {
                 }
             }
         });
+    }
+
+    protected SocketDataPacket socketDataPacket(short operateCode,byte type,HashMap<String,Object> map) {
+        SocketDataPacket socketDataPacket = null;
+        try {
+            socketDataPacket = new SocketDataPacket(operateCode, type,map);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return socketDataPacket;
     }
 }

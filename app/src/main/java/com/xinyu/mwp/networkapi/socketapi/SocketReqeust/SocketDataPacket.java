@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.HashMap;
 
 import io.netty.buffer.ByteBufInputStream;
 
@@ -37,6 +38,7 @@ public class SocketDataPacket implements Serializable {
     public SocketDataPacket(short operateCode,byte type,byte[] dataBody){
         this.operateCode = operateCode;
         this.dataBody = dataBody;
+        this.type = type;
         this.packetLength = (short)(26 + dataBody.length);
         this.dataLength = (short)dataBody.length;
     }
@@ -48,6 +50,12 @@ public class SocketDataPacket implements Serializable {
     public SocketDataPacket(short operateCode,byte type,JSONObject jsonObject) throws UnsupportedEncodingException {
         this(operateCode,type,jsonObject.toString());
     }
+
+
+    public SocketDataPacket(short operateCode,byte type,HashMap<String,Object> map) throws UnsupportedEncodingException {
+       this(operateCode,type,new JSONObject(map));
+    }
+
 
     public Short getPacketLength() {
         return packetLength;

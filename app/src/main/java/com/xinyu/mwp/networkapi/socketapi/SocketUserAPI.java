@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 /**
  * Created by yaowang on 2017/2/20.
@@ -18,20 +19,13 @@ import java.io.UnsupportedEncodingException;
 public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     @Override
     public void login(String phone, String password, OnAPIListener<LoginReturnEntity> listener) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("phone",phone);
-            jsonObject.put("pwd",password);
-            jsonObject.put("source",2);
-            SocketDataPacket socketDataPacket = new SocketDataPacket(SocketAPIConstant.OperateCode.Login,
-                    SocketAPIConstant.ReqeutType.User,jsonObject);
-            requestEntity(socketDataPacket,LoginReturnEntity.class,listener);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("phone",phone);
+        map.put("pwd",password);
+        map.put("source",2);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Login,
+                    SocketAPIConstant.ReqeutType.User,map);
+        requestEntity(socketDataPacket,LoginReturnEntity.class,listener);
     }
 }
