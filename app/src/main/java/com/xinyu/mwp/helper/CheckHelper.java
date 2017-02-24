@@ -1,6 +1,7 @@
 package com.xinyu.mwp.helper;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
@@ -31,6 +32,8 @@ public class CheckHelper {
     private static final String ERROR_MOBILE2 = "两次手机号码不一致";
     private static final String ERROR_PWD2 = "两次密码输入不一致";
     private static final String ERROR_NUM2 = "两次号码不一致";
+    private static final String EMPEY_VERIFY_CODE = "短信验证码不能为空";
+    private static final String LENGTH_MAX_VERIFY = "验证码不能大于10个字符";
 
     public boolean checkUsername(String username, CheckException exception) {
         if (exception == null) {
@@ -48,7 +51,7 @@ public class CheckHelper {
             exception = new CheckException();
         }
 
-        if (password.length() < 6) {
+        if (password.length() < 1) {  //临时修改
             exception.setErrorMsg(LENGTH_MIN_PASSWORD);
             return false;
         } else if (password.length() > 16) {
@@ -170,5 +173,18 @@ public class CheckHelper {
         }
     }
 
+    public boolean checkVerifyCode(String verifycode, CheckException exception) {
+        if (exception == null) {
+            exception = new CheckException();
+        }
 
+        if (TextUtils.isEmpty(verifycode)) {
+            exception.setErrorMsg(EMPEY_VERIFY_CODE);
+            return false;
+        } else if (verifycode.length() > 8) {
+            exception.setErrorMsg(LENGTH_MAX_VERIFY);
+            return false;
+        }
+        return true;
+    }
 }

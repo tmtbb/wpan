@@ -7,7 +7,10 @@ import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -57,6 +60,7 @@ import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.DealProductPageEntity;
 
 import com.xinyu.mwp.entity.Model;
+import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.StockListBean;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
@@ -102,6 +106,25 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private RelativeLayout mViewPagerContainer;
     private int halfScreenWidth;
 
+
+    private static Bundle bundle;
+    private List<List<ProductEntity>> productLists;
+
+    public static DealProductPageFragment newInstance(List<List<ProductEntity>> products) {
+        DealProductPageFragment newFragment = new DealProductPageFragment();
+        Message msg = new Message();
+        bundle = new Bundle();
+        List list = new ArrayList();
+        list.add(products);
+        bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) list);
+        msg.setData(bundle);
+        new Handler().sendMessage(msg);
+        return newFragment;
+    }
+
+    public DealProductPageFragment() {
+    }
+
     @Override
     protected int getLayoutID() {
         return R.layout.ly_listview;
@@ -112,24 +135,27 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         return adapter = new DealProductPageAdapter(context);
     }
 
-    protected void setData(String title) {
-        LogUtil.d("得到的:" + title);
+    protected void setData(int position) {
+        mUnitViewList = productLists.get(position);
+        initViewPager();
         // new DealProductPageAdapter(context).notifyDataSetChanged();
         listView.setSelection(0); //自动跳转到顶部
     }
 
-    private List<View> mViewList = new ArrayList<>();
+    private List<ProductEntity> mUnitViewList = new ArrayList<>();
+
 
     @Override
     protected void initView() {
         super.initView();
-        View view;
-        for (int i = 0; i < 10; i++) {
-            view = LayoutInflater.from(context).inflate(R.layout.ll_trade_time_type, null);
-            TextView tv = (TextView) view.findViewById(R.id.tv_trade_min60);
-            tv.setText(i + "分时");
-            mViewList.add(view);
+        ArrayList list = bundle.getParcelableArrayList("list");
+        productLists = (List<List<ProductEntity>>) list.get(0);  //获取传过来的集合
+
+        LogUtil.d("list集合长度是:" + list.size() + "productLists长度是:" + productLists.size());
+        if (productLists != null) {
+            mUnitViewList = productLists.get(0);
         }
+        LogUtil.d("加载unit集合的,长度为" + mUnitViewList.size() + "productLists长度是:" + productLists.size());
 
         View headView = LayoutInflater.from(context).inflate(R.layout.ly_tab_deal_order_head, null);
 
@@ -176,7 +202,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         //设置ViewPager切换效果
         mViewPager.setPageTransformer(true, new MyTransformation());
         //为ViewPager设置PagerAdapter
-        mViewPager.setAdapter(new LoopPagerAdapter(mViewList));
+        mViewPager.setAdapter(new LoopPagerAdapter(context, mUnitViewList));
 
         //设置每页之间的左右间隔
         mViewPager.setPageMargin(0);

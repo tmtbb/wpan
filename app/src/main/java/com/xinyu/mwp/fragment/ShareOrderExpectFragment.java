@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.fragment.base.BaseFragment;
+import com.xinyu.mwp.view.banner.IndexBannerView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -29,6 +30,7 @@ public class ShareOrderExpectFragment extends BaseFragment {
     ImageButton leftImage;
     @ViewInject(R.id.titleText)
     TextView titleText;
+
 
     @Override
     protected int getLayoutID() {

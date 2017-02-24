@@ -3,14 +3,13 @@ package com.xinyu.mwp.networkapi;
 
 import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
 
-public class NetworkAPIFactoryImpl  {
+public class NetworkAPIFactoryImpl {
     private static NetworkAPIFactory networkAPIFactory = null;
 
 
     static {
         networkAPIFactory = SocketAPIFactoryImpl.getInstance();
     }
-
 
 
     public static void initConfig(NetworkAPIConfig config) {
@@ -29,4 +28,5 @@ public class NetworkAPIFactoryImpl  {
     public static DealAPI getDealAPI() {
         return networkAPIFactory.getDealAPI();
     }
+
 }

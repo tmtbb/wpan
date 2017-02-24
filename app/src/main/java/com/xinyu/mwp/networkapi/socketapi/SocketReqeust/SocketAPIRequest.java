@@ -3,6 +3,7 @@ package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIException;
 import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
+import com.xinyu.mwp.util.LogUtil;
 
 import java.util.Date;
 
@@ -45,7 +46,7 @@ public class SocketAPIRequest {
 
 
     public void  onErrorCode(int errorCode) {
-
+        LogUtil.d("-------------------------errorCode:"+errorCode);
         onError(new NetworkAPIException(errorCode,"error"));
     }
 

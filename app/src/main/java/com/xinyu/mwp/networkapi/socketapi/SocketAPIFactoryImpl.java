@@ -4,7 +4,6 @@ import com.xinyu.mwp.networkapi.DealAPI;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.UserAPI;
-import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
 
 /**
@@ -44,4 +43,5 @@ public class SocketAPIFactoryImpl implements NetworkAPIFactory {
     public DealAPI getDealAPI() {
         return new SocketDealAPI();
     }
+
 }
