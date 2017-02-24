@@ -7,16 +7,25 @@ package com.xinyu.mwp.constant;
 public interface SocketAPIConstant {
 
     interface ReqeutType {
-        byte Error  = 0;
-        byte User   = 3;
-        byte Time   = 4;
-        byte Deal   = 5;
+        byte Error = 0;
+        byte User = 3;
+        byte Time = 4;
+        byte Deal = 5;
+        byte Verify = 1;
+
     }
 
     interface OperateCode {
         Short Login = 3003;
-
-
         Short Products = 5001;
+        Short VerifyCode = 1029;
+        Short Register = 3001;
+        Short DealPwd = 3005;
+        Short Test = 3000;
+        Short ProductList = 5005;
+        Short TimeLine = 4003;
+        Short CurrentPrice = 4001;
+        Short KChart = 4005;
+
     }
 }

@@ -7,7 +7,6 @@ import android.net.Uri;
 
 import com.xinyu.mwp.activity.ChooseUploadImgsActivity;
 import com.xinyu.mwp.activity.LoginActivity;
-import com.xinyu.mwp.activity.LoginSuccessActivity;
 import com.xinyu.mwp.activity.RegisterActivity;
 import com.xinyu.mwp.activity.ResetDealPwdActivity;
 import com.xinyu.mwp.activity.ResetUserPwdActivity;
@@ -51,10 +50,9 @@ public class ActivityUtil {
         next(context, ResetDealPwdActivity.class);
     }
 
-
-    public static void nextLoginSuccess(Context context) {
-        next(context, LoginSuccessActivity.class);
-    }
+//    public static void nextLoginSuccess(Context context) {
+//        next(context, LoginSuccessActivity.class);
+//    }
 
     public static void nextImageCropForResult(Activity activity, String imagePath) {
         Intent intent = new Intent();

@@ -133,10 +133,10 @@
             android:name=".activity.ResetDealPwdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.LoginSuccessActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
-            android:screenOrientation="portrait" />
+        <!--<activity-->
+            <!--android:name=".activity.LoginSuccessActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize|fontScale"-->
+            <!--android:screenOrientation="portrait" />-->
         <activity
             android:name=".activity.PositionHistoryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"

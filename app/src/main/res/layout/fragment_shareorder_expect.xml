@@ -12,4 +12,5 @@
         android:text="敬请期待!"
         android:textColor="@color/default_main_color"
         android:textSize="@dimen/fontSize_20sp" />
+
 </RelativeLayout>

@@ -1,19 +1,33 @@
 package com.xinyu.mwp.activity;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.entity.LoginReturnEntity;
+import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.ActivityUtil;
+import com.xinyu.mwp.util.CountUtil;
+import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.StringUtil;
+import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
+import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
 
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.List;
 
 /**
  * @author : created by chuangWu
@@ -31,8 +45,8 @@ public class RegisterActivity extends BaseControllerActivity {
     private WPEditText phoneEditText;
     @ViewInject(R.id.msgEditText)
     private WPEditText msgEditText;
-    @ViewInject(R.id.soundEditText)
-    private WPEditText soundEditText;
+    //    @ViewInject(R.id.soundEditText)
+//    private WPEditText soundEditText;
     @ViewInject(R.id.pwdEditText)
     private WPEditText pwdEditText;
     @ViewInject(R.id.nextButton)
@@ -49,21 +63,34 @@ public class RegisterActivity extends BaseControllerActivity {
         super.initView();
         setTitle("注册");
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, soundEditText, pwdEditText);
+        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
-        checkHelper.checkVerificationCode(soundEditText.getRightText(), phoneEditText);
+        // checkHelper.checkVerificationCode(soundEditText.getRightText(), phoneEditText);
     }
 
     @Override
     protected void initListener() {
         super.initListener();
+
+        msgEditText.getRightText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
+                int verifyType = 0;// 0-注册 1-登录 2-更新服务
+                VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText);
+            }
+        });
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showLoader("正在注册...");
+                LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
                 CheckException exception = new CheckException();
                 if (checkHelper.checkMobile(phoneEditText.getEditTextString(), exception)
-                        && checkHelper.checkPassword(pwdEditText.getEditTextString(), exception)) {
+                        && checkHelper.checkPassword(pwdEditText.getEditTextString(), exception)
+                        && checkHelper.checkVerifyCode(msgEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(v);
+                    register(phoneEditText.getEditTextString(), pwdEditText.getEditTextString(), msgEditText.getEditTextString());
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -73,6 +100,21 @@ public class RegisterActivity extends BaseControllerActivity {
                 } else {
                     showToast(exception.getErrorMsg());
                 }
+            }
+        });
+    }
+
+    private void register(String editTextString, String textString, String vCode) {
+        NetworkAPIFactoryImpl.getUserAPI().register(editTextString, textString, vCode, new OnAPIListener<LoginReturnEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(LoginReturnEntity loginReturnEntity) {
+                LogUtil.d("注册请求网络成功" + loginReturnEntity.toString());
+
             }
         });
     }

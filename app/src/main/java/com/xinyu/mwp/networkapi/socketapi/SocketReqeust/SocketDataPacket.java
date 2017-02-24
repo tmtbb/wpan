@@ -1,5 +1,7 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
+import com.xinyu.mwp.util.LogUtil;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -44,7 +46,9 @@ public class SocketDataPacket implements Serializable {
     }
 
     public SocketDataPacket(short operateCode,byte type,String jsonBody) throws UnsupportedEncodingException {
+
         this(operateCode,type,jsonBody.getBytes("UTF-8"));
+        LogUtil.d("jsonBody:"+jsonBody);
     }
 
     public SocketDataPacket(short operateCode,byte type,JSONObject jsonObject) throws UnsupportedEncodingException {

@@ -96,6 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_19"
+                android:visibility="gone"
                 app:edit_hint="请输入语音验证码"
                 app:edit_right_text="获取语音验证码"
                 app:edit_show_eye="false"
