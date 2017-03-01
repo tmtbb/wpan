@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_76">
+    android:layout_height="@dimen/dp_76"
+
+  >
 
     <TextView
+        android:layout_marginTop="@dimen/dp_20"
         android:id="@+id/tv_product_history_name"
         style="@style/style_trade_product_name"
         android:layout_marginLeft="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_22"
-        android:text="上海-法兰克福五分时" />
+        android:text="上海-法兰xxxxxxxxxxx分时" />
+
+    <ImageView
+        android:id="@+id/iv_history_loss"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
+        android:layout_alignTop="@id/tv_product_history_name"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_toRightOf="@id/tv_product_history_name"
+        android:src="@mipmap/icon_loss"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/iv_history_profit"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"
+        android:layout_alignTop="@id/tv_product_history_name"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_toRightOf="@id/tv_product_history_name"
+        android:src="@mipmap/icon_profit"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_history_time"
@@ -17,23 +39,24 @@
         android:layout_alignLeft="@id/tv_product_history_name"
         android:layout_below="@id/tv_product_history_name"
         android:layout_marginTop="@dimen/dp_10"
-        android:text="2016.12.25 12:24:24"
+        android:text="xxxx.xx.xx xx:xx:xx"
         android:textColor="@color/color_666666"
-        android:textSize="@dimen/fontSize_11sp" />
+        android:textSize="@dimen/fontSize_11sp"
+        android:layout_marginBottom="@dimen/dp_20"/>
 
 
     <TextView
+        android:layout_alignTop="@id/tv_product_history_name"
         android:id="@+id/tv_trade_history_turnover"
         style="@style/style_trade_product_name"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/dp_15"
-        android:text=" ¥ 85"
+        android:text=" ¥ --"
         android:textColor="@color/default_red" />
 
     <TextView
+        android:layout_alignTop="@id/tv_product_history_name"
         style="@style/style_trade_product_name"
-        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/tv_trade_history_turnover"
         android:text="成交额" />
 </RelativeLayout>

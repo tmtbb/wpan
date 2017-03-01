@@ -71,9 +71,11 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
                 CheckException exception = new CheckException();
                 if (checkHelper.checkPassword(pwdEditText1.getEditTextString(), exception)
                         && checkHelper.checkPassword2(pwdEditText1.getEditTextString(), pwdEditText2.getEditTextString(), exception)) {
-                    String pwd = SHA256Util.sha256(pwdEditText2.getEditTextString());
+                   // String pwd = SHA256Util.sha256(pwdEditText2.getEditTextString());
+                    String pwd = SHA256Util.shaEncrypt(pwdEditText2.getEditTextString()+"t1@s#df!");
+                    String newPwd = SHA256Util.shaEncrypt(pwd+new UserinfoEntity().getMemberId());
                     Utils.closeSoftKeyboard(v);
-                   resetDealPwd(pwd);
+                   resetDealPwd(newPwd);
                     showLoader("提交中...");
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -100,7 +102,7 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
 
             @Override
             public void onSuccess(Object object) {
-                LogUtil.d("请求数据成功,设置交易密码,返回的数据为:"+object.toString());
+                LogUtil.d("请求数据成功,交易密码,返回的数据为:"+object.toString());
             }
         });
     }

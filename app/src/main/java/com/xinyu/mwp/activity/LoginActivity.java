@@ -1,22 +1,18 @@
 package com.xinyu.mwp.activity;
 
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
+
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
-import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.entity.LoginReturnEntity;
-import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
-import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
@@ -27,7 +23,6 @@ import com.xinyu.mwp.view.WPEditText;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.util.List;
 
 /**
  * @author : created by chuangWu
@@ -79,23 +74,25 @@ public class LoginActivity extends BaseControllerActivity {
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(view);
-                    String pwd = SHA256Util.sha256(passwordEditText.getEditTextString());
+                    String pwd = SHA256Util.shaEncrypt(passwordEditText.getEditTextString() + "t1@s#df!");
+                    String newPwd = SHA256Util.shaEncrypt(pwd + userNameEditText.getEditTextString());
+                    LogUtil.d("加密后的密码:" + newPwd + ",原有密码:" + pwd);
                     NetworkAPIFactoryImpl.getUserAPI().login(userNameEditText.getEditTextString(), pwd, null,
                             new OnAPIListener<LoginReturnEntity>() {
-                        @Override
-                        public void onError(Throwable ex) {
-                            ex.printStackTrace();
-                            closeLoader();
-                            ToastUtils.show(context, "登录失败");
-                        }
+                                @Override
+                                public void onError(Throwable ex) {
+                                    ex.printStackTrace();
+                                    closeLoader();
+                                    ToastUtils.show(context, "登录失败");
+                                }
 
-                        @Override
-                        public void onSuccess(LoginReturnEntity loginReturnEntity) {
-                            LogUtil.d("请求成功的信息是:" + loginReturnEntity.getToken());
-                            closeLoader();
-                            ToastUtils.show(context, "登陆成功");
-                        }
-                    });
+                                @Override
+                                public void onSuccess(LoginReturnEntity loginReturnEntity) {
+                                    LogUtil.d("请求成功的信息是:" + loginReturnEntity.getToken());
+                                    closeLoader();
+                                    ToastUtils.show(context, "登陆成功");
+                                }
+                            });
                 } else {
                     showToast(exception.getErrorMsg());
                 }

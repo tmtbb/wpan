@@ -3,8 +3,11 @@ package com.xinyu.mwp.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RadioButton;
@@ -21,15 +24,16 @@ public class CustomDialog extends Dialog {
 
     private static Button mPositiveButton;
     private static Button mNegativeButton;
-    private static SeekBar mSeekBar;
-    private static TextView mEarnestMoney;
-    private static TextView mEarnestMoneyPercent;
-    private static TextView mTurnoverMoney;
-    private static TextView mServiceCharge;
+    public static SeekBar mSeekBar;
+    public static TextView mEarnestMoney;//定金
+    public static TextView mEarnestMoneyPercent; //运费比例
+    public static TextView mTurnoverMoney;  //成交额
+    public static TextView mServiceCharge;
     private static RadioButton mFreight;
     private static RadioButton mReturnDouble;
     private static TextView mCurrentCount;
     private static TextView mCurrentCountShow;
+
 
     public CustomDialog(Context context) {
         super(context);
@@ -138,6 +142,12 @@ public class CustomDialog extends Dialog {
             }
 
             dialog.setContentView(layout);
+            Window dialogWindow =  dialog.getWindow();
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
+            lp.width = (int) (d.widthPixels * 0.9); // 宽度设置为屏幕的0.9
+            dialogWindow.setAttributes(lp);
+            dialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
             return dialog;
         }
 
@@ -170,6 +180,9 @@ public class CustomDialog extends Dialog {
             mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (progressChangeListener != null){
+                        progressChangeListener.processData(progress +1);
+                    }
                     mCurrentCount.setText(progress + 1 + "");
                     mCurrentCountShow.setText(progress + 1 + "");
                     float x = seekBar.getWidth();//控件宽度
@@ -191,5 +204,15 @@ public class CustomDialog extends Dialog {
                 }
             });
         }
+
+        public interface ProgressChangeListener{
+             void processData(int process);
+        }
+        private ProgressChangeListener progressChangeListener;
+
+        public void setProgressChangeListener(ProgressChangeListener progressChangeListener) {
+            this.progressChangeListener = progressChangeListener;
+        }
     }
+
 }

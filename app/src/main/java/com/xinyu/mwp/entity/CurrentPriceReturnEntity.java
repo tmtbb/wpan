@@ -1,5 +1,7 @@
 package com.xinyu.mwp.entity;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/2/23.
  */
@@ -22,7 +24,7 @@ public class CurrentPriceReturnEntity extends BaseEntity {
     private String goodType;
     private String exchangeName;
     private String platformName;
-    private double currntPrice;
+    private double currentPrice;
     private double change;
     private double openingTodayPrice;
     private double closedYesterdayPrice;
@@ -55,12 +57,12 @@ public class CurrentPriceReturnEntity extends BaseEntity {
         this.platformName = platformName;
     }
 
-    public double getCurrntPrice() {
-        return currntPrice;
+    public double getCurrentPrice() {
+        return currentPrice;
     }
 
-    public void setCurrntPrice(double currntPrice) {
-        this.currntPrice = currntPrice;
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
     }
 
     public double getChange() {
@@ -118,4 +120,5 @@ public class CurrentPriceReturnEntity extends BaseEntity {
     public void setUpDown(double upDown) {
         this.upDown = upDown;
     }
+
 }

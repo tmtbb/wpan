@@ -33,7 +33,7 @@ public class TimeUtil {
     }
 
     public static String getDateAndTime(long time) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         return format.format(new Date(time));
     }
 
@@ -71,6 +71,10 @@ public class TimeUtil {
 
     public static String getMinuteAndSecond(long time) {
         SimpleDateFormat format = new SimpleDateFormat("mm:ss");
+        return format.format(new Date(time));
+    }
+    public static String getHourMinuteSecond(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
         return format.format(new Date(time));
     }
 }

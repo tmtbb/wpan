@@ -6,40 +6,40 @@ package com.xinyu.mwp.entity;
 
 public class ProductEntity extends BaseEntity {
 
-    private Integer amountPerLot;
-    private Double closeChargeFee;
+    private double amountPerLot;
+    private double closeChargeFee;
     private String code;
-    private Integer deferred;
-    private Double depositFee;
+    private double deferred;
+    private double depositFee;
     private String exchangeName;
-    private Integer id;
-    private Integer maxLot;
-    private Integer minLot;
+    private int id;
+    private int maxLot;
+    private int minLot;
     private String name;
-    private Double openChargeFee;
+    private double openChargeFee;
     private String platformName;
-    private Double profitPerUnit;
+    private double profitPerUnit;
     private String showName;
     private String showSymbol;
-    private Integer sort;
-    private Integer status;
+    private int sort;
+    private int status;
     private String symbol;
     private String unit;
-    private Double price;
+    private double price;
 
-    public Integer getAmountPerLot() {
+    public double getAmountPerLot() {
         return amountPerLot;
     }
 
-    public void setAmountPerLot(Integer amountPerLot) {
+    public void setAmountPerLot(double amountPerLot) {
         this.amountPerLot = amountPerLot;
     }
 
-    public Double getCloseChargeFee() {
+    public double getCloseChargeFee() {
         return closeChargeFee;
     }
 
-    public void setCloseChargeFee(Double closeChargeFee) {
+    public void setCloseChargeFee(double closeChargeFee) {
         this.closeChargeFee = closeChargeFee;
     }
 
@@ -51,19 +51,19 @@ public class ProductEntity extends BaseEntity {
         this.code = code;
     }
 
-    public Integer getDeferred() {
+    public double getDeferred() {
         return deferred;
     }
 
-    public void setDeferred(Integer deferred) {
+    public void setDeferred(double deferred) {
         this.deferred = deferred;
     }
 
-    public Double getDepositFee() {
+    public double getDepositFee() {
         return depositFee;
     }
 
-    public void setDepositFee(Double depositFee) {
+    public void setDepositFee(double depositFee) {
         this.depositFee = depositFee;
     }
 
@@ -75,27 +75,27 @@ public class ProductEntity extends BaseEntity {
         this.exchangeName = exchangeName;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Integer getMaxLot() {
+    public int getMaxLot() {
         return maxLot;
     }
 
-    public void setMaxLot(Integer maxLot) {
+    public void setMaxLot(int maxLot) {
         this.maxLot = maxLot;
     }
 
-    public Integer getMinLot() {
+    public int getMinLot() {
         return minLot;
     }
 
-    public void setMinLot(Integer minLot) {
+    public void setMinLot(int minLot) {
         this.minLot = minLot;
     }
 
@@ -107,11 +107,11 @@ public class ProductEntity extends BaseEntity {
         this.name = name;
     }
 
-    public Double getOpenChargeFee() {
+    public double getOpenChargeFee() {
         return openChargeFee;
     }
 
-    public void setOpenChargeFee(Double openChargeFee) {
+    public void setOpenChargeFee(double openChargeFee) {
         this.openChargeFee = openChargeFee;
     }
 
@@ -123,11 +123,11 @@ public class ProductEntity extends BaseEntity {
         this.platformName = platformName;
     }
 
-    public Double getProfitPerUnit() {
+    public double getProfitPerUnit() {
         return profitPerUnit;
     }
 
-    public void setProfitPerUnit(Double profitPerUnit) {
+    public void setProfitPerUnit(double profitPerUnit) {
         this.profitPerUnit = profitPerUnit;
     }
 
@@ -147,19 +147,19 @@ public class ProductEntity extends BaseEntity {
         this.showSymbol = showSymbol;
     }
 
-    public Integer getSort() {
+    public int getSort() {
         return sort;
     }
 
-    public void setSort(Integer sort) {
+    public void setSort(int sort) {
         this.sort = sort;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -179,11 +179,11 @@ public class ProductEntity extends BaseEntity {
         this.unit = unit;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }
