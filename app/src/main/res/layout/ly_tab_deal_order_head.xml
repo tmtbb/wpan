@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:background="@color/default_bg"
     android:orientation="vertical">
+    <!--用户总资产-->
+    <include layout="@layout/ll_user_total_assets" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white" />
 
     <LinearLayout
         android:layout_width="match_parent"

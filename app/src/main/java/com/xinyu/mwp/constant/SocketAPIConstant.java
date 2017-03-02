@@ -26,6 +26,8 @@ public interface SocketAPIConstant {
         Short TimeLine = 4003;
         Short CurrentPrice = 4001;
         Short KChart = 4005;
+        Short Position = 5003;
+        Short History = 6001;
 
     }
 }

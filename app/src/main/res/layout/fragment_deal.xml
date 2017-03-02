@@ -11,24 +11,15 @@
 
         <include layout="@layout/ly_title_bar" />
 
-        <!--用户总资产-->
-        <include layout="@layout/ll_user_total_assets" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            android:layout_gravity="center_vertical"
-            android:background="@color/white" />
 
         <FrameLayout
-            android:id="@+id/container_chart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="match_parent"
+            android:id="@+id/container_product"/>
 
     </LinearLayout>
 
 </com.xinyu.mwp.view.MyScrollView>
+
 
 

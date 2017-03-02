@@ -8,25 +8,42 @@ import java.security.NoSuchAlgorithmException;
  * Created by Administrator on 2017/2/22.
  */
 public class SHA256Util {
-    private static byte [] getHash(String password) {
-        MessageDigest digest = null ;
+    /**
+     * SHA加密
+     *
+     * @param strSrc 明文
+     * @return 加密之後的密文
+     */
+    public static String shaEncrypt(String strSrc) {
+        MessageDigest md = null;
+        String strDes = null;
+        byte[] bt = strSrc.getBytes();
         try {
-            digest = MessageDigest. getInstance( "SHA-256");
-        } catch (NoSuchAlgorithmException e1) {
-            e1.printStackTrace();
+            md = MessageDigest.getInstance("SHA-256");// 將此換成SHA-1、SHA-512、SHA-384等參數
+            md.update(bt);
+            strDes = bytes2Hex(md.digest()); // to HexString
+        } catch (NoSuchAlgorithmException e) {
+            return null;
         }
-        digest.reset();
-        return digest.digest(password.getBytes());
+        return strDes;
     }
 
     /**
-     * 使用sha256加密
-     * @param strForEncrypt  传入加密对象
-     * @return 结果
+     * byte數組轉換為16進制字符串
+     *
+     * @param bts 數據源
+     * @return 16進制字符串
      */
-    public static String sha256(String strForEncrypt) {
-        byte [] data = getHash(strForEncrypt);
-        return String.format( "%0" + (data.length * 2) + "X", new BigInteger(1, data));
-
+    public static String bytes2Hex(byte[] bts) {
+        String des = "";
+        String tmp = null;
+        for (int i = 0; i < bts.length; i++) {
+            tmp = (Integer.toHexString(bts[i] & 0xFF));
+            if (tmp.length() == 1) {
+                des += "0";
+            }
+            des += tmp;
+        }
+        return des;
     }
 }

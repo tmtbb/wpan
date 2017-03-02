@@ -12,16 +12,16 @@
         android:id="@+id/tv_trade_min60"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="60分时"
+        android:text="xx分时"
         android:textColor="@color/color_666666"
         android:textSize="@dimen/fontSize_15sp" />
 
     <TextView
-        android:id="@+id/tv_trade_price60"
+        android:id="@+id/tv_trade_price_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_6"
-        android:text="7.1013/手"
+        android:text="x.xxxx/手"
         android:textColor="@color/default_assist_color"
         android:textSize="@dimen/fontSize_18sp" />
 
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_6"
-        android:text="运费55%  手续费15%"
+        android:text="手续费xxx"
         android:textColor="@color/color_666666"
         android:textSize="@dimen/fontSize_11sp" />
 
