@@ -84,7 +84,7 @@
             android:layout_below="@id/tv_trade_countdown"
             android:layout_marginTop="@dimen/dp_7"
             android:max="100"
-            android:progress="50"
+            android:progress="0"
             android:progressDrawable="@drawable/bg_progress_countdown" />
 
 

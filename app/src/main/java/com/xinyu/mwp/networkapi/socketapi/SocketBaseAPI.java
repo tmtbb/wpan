@@ -3,7 +3,6 @@ package com.xinyu.mwp.networkapi.socketapi;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BaseEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
@@ -74,7 +73,7 @@ public class SocketBaseAPI {
     public void requestEntity(SocketDataPacket socketDataPacket, final Class<? extends BaseEntity> cls, final OnAPIListener listener) {
         SocketAPIRequestManage.getInstance().startJsonRequest(socketDataPacket, new OnAPIListener<SocketAPIResponse>() {
             @Override
-            public void onError(Throwable ex) {
+            public void onError(Throwable ex ){
                 SocketBaseAPI.this.onError(listener,ex);
             }
 

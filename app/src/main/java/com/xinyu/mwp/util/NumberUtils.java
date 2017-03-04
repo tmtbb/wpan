@@ -28,5 +28,10 @@ public class NumberUtils {
         return String.format("%.5f", number);
     }
 
-
+    /**
+     * 四舍五入,保留6位小数
+     */
+    public static String halfAdjust6(double number) {
+        return String.format("%.6f", number);
+    }
 }

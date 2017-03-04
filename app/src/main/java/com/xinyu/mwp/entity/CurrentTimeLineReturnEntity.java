@@ -22,8 +22,16 @@ public class CurrentTimeLineReturnEntity extends BaseEntity{
     private double closedYesterdayPrice;
     private double highPrice;
     private double lowPrice;
-    private int priceTime;
+    private double priceTime;
     private double upDown;
+
+    public double getPriceTime() {
+        return priceTime;
+    }
+
+    public void setPriceTime(double priceTime) {
+        this.priceTime = priceTime;
+    }
 
     public double getCurrentPrice() {
         return currentPrice;
@@ -71,14 +79,6 @@ public class CurrentTimeLineReturnEntity extends BaseEntity{
 
     public void setLowPrice(double lowPrice) {
         this.lowPrice = lowPrice;
-    }
-
-    public int getPriceTime() {
-        return priceTime;
-    }
-
-    public void setPriceTime(int priceTime) {
-        this.priceTime = priceTime;
     }
 
     public double getUpDown() {

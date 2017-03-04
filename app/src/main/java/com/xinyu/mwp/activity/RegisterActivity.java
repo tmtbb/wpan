@@ -1,33 +1,25 @@
 package com.xinyu.mwp.activity;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
-import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.ActivityUtil;
-import com.xinyu.mwp.util.CountUtil;
 import com.xinyu.mwp.util.LogUtil;
-import com.xinyu.mwp.util.StringUtil;
-import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
 
 import org.xutils.view.annotation.ViewInject;
-
-import java.util.List;
 
 /**
  * @author : created by chuangWu

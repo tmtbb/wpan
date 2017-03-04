@@ -65,7 +65,7 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
             public void onClick(View v) {
                 LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
                 int verifyType = 1;// 0-注册 1-登录 2-更新服务
-                VerifyCodeUtils.getCode(msgEditText,verifyType, context, v, phoneEditText);
+                VerifyCodeUtils.getCode(msgEditText, verifyType, context, v, phoneEditText);
             }
         });
 

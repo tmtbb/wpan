@@ -28,7 +28,7 @@ public interface DealAPI {
     void currentPrice(List<SymbolInfosEntity> symbolInfos, OnAPIListener<List<CurrentPriceReturnEntity>> listener);
 
     //加载Kchart
-    void kchart(String exchangeName, String platformName, String symbol, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener);
+    void kchart(String exchangeName, String platformName, String symbol,int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener);
 
     //建仓
     void openPosition(int codeId, int buySell, double amount, int isDeferred, OnAPIListener<OpenPositionReturnEntity> listener);
