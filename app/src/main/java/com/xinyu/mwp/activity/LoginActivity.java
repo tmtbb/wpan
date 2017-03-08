@@ -8,11 +8,12 @@ import android.widget.Button;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
+import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
+import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
@@ -64,20 +65,19 @@ public class LoginActivity extends BaseControllerActivity {
             case R.id.registerText:
                 ActivityUtil.nextRegister(context);
                 break;
-            case R.id.findPwd:
-                ActivityUtil.nextResetUserPwd(context);
-                break;
+//            case R.id.findPwd:    //去掉修改登录密码功能
+//                ActivityUtil.nextResetUserPwd(context);
+//                break;
             case R.id.loginButton: {
-                showLoader("正在登陆...");
-                LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
+                showLoader("正在登录...");
                 CheckException exception = new CheckException();
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(view);
                     String pwd = SHA256Util.shaEncrypt(passwordEditText.getEditTextString() + "t1@s#df!");
                     String newPwd = SHA256Util.shaEncrypt(pwd + userNameEditText.getEditTextString());
-                    LogUtil.d("加密后的密码:" + newPwd + ",原有密码:" + pwd);
-                    NetworkAPIFactoryImpl.getUserAPI().login(userNameEditText.getEditTextString(), pwd, null,
+
+                    NetworkAPIFactoryImpl.getUserAPI().login(userNameEditText.getEditTextString(), newPwd, null,
                             new OnAPIListener<LoginReturnEntity>() {
                                 @Override
                                 public void onError(Throwable ex) {
@@ -88,12 +88,24 @@ public class LoginActivity extends BaseControllerActivity {
 
                                 @Override
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
-                                    LogUtil.d("请求成功的信息是:" + loginReturnEntity.getToken());
+
                                     closeLoader();
                                     ToastUtils.show(context, "登陆成功");
+                                    NetworkAPIFactoryImpl.getConfig().setUserToken(loginReturnEntity.getToken());
+                                    NetworkAPIFactoryImpl.getConfig().setUserId(loginReturnEntity.getUserinfo().getId());
+                                    UserEntity en = new UserEntity();
+                                    en.setId(loginReturnEntity.getUserinfo().getId());
+                                    en.setName(userNameEditText.getEditTextString());
+                                    en.setToken(loginReturnEntity.getToken());
+
+                                    UserManager.getInstance().saveUserEntity(en, true);
+                                    UserManager.getInstance().setLogin(true);
+
+                                    finish();
                                 }
                             });
                 } else {
+                    closeLoader();
                     showToast(exception.getErrorMsg());
                 }
             }

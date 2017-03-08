@@ -10,12 +10,15 @@ import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGener
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.xinyu.mwp.entity.LoginReturnEntity;
+import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.FileCacheUtil;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.Utils;
 
@@ -37,7 +40,9 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initNetworkAPIConfig();
         initImageLoader();
         initUser();
+
     }
+
 
     private void initNetworkAPIConfig() {
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
@@ -96,10 +101,13 @@ public class MyApplication extends Application implements OnUserUpdateListener {
     @Override
     public void onUserUpdate(boolean isLogin) {
         String userToken = null;
+        int id = 0;
         if (UserManager.getInstance().isLogin()) {
             userToken = UserManager.getInstance().getUserEntity().getToken();
+            id = UserManager.getInstance().getUserEntity().getId();
         }
         NetworkAPIFactoryImpl.getConfig().setUserToken(userToken);
+        NetworkAPIFactoryImpl.getConfig().setUserId(id);
     }
 
     public String getAndroidId() {
@@ -127,4 +135,6 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         }
         android.os.Process.killProcess(android.os.Process.myPid());
     }
+
+
 }

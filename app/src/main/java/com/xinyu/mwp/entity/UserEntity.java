@@ -102,7 +102,7 @@ public class UserEntity extends BaseEntity implements Serializable {
     @FieldJsonKey("userType")
     private String userType = "0";//0：普通用户，1：充值用户
     @FieldJsonKey("balance")
-    private String balance = "0";
+    private double balance =0;
     @FieldJsonKey("spreadUser")
     private String spreadUser;//0：普通用户，1：推广用户
     @FieldJsonKey("showWindow")
@@ -110,11 +110,11 @@ public class UserEntity extends BaseEntity implements Serializable {
     @FieldJsonKey("isOfficial")
     private String isOfficial;//0:否,1:是
 
-    public String getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

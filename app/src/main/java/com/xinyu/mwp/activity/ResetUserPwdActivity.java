@@ -13,6 +13,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
@@ -79,15 +80,9 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
                         && checkHelper.checkPassword(pwdEditText1.getEditTextString(), exception)
                         && checkHelper.checkPassword2(pwdEditText1.getEditTextString(), pwdEditText2.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(v);
-                    resetUserPwd();
                     showLoader("正在修改...");
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            closeLoader();
-                            showToast("哈哈哈");
-                        }
-                    }, 2000);
+                    resetUserPwd();
+
                 } else {
                     showToast(exception.getErrorMsg());
                 }
@@ -96,16 +91,21 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
     }
 
     private void resetUserPwd() {
+        int type = 0;//0：登录密码 1：交易密码，提现密码
         NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(phoneEditText.getEditTextString(), pwdEditText2.getEditTextString()
-                , msgEditText.getEditTextString(), new OnAPIListener<Object>() {
+                , msgEditText.getEditTextString(), type, new OnAPIListener<Object>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
+                        closeLoader();
+                        ToastUtils.show(context, "修改登录密码失败");
                     }
 
                     @Override
                     public void onSuccess(Object o) {
-                        LogUtil.d("重置用户密码成功" + o.toString());
+                        closeLoader();
+                        ToastUtils.show(context, "修改登录密码成功");
+                        finish();
                     }
                 });
     }

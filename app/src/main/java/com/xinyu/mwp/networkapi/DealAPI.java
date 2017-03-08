@@ -8,6 +8,7 @@ import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
+import com.xinyu.mwp.entity.TotalDealInfoEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public interface DealAPI {
 
     //当前仓位列表
     void historyPositionList(int start, int count, OnAPIListener<List<HistoryPositionListReturnEntity>> listener);
+    //交易总概况
+    void totalDealInfo(OnAPIListener<List<TotalDealInfoEntity>> listener);
 }

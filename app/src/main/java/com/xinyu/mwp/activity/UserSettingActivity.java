@@ -11,6 +11,7 @@ import com.xinyu.mwp.activity.base.BaseRefreshActivity;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.CropImageUtil;
 import com.xinyu.mwp.util.FileCacheUtil;
@@ -70,6 +71,8 @@ public class UserSettingActivity extends BaseRefreshActivity {
                 break;
             case R.id.logout:
                 showToast("退出登录");
+                UserManager.getInstance().logout();
+                finish();
                 break;
         }
     }

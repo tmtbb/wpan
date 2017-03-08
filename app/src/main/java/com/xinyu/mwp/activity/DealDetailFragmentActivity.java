@@ -9,6 +9,8 @@ import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
 import com.xinyu.mwp.entity.DealAllGoodsTopEntity;
 import com.xinyu.mwp.fragment.BaseDealAllGoodsFragment;
+import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.ViewInject;
 
@@ -65,14 +67,14 @@ public class DealDetailFragmentActivity extends BaseMultiFragmentActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                DealAllGoodsTopEntity entity = new DealAllGoodsTopEntity();
-                entity.setMoney("188888.99");
-                entity.setHands("199999");
-                entity.setOrders("1888888");
+//                DealAllGoodsTopEntity entity = new DealAllGoodsTopEntity();
+//                entity.setMoney("188888.99");
+//                entity.setHands("199999");
+//                entity.setOrders("1888888");
 
-                money.setText(entity.getMoney());
-                allHandsCount.setText(entity.getHands());
-                allOrdersCount.setText(entity.getOrders());
+                money.setText(NumberUtils.halfAdjust2( UserManager.getInstance().getUserEntity().getBalance()));
+                allHandsCount.setText("---");
+                allOrdersCount.setText("---");
 
                 closeLoader();
             }

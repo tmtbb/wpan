@@ -6,9 +6,9 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
  * Created by yaowang on 2017/2/20.
  */
 
-public class LoginReturnEntity extends BaseEntity  {
+public class LoginReturnEntity extends BaseEntity {
     @FieldJsonKey("userinfo")
-   private UserinfoEntity userinfo;
+    private UserinfoEntity userinfo;
     @FieldJsonKey("token")
     private String token;
 

@@ -96,7 +96,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private TextView openingTodayPrice;
     private TextView closedYesterdayPrice;
     private List<CurrentPriceReturnEntity> entitys;
-    private ArrayList<SymbolInfosEntity> symbolInfos;  //商品信息集合
+    private ArrayList<SymbolInfosEntity> symbolInfos = new ArrayList<>();
+    ;  //商品信息集合
     private List<CurrentPositionListReturnEntity> currentPositionList; //仓位列表集合
 
     Handler handler = new Handler();
@@ -306,11 +307,13 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private void initProductPrice() {
         LogUtil.d("请求报价");
 
-        symbolInfos = new ArrayList<>();
+
         if (mUnitViewList.size() == 0) {
             mUnitViewList = products.get(0);
         }
-
+        if (symbolInfos.size() > 0) {
+            symbolInfos.clear();
+        }
         for (ProductEntity productEntity : mUnitViewList) {
             SymbolInfosEntity entity = new SymbolInfosEntity();
             entity.setAType(4);
@@ -346,6 +349,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private void processTimeLine() {
         if (!isTimeLine) {
             return;   //如果为false,不用刷新请求数据
+        }
+        if (symbolInfos.size() == 0) {
+            ToastUtils.show(context, "请求数据失败,请检查网络连接");
+            return;
         }
         SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
         int aType = symbolInfosentity.getAType();
@@ -615,6 +622,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount 当前手数
      */
     private void initDialogData(int amount) {
+        if (mUnitViewList.size() == 0 || mViewPager == null) {
+            ToastUtils.show(context, "集合为空或者viewpager为空");
+            return;
+        }
         double unit = getCurrentUnit();  //获取当前商品 的单价
         CustomDialog.mEarnestMoney.setText("¥ " + NumberUtils.halfAdjust2(unit * amount)); //定金
         double chargeFree = mUnitViewList.get(mViewPager.getCurrentItem()).getOpenChargeFee() * unit * amount;//手续费

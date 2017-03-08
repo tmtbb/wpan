@@ -8,6 +8,7 @@ import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
+import com.xinyu.mwp.entity.TotalDealInfoEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.DealAPI;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
@@ -27,11 +28,6 @@ import java.util.List;
 public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     @Override
     public void products(OnAPIListener<List<ProductEntity>> listener) {
-//        {
-//            "id": 100002,
-//                "token": "adc28ac69625652b46d5c00b"
-//            "pid":1001
-//        }
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
@@ -48,18 +44,17 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
                          OnAPIListener<List<CurrentTimeLineReturnEntity>> listener) {
         LogUtil.d("----------------请求分时数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id",32);
+        map.put("id", 32);
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("exchangeName", exchangeName);
         map.put("platformName", platformName);
         map.put("symbol", symbol);
         map.put("aType", aType);  //4
-        double b = 1488363500;
-        map.put("startTime", b);  //4
+//        double b = 1488363500;
+//        map.put("startTime", b);  //加时间戳 历史数据
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.TimeLine,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "priceinfo", CurrentTimeLineReturnEntity.class, listener);
-//        requestEntity(socketDataPacket, CurrentTimeLineReturnEntity.class, listener);
     }
 
     //当前报价
@@ -86,10 +81,10 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void kchart(String exchangeName, String platformName, String symbol,int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener) {
+    public void kchart(String exchangeName, String platformName, String symbol, int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener) {
         LogUtil.d("请求K线数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id",32);
+        map.put("id", 32);
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("exchangeName", exchangeName);
         map.put("platformName", platformName);
@@ -143,6 +138,18 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
+    }
+
+    @Override
+    public void totalDealInfo(OnAPIListener<List<TotalDealInfoEntity>> listener) {
+        LogUtil.d("请求交易总概况数据");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+//        map.put("id", 32);
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Total,
+                SocketAPIConstant.ReqeutType.History, map);
+        requestEntity(socketDataPacket, TotalDealInfoEntity.class, listener);
     }
 
 }

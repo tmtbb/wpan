@@ -1,6 +1,7 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
 
+import com.xinyu.mwp.listener.OnSuccessListener;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
 
@@ -36,7 +37,7 @@ public class SocketAPINettyBootstrap {
 
 
     public void writeAndFlush(Object object) {
-        if( object != null && socketChannel != null ) {
+        if (object != null && socketChannel != null) {
             socketChannel.writeAndFlush(object);
         }
     }
@@ -74,6 +75,9 @@ public class SocketAPINettyBootstrap {
             if (future.isSuccess()) {
                 socketChannel = (SocketChannel) future.channel();
                 System.out.println("connect server  成功---------");
+                if (onConnectListener != null) {
+                    onConnectListener.onSuccess();
+                }
                 return true;
             } else {
                 System.out.println("connect server  失败---------");
@@ -115,4 +119,9 @@ public class SocketAPINettyBootstrap {
         void onFailure();
     }
 
+    private OnConnectListener onConnectListener;
+
+    public void setOnConnectListener(OnConnectListener onConnectListener) {
+        this.onConnectListener = onConnectListener;
+    }
 }

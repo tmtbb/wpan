@@ -12,6 +12,7 @@ public interface SocketAPIConstant {
         byte Time = 4;
         byte Deal = 5;
         byte Verify = 1;
+        byte History = 6;
 
     }
 
@@ -28,6 +29,7 @@ public interface SocketAPIConstant {
         Short KChart = 4005;
         Short Position = 5003;
         Short History = 6001;
-
+        Short Balance = 1003;
+        Short Total = 6003;
     }
 }
