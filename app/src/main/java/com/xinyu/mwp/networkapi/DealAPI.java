@@ -8,6 +8,7 @@ import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
+import com.xinyu.mwp.entity.TotalDealInfoEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface DealAPI {
     void currentPrice(List<SymbolInfosEntity> symbolInfos, OnAPIListener<List<CurrentPriceReturnEntity>> listener);
 
     //加载Kchart
-    void kchart(String exchangeName, String platformName, String symbol, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener);
+    void kchart(String exchangeName, String platformName, String symbol,int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener);
 
     //建仓
     void openPosition(int codeId, int buySell, double amount, int isDeferred, OnAPIListener<OpenPositionReturnEntity> listener);
@@ -38,4 +39,6 @@ public interface DealAPI {
 
     //当前仓位列表
     void historyPositionList(int start, int count, OnAPIListener<List<HistoryPositionListReturnEntity>> listener);
+    //交易总概况
+    void totalDealInfo(OnAPIListener<List<TotalDealInfoEntity>> listener);
 }

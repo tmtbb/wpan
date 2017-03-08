@@ -42,8 +42,14 @@
         <include layout="@layout/layout_exchange_product" />
 
         <!--走势图 K线图-->
-        <com.github.mikephil.charting.charts.CombinedChart
-            android:id="@+id/chart"
+        <!--<com.github.mikephil.charting.charts.CombinedChart-->
+            <!--android:id="@+id/chart"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp_181"-->
+            <!--android:layout_marginTop="@dimen/dp_4" />-->
+
+        <FrameLayout
+            android:id="@+id/chart_container"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_181"
             android:layout_marginTop="@dimen/dp_4" />

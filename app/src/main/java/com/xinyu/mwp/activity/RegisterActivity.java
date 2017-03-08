@@ -1,33 +1,31 @@
 package com.xinyu.mwp.activity;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.TextView;
+
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
-import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
+import com.xinyu.mwp.entity.RegisterReturnEntity;
+import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
+import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
-import com.xinyu.mwp.util.CountUtil;
 import com.xinyu.mwp.util.LogUtil;
-import com.xinyu.mwp.util.StringUtil;
+import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
 
 import org.xutils.view.annotation.ViewInject;
-
-import java.util.List;
 
 /**
  * @author : created by chuangWu
@@ -52,6 +50,10 @@ public class RegisterActivity extends BaseControllerActivity {
     @ViewInject(R.id.nextButton)
     private Button nextButton;
     private CheckHelper checkHelper = new CheckHelper();
+    private RegisterReturnEntity registerEntity;
+    private String phone;
+    private String pwd;
+    private String vCode;
 
     @Override
     protected int getContentView() {
@@ -65,7 +67,7 @@ public class RegisterActivity extends BaseControllerActivity {
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
-        // checkHelper.checkVerificationCode(soundEditText.getRightText(), phoneEditText);
+
     }
 
     @Override
@@ -75,47 +77,102 @@ public class RegisterActivity extends BaseControllerActivity {
         msgEditText.getRightText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
+                if (!SocketAPINettyBootstrap.getInstance().isOpen()) {
+                    ToastUtils.show(context, "网络连接失败,请检查网络");
+                    return;
+                }
                 int verifyType = 0;// 0-注册 1-登录 2-更新服务
                 VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText);
             }
         });
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showLoader("正在注册...");
-                LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
                 CheckException exception = new CheckException();
-                if (checkHelper.checkMobile(phoneEditText.getEditTextString(), exception)
-                        && checkHelper.checkPassword(pwdEditText.getEditTextString(), exception)
-                        && checkHelper.checkVerifyCode(msgEditText.getEditTextString(), exception)) {
+                phone = phoneEditText.getEditTextString();
+                pwd = pwdEditText.getEditTextString();
+                vCode = msgEditText.getEditTextString();
+
+                if (checkHelper.checkMobile(phone, exception) && checkHelper.checkPassword(pwd, exception)
+                        && checkHelper.checkVerifyCode(vCode, exception)) {
                     Utils.closeSoftKeyboard(v);
-                    register(phoneEditText.getEditTextString(), pwdEditText.getEditTextString(), msgEditText.getEditTextString());
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ActivityUtil.nextResetDealPwd(context);
-                        }
-                    }, 100);
+                    register();
                 } else {
+                    closeLoader();
                     showToast(exception.getErrorMsg());
+
                 }
             }
         });
     }
 
-    private void register(String editTextString, String textString, String vCode) {
-        NetworkAPIFactoryImpl.getUserAPI().register(editTextString, textString, vCode, new OnAPIListener<LoginReturnEntity>() {
-            @Override
-            public void onError(Throwable ex) {
-                ex.printStackTrace();
-            }
+    private void register() {
+        final String newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(pwd + "t1@s#df!") + phone);
 
-            @Override
-            public void onSuccess(LoginReturnEntity loginReturnEntity) {
-                LogUtil.d("注册请求网络成功" + loginReturnEntity.toString());
+        NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode,
+                new OnAPIListener<RegisterReturnEntity>() {
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        closeLoader();
+                        ToastUtils.show(context, "用户名或验证码错误");
+                    }
 
-            }
-        });
+                    @Override
+                    public void onSuccess(RegisterReturnEntity registerReturnEntity) {
+                        registerEntity = registerReturnEntity;
+                        LogUtil.d("注册请求网络成功" + registerEntity.toString());
+                        closeLoader();
+                        if (registerEntity.result == 0) {
+                            ToastUtils.show(context, "用户已经注册,请直接登录");
+                            next(LoginActivity.class);
+                            finish();
+                        } else if (registerEntity.result == 1) {
+                            ToastUtils.show(context, "注册成功");
+                            loginGetUserInfo(newPwd);  //登录请求数据
+                            finish();
+                        }
+
+//                        new Handler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ActivityUtil.nextResetDealPwd(context);
+//                            }
+//                        }, 100);
+                    }
+                });
+    }
+
+    /**
+     * 登录获取用户信息
+     *
+     * @param newPwd 加密后的pwd
+     */
+    private void loginGetUserInfo(String newPwd) {
+        NetworkAPIFactoryImpl.getUserAPI().login(phone, newPwd, null,
+                new OnAPIListener<LoginReturnEntity>() {
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                    }
+
+                    @Override
+                    public void onSuccess(LoginReturnEntity loginReturnEntity) {
+                        NetworkAPIFactoryImpl.getConfig().setUserToken(loginReturnEntity.getToken());
+                        NetworkAPIFactoryImpl.getConfig().setUserId(loginReturnEntity.getUserinfo().getId());
+                        UserEntity en = new UserEntity();
+                        en.setId(loginReturnEntity.getUserinfo().getId());
+                        en.setName(phone);
+                        en.setToken(loginReturnEntity.getToken());
+
+                        UserManager.getInstance().saveUserEntity(en, true);
+                        UserManager.getInstance().setLogin(true);
+
+                        finish();
+                    }
+                });
     }
 }
+

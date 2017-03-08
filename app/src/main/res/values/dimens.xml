@@ -87,4 +87,5 @@
     <dimen name="fontSize_25sp">25sp</dimen>
     <dimen name="fontSize_30sp">30sp</dimen>
     <dimen name="fontSize_32sp">32sp</dimen>
+    <dimen name="fontSize_48sp">48sp</dimen>
 </resources>

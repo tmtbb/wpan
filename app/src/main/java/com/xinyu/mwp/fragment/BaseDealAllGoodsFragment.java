@@ -28,7 +28,7 @@ import java.util.List;
 public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragment<DealAllGoodsItemEntity> {
     @ViewInject(R.id.contentView)
     protected ListView contentView;
-    protected DealAllGoodsHeader header;
+//    protected DealAllGoodsHeader header;
     protected DealAllGoodsEntity entity;
     protected DealAllGoodsAdapter adapter;
 
@@ -45,8 +45,8 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
     @Override
     protected void initView() {
         super.initView();
-        header = new DealAllGoodsHeader(context);
-        contentView.addHeaderView(header);
+//        header = new DealAllGoodsHeader(context);
+//        contentView.addHeaderView(header);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
                     list.add(entity);
                 }
                 entity.setGoodsInfo(list);
-                header.update(entity);
+//                header.update(entity);
                 getRefreshController().refreshComplete(entity.getGoodsInfo());
             }
         }, 2000);

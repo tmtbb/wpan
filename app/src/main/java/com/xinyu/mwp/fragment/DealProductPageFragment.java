@@ -4,13 +4,16 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -43,10 +46,9 @@ import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
-import com.xinyu.mwp.entity.Model;
+import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
-import com.xinyu.mwp.entity.StockListBean;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -56,6 +58,7 @@ import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
+import com.xinyu.mwp.util.TimeUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.MyTransformation;
@@ -74,21 +77,10 @@ import java.util.Random;
  */
 public class DealProductPageFragment extends BaseRefreshAbsListControllerFragment<CurrentPositionListReturnEntity> implements View.OnClickListener {
     private DealProductPageAdapter adapter;
-    private List<Fragment> chartFragments = new ArrayList<>();
+
     private RadioGroup radioGroupChart;
-    private CombinedChart mChart;
-    private int itemcount;
-    private LineData lineData;
-    private CandleData candleData;
-    private CombinedData combinedData;
-    private ArrayList<String> xVals;
-    private List<CandleEntry> candleEntries = new ArrayList<>();
-    private int colorHomeBg;
-    private int colorLine;
-    private int colorText;
-    private int colorMa5;
-    private int colorMa10;
-    private int colorMa20;
+    private FrameLayout mChartContainer;
+
     private ListView listView;
     private ViewPager mViewPager;
     private RelativeLayout mViewPagerContainer;
@@ -104,7 +96,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private TextView openingTodayPrice;
     private TextView closedYesterdayPrice;
     private List<CurrentPriceReturnEntity> entitys;
-    private ArrayList<SymbolInfosEntity> symbolInfos;
+    private ArrayList<SymbolInfosEntity> symbolInfos = new ArrayList<>();
+    ;  //商品信息集合
     private List<CurrentPositionListReturnEntity> currentPositionList; //仓位列表集合
 
     Handler handler = new Handler();
@@ -113,7 +106,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         public void run() {
             LogUtil.d("每3秒执行一次");
             reuqestData();  //商品列表
-            initCurrentPositionList();  //请求仓位列表数据
             handler.postDelayed(this, 3000);
         }
     };
@@ -123,6 +115,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private List<List<ProductEntity>> products; //集合的集合
     private RecyclerView mRecyclerView;
     private boolean isRequestFail = true;
+    private List<CurrentTimeLineReturnEntity> currentTimeLineEntities; //当前分时数据
+    private KChartFragment kChartFragment;
 
     public DealProductPageFragment() {
     }
@@ -227,10 +221,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         handler.postDelayed(runnable, 3000);//每两秒执行一次runnable.
         initCurrentPositionList();  //请求仓位列表数据
         initHeadView();  //初始化头布局
-
-        //设置K线图属性
-        initChart();
-        loadChartData();
     }
 
     /**
@@ -242,6 +232,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 LogUtil.d("仓位列表,请求网络失败" + ex.getMessage());
+                currentPositionList = new ArrayList<CurrentPositionListReturnEntity>();
+                processPositionList();
             }
 
             @Override
@@ -260,10 +252,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * 仓位列表数据显示
      */
     private void processPositionList() {
-        if (currentPositionList != null) {
-            adapter.setList(currentPositionList);
-            adapter.notifyDataSetChanged();
-        }
+        adapter.setList(currentPositionList);
+        adapter.notifyDataSetChanged();
     }
 
     private void initHeadView() {
@@ -276,7 +266,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         TextView buyMinus = (TextView) headView.findViewById(R.id.tv_exchange_buy_minus);
 
         radioGroupChart = (RadioGroup) headView.findViewById(R.id.radiogroup_chart);
-        mChart = (CombinedChart) headView.findViewById(R.id.chart);
+        mChartContainer = (FrameLayout) headView.findViewById(R.id.chart_container);
+        kChartFragment = new KChartFragment(context);
+        mChartContainer.addView(kChartFragment);
 
         currentPrice = (TextView) headView.findViewById(R.id.tv_current_price);
         changePercent = (TextView) headView.findViewById(R.id.tv_change_percent);
@@ -315,11 +307,13 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private void initProductPrice() {
         LogUtil.d("请求报价");
 
-        symbolInfos = new ArrayList<>();
+
         if (mUnitViewList.size() == 0) {
             mUnitViewList = products.get(0);
         }
-
+        if (symbolInfos.size() > 0) {
+            symbolInfos.clear();
+        }
         for (ProductEntity productEntity : mUnitViewList) {
             SymbolInfosEntity entity = new SymbolInfosEntity();
             entity.setAType(4);
@@ -343,8 +337,45 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 initViewPager();
                 processPriceInfo();
 //                mViewPager.setCurrentItem(0);//默认在中间
+
+                processTimeLine();//加载分时图
             }
         });
+    }
+
+    /**
+     * 加载分时数据
+     */
+    private void processTimeLine() {
+        if (!isTimeLine) {
+            return;   //如果为false,不用刷新请求数据
+        }
+        if (symbolInfos.size() == 0) {
+            ToastUtils.show(context, "请求数据失败,请检查网络连接");
+            return;
+        }
+        SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
+        int aType = symbolInfosentity.getAType();
+        String exchangeName = symbolInfosentity.getExchangeName();
+        String platformName = symbolInfosentity.getPlatformName();
+        String symbol = symbolInfosentity.getSymbol();
+        NetworkAPIFactoryImpl.getDealAPI().timeline(exchangeName, platformName, symbol, aType, new OnAPIListener<List<CurrentTimeLineReturnEntity>>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+                LogUtil.d("分时请求网络错误---");
+            }
+
+            @Override
+            public void onSuccess(List<CurrentTimeLineReturnEntity> currentTimeLineReturnEntities) {
+                LogUtil.d("分时请求网络成功" + currentTimeLineReturnEntities.toString());
+                currentTimeLineEntities = currentTimeLineReturnEntities;
+//                kChartFragment.initChart();
+                kChartFragment.loadChartData(currentTimeLineEntities, 0);
+            }
+        });
+
+
     }
 
     /**
@@ -424,14 +455,23 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
             @Override
             public void onPageSelected(int position) {
-//             entitys.get(position);//请求报价的集合第二次变动
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
+            @Override
+            public void refreshData() {
+                initCurrentPositionList();//刷新仓位列表
+                LogUtil.d("刷新仓位列表了---------");
+            }
+        });
     }
+
+    private boolean isTimeLine = true;
 
     @Override
     public void onClick(View v) {
@@ -447,7 +487,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
             case R.id.ll_history_record:  //仓位历史记录
                 next(PositionHistoryActivity.class);
-                LogUtil.d("仓位历史记录");
                 break;
 
             case R.id.tv_exchange_buy_plus:
@@ -460,25 +499,70 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 break;
             case R.id.rb_min_hour:
                 ToastUtils.show(context, "分时线,加载数据");
-                loadChartData();
+                if (symbolInfos == null) {
+                    processTimeLine();//请求分时数据
+
+                }
+                isTimeLine = true;
                 break;
             case R.id.rb_min_5:
-                ToastUtils.show(context, "5分线,加载数据");
-                loadChartData();
+                ToastUtils.show(context, "5分时线");
+                processKChartData(MIN_LINE5);
                 break;
             case R.id.rb_min_15:
                 ToastUtils.show(context, "15分时线,加载数据");
-                loadChartData();
+                processKChartData(MIN_LINE15); //请求K线数据
                 break;
             case R.id.rb_min_60:
-                ToastUtils.show(context, "60分时线,加载数据");
-                loadChartData();
+                ToastUtils.show(context, "30分时线,加载数据");
+                processKChartData(MIN_LINE30); //请求K线数据
                 break;
             case R.id.rb_day_hour:
-                ToastUtils.show(context, "日时线,加载数据");
-                loadChartData();
+                ToastUtils.show(context, "60分时线,加载数据");
+                processKChartData(MIN_LINE60);   //请求K线数据
                 break;
         }
+    }
+
+    //    60-1分钟K线，300-5分K线，900-15分K线，1800-30分K线，3600-60分K线，5-日K线
+//    private static int MIN_LINE1 = 60;
+    private static int MIN_LINE5 = 300;
+    private static int MIN_LINE15 = 900;
+    private static int MIN_LINE30 = 1800;
+    private static int MIN_LINE60 = 3600;
+
+
+    /**
+     * 请求K线数据
+     */
+    private void processKChartData(final int chartType) {
+        isTimeLine = false;
+        LogUtil.d("模拟加载K线数据");
+        if (symbolInfos == null) {
+            ToastUtils.show(context, "请求网络数据失败");
+            return;
+        }
+
+        SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
+        int aType = symbolInfosentity.getAType();
+        String exchangeName = symbolInfosentity.getExchangeName();
+        String platformName = symbolInfosentity.getPlatformName();
+        String symbol = symbolInfosentity.getSymbol();
+        NetworkAPIFactoryImpl.getDealAPI().kchart(exchangeName, platformName,
+                symbol, aType, chartType, new OnAPIListener<List<CurrentTimeLineReturnEntity>>() {
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        LogUtil.d("K线请求网络错了");
+                    }
+
+                    @Override
+                    public void onSuccess(List<CurrentTimeLineReturnEntity> currentTimeLineReturnEntities) {
+                        LogUtil.d("K线数据,请求成功:" + currentTimeLineReturnEntities.toString());
+//                kChartFragment.initChart();
+                        kChartFragment.loadChartData(currentTimeLineReturnEntities, chartType);
+                    }
+                });
     }
 
     private void showDialog(int type) {
@@ -538,6 +622,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount 当前手数
      */
     private void initDialogData(int amount) {
+        if (mUnitViewList.size() == 0 || mViewPager == null) {
+            ToastUtils.show(context, "集合为空或者viewpager为空");
+            return;
+        }
         double unit = getCurrentUnit();  //获取当前商品 的单价
         CustomDialog.mEarnestMoney.setText("¥ " + NumberUtils.halfAdjust2(unit * amount)); //定金
         double chargeFree = mUnitViewList.get(mViewPager.getCurrentItem()).getOpenChargeFee() * unit * amount;//手续费
@@ -577,173 +665,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         });
     }
 
-    private void initChart() {
-        colorHomeBg = getResources().getColor(R.color.white); //背景色
-        colorLine = getResources().getColor(R.color.white);//分割线
-        colorText = getResources().getColor(R.color.color_666666);
-        colorMa5 = getResources().getColor(R.color.yellow);//条目1
-        colorMa10 = getResources().getColor(R.color.red);//条目2
-        colorMa20 = getResources().getColor(R.color.color_f05f46);//条目3
-
-        mChart.setDescription("");//描述信息
-        mChart.setDrawGridBackground(false); //是否显示表格颜色
-        mChart.setBackgroundColor(colorHomeBg);
-        mChart.setGridBackgroundColor(colorHomeBg);
-        mChart.setScaleYEnabled(true);  //Y轴激活
-        mChart.setPinchZoom(true); //如果禁用,扩展可以在x轴和y轴分别完成
-        mChart.setDrawValueAboveBar(false);
-        mChart.setNoDataText("加载中...");
-        mChart.setAutoScaleMinMaxEnabled(false);
-        mChart.setDragEnabled(false); //可以拖拽
-        mChart.setScaleEnabled(false);
-        //设置绘制顺序
-        mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(true);
-        xAxis.setGridColor(colorLine);
-        xAxis.setTextColor(colorText);
-        xAxis.setSpaceBetweenLabels(4);// 轴刻度间的宽度，默认值是4
-
-        YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setLabelCount(6, false);
-        rightAxis.setDrawGridLines(true);
-        rightAxis.setDrawAxisLine(true);
-        rightAxis.setGridColor(colorLine);
-        rightAxis.setTextColor(colorText);
-
-        YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.setEnabled(false);
-
-        int[] colors = {colorMa5, colorMa10, colorMa20};
-        String[] labels = {"MA5", "MA10", "MA20"};
-        Legend legend = mChart.getLegend();
-        legend.setCustom(colors, labels);
-        legend.setPosition(Legend.LegendPosition.ABOVE_CHART_LEFT);
-
-        for (int color : colors) {
-            legend.setTextColor(color); //设置标签的颜色
-        }
-
-        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry entry, int i, Highlight highlight) {
-                CandleEntry candleEntry = (CandleEntry) entry;
-                float change = (candleEntry.getClose() - candleEntry.getOpen()) / candleEntry.getOpen();
-                NumberFormat nf = NumberFormat.getPercentInstance();
-                nf.setMaximumFractionDigits(2);
-                String changePercentage = nf.format(Double.valueOf(String.valueOf(change)));
-                LogUtil.d("qqq", "最高" + candleEntry.getHigh() + " 最低" + candleEntry.getLow() +
-                        " 开盘" + candleEntry.getOpen() + " 收盘" + candleEntry.getClose() +
-                        " 涨跌幅" + changePercentage);
-            }
-
-            @Override
-            public void onNothingSelected() {
-            }
-        });
-    }
-
-    protected void loadChartData() {
-        mChart.resetTracking();
-
-        Random r = new Random();  //模拟随机数
-
-        candleEntries = Model.getCandleEntries();
-
-        itemcount = candleEntries.size();
-        List<StockListBean.StockBean> stockBeans = Model.getData();
-        xVals = new ArrayList<>();
-        for (int i = 0; i < itemcount; i++) {
-            int num = r.nextInt(itemcount);
-            xVals.add(stockBeans.get(num).getDate());  //模拟的日期
-        }
-
-        combinedData = new CombinedData(xVals);
-
-        /*k line*/
-        candleData = generateCandleData();
-        combinedData.setData(candleData);
-
-        /*ma5*/
-        ArrayList<Entry> ma5Entries = new ArrayList<Entry>();
-        for (int index = 0; index < itemcount; index++) {
-            ma5Entries.add(new Entry(stockBeans.get(index).getMa5(), index));
-        }
-        /*ma10*/
-        ArrayList<Entry> ma10Entries = new ArrayList<Entry>();
-        for (int index = 0; index < itemcount; index++) {
-            ma10Entries.add(new Entry(stockBeans.get(index).getMa10(), index));
-        }
-        /*ma20*/
-        ArrayList<Entry> ma20Entries = new ArrayList<Entry>();
-        for (int index = 0; index < itemcount; index++) {
-            ma20Entries.add(new Entry(stockBeans.get(index).getMa20(), index));
-        }
-
-        lineData = generateMultiLineData(   //包含三种折线图的LineData
-                generateLineDataSet(ma5Entries, colorMa5, "ma5"),
-                generateLineDataSet(ma10Entries, colorMa10, "ma10"),
-                generateLineDataSet(ma20Entries, colorMa20, "ma20"));
-
-        combinedData.setData(lineData); //加入MA5\MA10\MA20三种折线图数据
-        mChart.setData(combinedData);//当前屏幕会显示所有的数据
-        mChart.invalidate();
-    }
-
-    private LineDataSet generateLineDataSet(List<Entry> entries, int color, String label) {
-        LineDataSet set = new LineDataSet(entries, label);
-        set.setColor(color);
-        set.setLineWidth(1f);
-        set.setDrawCubic(true);//圆滑曲线
-        set.setDrawCircles(false);
-        set.setDrawCircleHole(false);
-        set.setDrawValues(false);
-        set.setHighlightEnabled(false);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-
-        return set;
-    }
-
-    //折线图
-    private LineData generateMultiLineData(LineDataSet... lineDataSets) {
-        List<LineDataSet> dataSets = new ArrayList<>();
-        Random r = new Random();
-        for (int i = 0; i < lineDataSets.length; i++) {
-            dataSets.add(lineDataSets[i]);
-        }
-
-        List<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < itemcount; i++) {
-            xVals.add("" + (r.nextInt(1990) + i));
-        }
-
-        LineData data = new LineData(xVals, dataSets);
-
-        return data;
-    }
-
-    private CandleData generateCandleData() {
-
-        CandleDataSet set = new CandleDataSet(candleEntries, "");
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setShadowWidth(0.7f);
-        set.setDecreasingColor(Color.RED);
-        set.setDecreasingPaintStyle(Paint.Style.FILL);
-        set.setIncreasingColor(Color.GREEN);
-        set.setIncreasingPaintStyle(Paint.Style.STROKE);
-        //set.setNeutralColor(Color.RED);
-        set.setShadowColorSameAsCandle(true);
-        set.setHighlightLineWidth(0.5f);
-        set.setHighLightColor(Color.WHITE);
-        set.setDrawValues(false);
-
-        CandleData candleData = new CandleData(xVals);
-        candleData.addDataSet(set);
-
-        return candleData;
-    }
 
     @Override
     public void onDestroy() {

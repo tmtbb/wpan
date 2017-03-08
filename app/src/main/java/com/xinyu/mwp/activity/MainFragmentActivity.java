@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,11 +19,15 @@ import com.unionpay.tsmservice.request.GetTransRecordRequestParams;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
 import com.xinyu.mwp.application.MyApplication;
+import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.fragment.DealFragment;
 import com.xinyu.mwp.fragment.IndexFragment;
 import com.xinyu.mwp.fragment.LeftFragment;
 import com.xinyu.mwp.fragment.ShareOrderExpectFragment;
 import com.xinyu.mwp.fragment.ShareOrderFragment;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
@@ -62,11 +67,13 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     public void createFragmentsToBackStack() {
         fragments.add(new IndexFragment());
         fragments.add(new DealFragment());
-       // fragments.add(new ShareOrderFragment());  //隐藏晒单界面
+        // fragments.add(new ShareOrderFragment());  //隐藏晒单界面
         fragments.add(new ShareOrderExpectFragment());
-
         leftFragment = new LeftFragment();
+
+
         pushFragmentToContainer(R.id.leftContainer, leftFragment);
+
         pushFragmentToBackStack(0);
     }
 
@@ -80,7 +87,9 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     protected void initView() {
         super.initView();
         UserManager.getInstance().registerUserUpdateListener(this);
+
         setSwipeBackEnable(false);
+
     }
 
     @Override
@@ -91,40 +100,67 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
             public void click(View v, int action, Object obj) {
                 toggleDrawer(false);
                 switch (action) {
-                    case R.id.icon:
-                        next(UserSettingActivity.class);
-                        break;
+//                    case R.id.icon:
+//                        next(UserSettingActivity.class);
+//                        break;
                     case R.id.login:
                         ActivityUtil.nextLogin(context);
                         break;
                     case R.id.register:
                         ActivityUtil.nextRegister(context);
                         break;
-                    case R.id.myAssetsLayout:
-                        next(UserAssetsActivity.class);
-                        break;
-                    case R.id.myScoreLayout:
-                        break;
-                    case R.id.myAttention:
-                        next(MyAttentionActivity.class);
-                        break;
-                    case R.id.myPushOrder:
-                        next(MyPushOrderActivity.class);
-                        break;
-                    case R.id.myShareOrder:
-                        next(MyShareOrderActivity.class);
-                        break;
+//                    case R.id.user_balance:
+                    //  next(UserAssetsActivity.class);
+//                        break;
+//                    case R.id.myScoreLayout:
+//                        break;
+//                    case R.id.myAttention:
+//                        next(MyAttentionActivity.class);
+//                        break;
+//                    case R.id.myPushOrder:
+//                        next(MyPushOrderActivity.class);
+//                        break;
+//                    case R.id.myShareOrder:
+//                        next(MyShareOrderActivity.class);
+//                        break;
                     case R.id.dealDetail:
-                        next(DealDetailFragmentActivity.class);
+                        if (UserManager.getInstance().isLogin()) {
+                            next(DealDetailFragmentActivity.class);
+                        } else {
+                            ToastUtils.show(context, "请先登录");
+                            ActivityUtil.nextLogin(context);
+                        }
                         break;
-                    case R.id.feedback:
-                        next(RechargeRecordActivity.class);
+//                    case R.id.feedback:
+//                        next(RechargeRecordActivity.class);
+//                        break;
+//                    case R.id.score:
+//                        next(CheckPhoneNumberActivity.class);
+//                        break;
+//                    case R.id.about:
+//                        next(AddBankInfoActivity.class);
+//                        break;
+                    case R.id.myCashOut:
+                        if (UserManager.getInstance().isLogin()) {
+                            ToastUtils.show(context, "提现");
+                            next(CashActivity.class);
+                        } else {
+                            ToastUtils.show(context, "请先登录");
+                            ActivityUtil.nextLogin(context);
+                        }
                         break;
-                    case R.id.score:
-                        next(CheckPhoneNumberActivity.class);
+                    case R.id.myRecharge:
+                        if (UserManager.getInstance().isLogin()) {
+                            ToastUtils.show(context, "充值");
+                            next(RechargeActivity.class);
+                        } else {
+                            ToastUtils.show(context, "请先登录");
+                            ActivityUtil.nextLogin(context);
+                        }
                         break;
-                    case R.id.about:
-                        next(AddBankInfoActivity.class);
+                    case R.id.logout:
+                        UserManager.getInstance().logout();
+                        ToastUtils.show(context, "退出登录");
                         break;
                 }
             }
@@ -146,6 +182,20 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
             @Override
             public void onDrawerStateChanged(int newState) {
+            }
+        });
+        SocketAPINettyBootstrap.getInstance().setOnConnectListener(new SocketAPINettyBootstrap.OnConnectListener() {
+            @Override
+            public void onExist() {
+            }
+
+            @Override
+            public void onSuccess() {
+                judgeIsLogin();
+            }
+
+            @Override
+            public void onFailure() {
             }
         });
     }
@@ -216,4 +266,36 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         LogUtil.e("test");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (UserManager.getInstance().isLogin()) {
+            leftFragment.userUpdate(true);
+        }
+    }
+
+    private void judgeIsLogin() {
+        LogUtil.d("校验token登录是否失效");
+        //判断是否登录
+        if (UserManager.getInstance().isLogin()) {
+            //利用token登录
+            String phone = UserManager.getInstance().getUserEntity().getName();
+            String token = UserManager.getInstance().getUserEntity().getToken();
+
+            NetworkAPIFactoryImpl.getUserAPI().loginWithToken(phone, token, new OnAPIListener<LoginReturnEntity>() {
+                @Override
+                public void onError(Throwable ex) {
+                    ex.printStackTrace();
+                    LogUtil.d("登录失败.token已经失效");
+                    UserManager.getInstance().logout();
+                    next(LoginActivity.class);
+                }
+
+                @Override
+                public void onSuccess(LoginReturnEntity loginReturnEntity) {
+                    LogUtil.d("登陆成功,token登录用户信息登陆成功" + loginReturnEntity.toString());
+                }
+            });
+        }
+    }
 }

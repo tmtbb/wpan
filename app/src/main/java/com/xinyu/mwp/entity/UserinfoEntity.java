@@ -8,8 +8,8 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
 
 public class UserinfoEntity extends BaseEntity {
 
-    @FieldJsonKey("uid")
-    private long uid;
+    @FieldJsonKey("id")
+    private int id;
     @FieldJsonKey("screenName")
     private String screenName;
     @FieldJsonKey("memberId")
@@ -23,14 +23,14 @@ public class UserinfoEntity extends BaseEntity {
     @FieldJsonKey("avatarLarge")
     private String avatarLarge;
     @FieldJsonKey("balance")
-    private Float balance;
+    private double balance;
 
-    public long getUid() {
-        return uid;
+    public int getId() {
+        return id;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getScreenName() {
@@ -81,11 +81,11 @@ public class UserinfoEntity extends BaseEntity {
         this.avatarLarge = avatarLarge;
     }
 
-    public Float getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Float balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 }

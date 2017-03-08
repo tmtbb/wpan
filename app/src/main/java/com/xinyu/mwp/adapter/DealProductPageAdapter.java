@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
@@ -17,10 +18,14 @@ import com.xinyu.mwp.util.TimeUtil;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.sql.Time;
+
 /**
  * 交易 productPageAdapter
  */
 public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionListReturnEntity> {
+
+//    private CurrentPositionListReturnEntity dataEntity;
 
     public DealProductPageAdapter(Context context) {
         super(context);
@@ -40,9 +45,13 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
         private ProgressBar tradeCountDown;  //进度条
         @ViewInject(R.id.tv_trade_product_countdown)
         private TextView tradeCountDownTime; //倒计时
+        @ViewInject(R.id.tv_trade_countdown)
+        private TextView tradeCountdownDesc; //倒计时
+        private double timer;
 
         public DealProductPageViewHolder(Context context) {
             super(context);
+            handler.sendEmptyMessage(1);
         }
 
         @Override
@@ -50,30 +59,58 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
             return R.layout.item_deal_order_page;
         }
 
+        CurrentPositionListReturnEntity dataEntity;
+
         @Override
         protected void update(final CurrentPositionListReturnEntity data) {
+            dataEntity = data;
+            //刷新
             if (data != null) {
                 productName.setText(data.getName());
                 openPositionCount.setText(data.getAmount() + "");
-//                tradeCountDown.setProgress(data.getCloseTime());
-                tradeCountDownTime.setText(TimeUtil.getMinuteAndSecond(data.getCloseTime()));
-                final Handler handler = new Handler();
-//                processCountDown((long) data.getInterval());//加载倒计时
+
+                tradeCountDownTime.setText(TimeUtil.getMinuteAndSecond((long) (dataEntity.getInterval() * 1000)));
+                double interval = dataEntity.getInterval();
+                timer = interval;
             }
         }
 
-        private void processCountDown(final long interval) {
-            new CountDownTimer(interval, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                }
+        public Handler handler = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        boolean isNeedCountTime = false;
 
-                @Override
-                public void onFinish() {
-                    LogUtil.i("done!");
+                        if (timer > 0) {
+                            isNeedCountTime = true;
+                            timer = timer - 1;
+                            tradeCountDownTime.setText(TimeUtil.getMinuteAndSecond((long) (timer * 1000)));
+                            int process = (int) ((dataEntity.getInterval() - timer) * 100 / dataEntity.getInterval());
+                            tradeCountDown.setProgress(process);
+                        } else {
+                            tradeCountDownTime.setText("00:00");
+                            tradeCountDownTime.setTextColor(context.getResources().getColor(R.color.color_cccccc));
+                            tradeCountdownDesc.setTextColor(context.getResources().getColor(R.color.color_cccccc));
+                            if (litener != null) {
+                                litener.refreshData();  //结束的接口回调
+                            }
+                        }
+                        if (isNeedCountTime) {
+                            handler.sendEmptyMessageDelayed(1, 1000);
+                        }
+                        break;
                 }
-            }.start();
-        }
+            }
+        };
     }
 
+    public TimeFinishLitener litener;
+
+    public void setTimeFinishLitener(TimeFinishLitener litener) {
+        this.litener = litener;
+    }
+
+    public interface TimeFinishLitener {
+        void refreshData();
+    }
 }

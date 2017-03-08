@@ -7,12 +7,10 @@ import android.widget.Button;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.UserinfoEntity;
-import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.http.NetworkHttpAPIFactoryImpl;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.Utils;
@@ -30,7 +28,6 @@ import org.xutils.view.annotation.ViewInject;
  * @revise : none
  */
 public class ResetDealPwdActivity extends BaseControllerActivity {
-
 
     @ViewInject(R.id.pwdEditText1)
     private WPEditText pwdEditText1;
@@ -71,11 +68,11 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
                 CheckException exception = new CheckException();
                 if (checkHelper.checkPassword(pwdEditText1.getEditTextString(), exception)
                         && checkHelper.checkPassword2(pwdEditText1.getEditTextString(), pwdEditText2.getEditTextString(), exception)) {
-                   // String pwd = SHA256Util.sha256(pwdEditText2.getEditTextString());
-                    String pwd = SHA256Util.shaEncrypt(pwdEditText2.getEditTextString()+"t1@s#df!");
-                    String newPwd = SHA256Util.shaEncrypt(pwd+new UserinfoEntity().getMemberId());
+                    // String pwd = SHA256Util.sha256(pwdEditText2.getEditTextString());
+                    String pwd = SHA256Util.shaEncrypt(pwdEditText2.getEditTextString() + "t1@s#df!");
+                    String newPwd = SHA256Util.shaEncrypt(pwd + new UserinfoEntity().getMemberId());
                     Utils.closeSoftKeyboard(v);
-                   resetDealPwd(newPwd);
+                    resetDealPwd(newPwd);
                     showLoader("提交中...");
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -94,7 +91,8 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
 
     private void resetDealPwd(String pwd) {
         String memberId = new UserinfoEntity().getMemberId();
-        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(memberId, pwd,null, new OnAPIListener<Object>() {
+        int type = 1;//0：登录密码 1：交易密码，提现密码
+        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(memberId, pwd, null, type, new OnAPIListener<Object>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
@@ -102,7 +100,7 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
 
             @Override
             public void onSuccess(Object object) {
-                LogUtil.d("请求数据成功,交易密码,返回的数据为:"+object.toString());
+                LogUtil.d("请求数据成功,交易密码,返回的数据为:" + object.toString());
             }
         });
     }
