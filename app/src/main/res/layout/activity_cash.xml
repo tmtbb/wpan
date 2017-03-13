@@ -65,12 +65,26 @@
                 app:celledit_hint="全部提现"
                 app:celledit_name="金额" />
 
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/cash_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="全部提现"
+                app:celledit_name="提现密码" />
+            <com.xinyu.mwp.view.CellEditView
+                android:id="@+id/cash_comments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:celledit_hint="备注"
+                app:celledit_name="添加备注" />
+
             <include layout="@layout/ly_space" />
 
             <com.xinyu.mwp.view.CheckCodeView
                 android:id="@+id/checkCode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/cash"

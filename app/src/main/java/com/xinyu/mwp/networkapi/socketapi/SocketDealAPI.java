@@ -9,6 +9,8 @@ import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.TotalDealInfoEntity;
+import com.xinyu.mwp.entity.WXPayReturnEntity;
+import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.DealAPI;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
@@ -141,7 +143,32 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void totalDealInfo(OnAPIListener<List<TotalDealInfoEntity>> listener) {
+    public void historyDealList(int start, int count, String symbol, OnAPIListener<List<HistoryPositionListReturnEntity>> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", 32);
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("start", start);
+        map.put("count", count);
+        map.put("symbol", symbol);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
+                SocketAPIConstant.ReqeutType.Time, map);
+        requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
+    }
+
+    @Override
+    public void historyPositionDetail(long positionId, OnAPIListener<HistoryPositionListReturnEntity> listener) {
+        LogUtil.d("请求历史交易详情");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", 32);
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("positionId", positionId);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
+                SocketAPIConstant.ReqeutType.Time, map);
+        requestEntity(socketDataPacket, HistoryPositionListReturnEntity.class, listener);
+    }
+
+    @Override
+    public void totalDealInfo(OnAPIListener<TotalDealInfoEntity> listener) {
         LogUtil.d("请求交易总概况数据");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
@@ -152,4 +179,45 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         requestEntity(socketDataPacket, TotalDealInfoEntity.class, listener);
     }
 
+    @Override
+    public void weixinPay(String title, double price, OnAPIListener<WXPayReturnEntity> listener) {
+        LogUtil.d("请求微信支付");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+//        map.put("id", 32);
+        map.put("title", title);
+        map.put("price", price);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXPay,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestEntity(socketDataPacket, WXPayReturnEntity.class, listener);
+    }
+
+    @Override
+    public void cash(double money, int bankId, String password, String comment, OnAPIListener<WithDrawCashReturnEntity> listener) {
+        LogUtil.d("请求提现--");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("price", money);
+        map.put("bankId", bankId);
+        map.put("password", password);
+        map.put("comment", comment);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Cash,
+                SocketAPIConstant.ReqeutType.History, map);
+        requestEntity(socketDataPacket, WithDrawCashReturnEntity.class, listener);
+    }
+
+    @Override
+    public void cashList(String status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener) {
+        LogUtil.d("提现列表请求网络");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("start", startPos);
+        map.put("count", count);
+        map.put("status", status);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CashList,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestEntitys(socketDataPacket, "withdrawList", WithDrawCashReturnEntity.class, listener);
+    }
 }

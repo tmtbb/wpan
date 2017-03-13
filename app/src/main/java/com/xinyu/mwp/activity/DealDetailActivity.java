@@ -5,6 +5,10 @@ import android.view.View;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.view.CellView;
 
 import org.xutils.view.annotation.ViewInject;
@@ -38,6 +42,25 @@ public class DealDetailActivity extends BaseControllerActivity {
     protected void initView() {
         super.initView();
         setTitle("交易详情");
+        String positionId = getIntent().getStringExtra("positionId");
+        LogUtil.d("交易详情获取的id:" + positionId);
+        requestNetData(positionId);
+    }
+
+    private void requestNetData(String positionId) {
+        long id = Long.valueOf(positionId);
+        NetworkAPIFactoryImpl.getDealAPI().historyPositionDetail(id, new OnAPIListener<HistoryPositionListReturnEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+                LogUtil.d("历史仓位详情请求网络失败");
+            }
+
+            @Override
+            public void onSuccess(HistoryPositionListReturnEntity historyPositionListReturnEntity) {
+                LogUtil.d("历史记录详情请求网络成功:" + historyPositionListReturnEntity.toString());
+            }
+        });
     }
 
     @Override

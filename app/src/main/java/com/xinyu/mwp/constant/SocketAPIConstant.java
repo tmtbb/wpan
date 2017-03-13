@@ -13,7 +13,6 @@ public interface SocketAPIConstant {
         byte Deal = 5;
         byte Verify = 1;
         byte History = 6;
-
     }
 
     interface OperateCode {
@@ -29,7 +28,10 @@ public interface SocketAPIConstant {
         Short KChart = 4005;
         Short Position = 5003;
         Short History = 6001;
-        Short Balance = 1003;
+        Short Balance = 3007;
         Short Total = 6003;
+        Short WXPay = 7033;
+        Short Cash = 6011;
+        Short CashList = 6005;
     }
 }

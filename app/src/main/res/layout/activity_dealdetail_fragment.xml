@@ -90,7 +90,13 @@
 
     <include layout="@layout/ly_space" />
 
-    <include layout="@layout/ly_tab_bar" />
+    <!--<include layout="@layout/ly_tab_bar" />-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white" />
 
     <include layout="@layout/ly_space" />
 

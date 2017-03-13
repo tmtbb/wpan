@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_userassets_title" />
+
+    <com.xinyu.mwp.view.CellView
+        android:id="@+id/buy_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cell_icon="@mipmap/icon_buyup"
+        app:cell_content="00000"
+        app:cell_name="xxx" />
+
+    <include layout="@layout/ly_space" />
+</LinearLayout>

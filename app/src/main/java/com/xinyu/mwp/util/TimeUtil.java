@@ -77,4 +77,12 @@ public class TimeUtil {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
         return format.format(new Date(time));
     }
+    public static String getWeekAndDate(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("E MM-dd");
+        return format.format(new Date(time));
+    }
+    public static String getWeekAndYearDate(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("E yyyyMM-dd");
+        return format.format(new Date(time));
+    }
 }
