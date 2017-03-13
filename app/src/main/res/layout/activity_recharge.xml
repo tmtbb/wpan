@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/default_bg"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,6 +68,7 @@
                     android:id="@+id/myBankCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     core_ptr:cell_content="请绑定银行卡"
                     core_ptr:cell_content_color="@color/font_999"
                     core_ptr:cell_content_size="14sp"
@@ -78,17 +80,54 @@
                     core_ptr:cell_name_color="@color/font_666"
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
 
-                <com.xinyu.mwp.view.CellView
-                    android:id="@+id/rechargeMoney"
+
+                <LinearLayout
+                    android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    core_ptr:cell_contentleft="100元"
-                    core_ptr:cell_contentleft_color="@color/font_333"
-                    core_ptr:cell_contentleft_size="18sp"
-                    core_ptr:cell_icon="@mipmap/icon_recharge_money"
-                    core_ptr:cell_name="充值金额"
-                    core_ptr:cell_name_color="@color/font_666"
-                    core_ptr:cell_name_size="@dimen/fontSize_16sp" />
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:src="@mipmap/icon_recharge_money" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_13"
+                        android:text="充值金额"
+                        android:textColor="@color/color_666666"
+                        android:textSize="@dimen/fontSize_16sp" />
+
+                    <EditText
+                        android:id="@+id/rechargeMoney"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="请输入充值金额"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:paddingLeft="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_5"
+                        android:textColor="@color/font_333"
+                        android:textSize="@dimen/fontSize_18sp" />
+
+                    <!--<com.xinyu.mwp.view.CellEditView-->
+                    <!---->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--core_ptr:cell_contentleft="100元"-->
+                    <!--core_ptr:cell_contentleft_color="@color/font_333"-->
+                    <!--core_ptr:cell_contentleft_size="18sp"-->
+                    <!--core_ptr:cell_icon="@mipmap/icon_recharge_money"-->
+                    <!--core_ptr:cell_name="充值金额"-->
+                    <!--core_ptr:cell_name_color="@color/font_666"-->
+                    <!--core_ptr:cell_name_size="@dimen/fontSize_16sp" />-->
+
+                </LinearLayout>
 
                 <com.xinyu.mwp.view.CellView
                     android:id="@+id/rechargeType"

@@ -76,14 +76,14 @@ public class LeftFragment extends BaseControllerFragment {
     }
 
     private void requestUserDealInfo() {
-        NetworkAPIFactoryImpl.getDealAPI().totalDealInfo(new OnAPIListener<List<TotalDealInfoEntity>>() {
+        NetworkAPIFactoryImpl.getDealAPI().totalDealInfo(new OnAPIListener<TotalDealInfoEntity>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
             }
 
             @Override
-            public void onSuccess(List<TotalDealInfoEntity> totalDealInfoEntities) {
+            public void onSuccess(TotalDealInfoEntity totalDealInfoEntities) {
                 LogUtil.d("交易总概览请求数据成功:" + totalDealInfoEntities.toString());
             }
         });
@@ -94,6 +94,7 @@ public class LeftFragment extends BaseControllerFragment {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                LogUtil.d("余额请求失败");
             }
 
             @Override

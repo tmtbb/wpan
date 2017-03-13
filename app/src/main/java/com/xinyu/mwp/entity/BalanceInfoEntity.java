@@ -9,7 +9,7 @@ public class BalanceInfoEntity extends BaseEntity {
      * balance : 188.0
      */
 
-    private double balance;
+    private double balance = 0;
 
     public double getBalance() {
         return balance;

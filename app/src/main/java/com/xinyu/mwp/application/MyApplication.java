@@ -10,6 +10,8 @@ import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGener
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.Host;
@@ -32,6 +34,8 @@ public class MyApplication extends Application implements OnUserUpdateListener {
 
     private static MyApplication application;
     public static List<Activity> activityList = new ArrayList<Activity>();
+    public IWXAPI api;
+    private static final String APP_ID = "wx9dc39aec13ee3158";//需要换成正式的id
 
     @Override
     public void onCreate() {
@@ -40,9 +44,8 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initNetworkAPIConfig();
         initImageLoader();
         initUser();
-
+        regToWx();
     }
-
 
     private void initNetworkAPIConfig() {
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
@@ -136,5 +139,9 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
+    private void regToWx() {
+        api = WXAPIFactory.createWXAPI(this,APP_ID,true);
+        api.registerApp(APP_ID);
+    }
 
 }

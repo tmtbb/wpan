@@ -143,4 +143,7 @@ public class CellView extends BaseFrameLayout {
         updateName(name);
         updateContent(content);
     }
+    public void updateContentLeftImage(int id) {
+        icon.setImageResource(id);
+    }
 }

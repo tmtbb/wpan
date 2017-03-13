@@ -211,7 +211,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 return false;
             }
         });
-
     }
 
     @Override

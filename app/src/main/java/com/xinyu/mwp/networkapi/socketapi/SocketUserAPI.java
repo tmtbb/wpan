@@ -30,7 +30,7 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         LogUtil.d("开始登录");
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", phone);
-        map.put("pwd", password);
+        map.put("pwd", "d2337e370831e755254797c9a2d3139aa9a53bb977ad7ad27e213d30eccade2d");
         map.put("source", 2);
         LogUtil.d("phone:" + phone + "pwd:" + password);
 //        map.put("deviceId", deviceId);
@@ -97,9 +97,6 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", phone);
         map.put("token", token);
-        //  map.put("source", 2);
-        // LogUtil.d("phone:" + phone + "pwd:" + password);
-//        map.put("deviceId", deviceId);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Login,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, LoginReturnEntity.class, listener);
