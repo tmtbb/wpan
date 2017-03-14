@@ -15,7 +15,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/dp_15"
         android:layout_weight="7.9"
-        android:text="7.2890"
+        android:text="-.----"
         android:textColor="@color/default_green"
         android:textSize="@dimen/fontSize_25sp" />
 

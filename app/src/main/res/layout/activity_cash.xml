@@ -69,7 +69,7 @@
                 android:id="@+id/cash_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:celledit_hint="全部提现"
+                app:celledit_hint="输入密码"
                 app:celledit_name="提现密码" />
             <com.xinyu.mwp.view.CellEditView
                 android:id="@+id/cash_comments"

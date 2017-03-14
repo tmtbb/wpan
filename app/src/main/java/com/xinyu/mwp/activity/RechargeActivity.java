@@ -34,6 +34,7 @@ import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellEditView;
@@ -120,11 +121,11 @@ public class RechargeActivity extends BaseRefreshActivity {
     }
 
     private void commitPay() {
-        if (choice == 0 ) {
+        if (choice == 0) {
             ToastUtils.show(context, "微信支付");
             String title = "微盘-余额充值";
-            if (TextUtils.isEmpty(rechargeMoney.getEditableText().toString().trim())){
-                ToastUtils.show(context,"输入不能为空");
+            if (TextUtils.isEmpty(rechargeMoney.getEditableText().toString().trim())) {
+                ToastUtils.show(context, "输入不能为空");
                 return;
             }
             double price = Double.parseDouble(rechargeMoney.getEditableText().toString().trim());
@@ -188,6 +189,12 @@ public class RechargeActivity extends BaseRefreshActivity {
     }
 
     @Override
+    public void beforeFinish() {
+//        super.beforeFinish();
+        return;
+    }
+
+    @Override
     protected void initListener() {
         super.initListener();
         setOnRefreshListener(new OnRefreshListener() {
@@ -196,8 +203,9 @@ public class RechargeActivity extends BaseRefreshActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        account.updateContentLeft(UserManager.getInstance().getUserEntity().getName());
-                        money.updateContentLeft(UserManager.getInstance().getUserEntity().getBalance() + "元");
+                        LogUtil.d("当前账户:" + UserManager.getInstance().getUserEntity().getName() + "所有的信息是:" + UserManager.getInstance().getUserEntity().toString());
+                        account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
+                        money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
 //                        myBankCard.updateContentLeft("3");
 //                        rechargeMoney.setEditTextString("999元");
                         rechargeType.updateContentLeft(Constant.rechargeType[choice]);

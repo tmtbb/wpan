@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
@@ -20,6 +21,7 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -37,14 +39,12 @@ import org.xutils.view.annotation.ViewInject;
  * @revise : none
  */
 public class RegisterActivity extends BaseControllerActivity {
-
-
     @ViewInject(R.id.phoneEditText)
     private WPEditText phoneEditText;
     @ViewInject(R.id.msgEditText)
     private WPEditText msgEditText;
     //    @ViewInject(R.id.soundEditText)
-//    private WPEditText soundEditText;
+    //    private WPEditText soundEditText;
     @ViewInject(R.id.pwdEditText)
     private WPEditText pwdEditText;
     @ViewInject(R.id.nextButton)
@@ -102,7 +102,6 @@ public class RegisterActivity extends BaseControllerActivity {
                 } else {
                     closeLoader();
                     showToast(exception.getErrorMsg());
-
                 }
             }
         });
@@ -160,16 +159,18 @@ public class RegisterActivity extends BaseControllerActivity {
 
                     @Override
                     public void onSuccess(LoginReturnEntity loginReturnEntity) {
-                        NetworkAPIFactoryImpl.getConfig().setUserToken(loginReturnEntity.getToken());
-                        NetworkAPIFactoryImpl.getConfig().setUserId(loginReturnEntity.getUserinfo().getId());
                         UserEntity en = new UserEntity();
+                        en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                         en.setId(loginReturnEntity.getUserinfo().getId());
-                        en.setName(phone);
                         en.setToken(loginReturnEntity.getToken());
-
-                        UserManager.getInstance().saveUserEntity(en, true);
+                        en.setName(loginReturnEntity.getUserinfo().getMemberName());
+                        en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
+                        en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
+                        en.setMobile(phone);
+                        UserManager.getInstance().saveUserEntity(en);
                         UserManager.getInstance().setLogin(true);
-
+                        MyApplication.getApplication().onUserUpdate(true);
+                        SPUtils.putString("phone",phone);
                         finish();
                     }
                 });

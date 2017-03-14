@@ -1,41 +1,29 @@
 package com.xinyu.mwp.activity;
 
-import android.app.Activity;
-import android.graphics.Color;
+
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.jaeger.library.StatusBarUtil;
-import com.unionpay.tsmservice.request.GetTransRecordRequestParams;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
 import com.xinyu.mwp.application.MyApplication;
-import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.fragment.DealFragment;
 import com.xinyu.mwp.fragment.IndexFragment;
 import com.xinyu.mwp.fragment.LeftFragment;
 import com.xinyu.mwp.fragment.ShareOrderExpectFragment;
-import com.xinyu.mwp.fragment.ShareOrderFragment;
-import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
-import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
 
 /**
  * @author : Created by Benjamin
@@ -71,9 +59,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         fragments.add(new ShareOrderExpectFragment());
         leftFragment = new LeftFragment();
 
-
         pushFragmentToContainer(R.id.leftContainer, leftFragment);
-
         pushFragmentToBackStack(0);
     }
 
@@ -87,9 +73,8 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     protected void initView() {
         super.initView();
         UserManager.getInstance().registerUserUpdateListener(this);
-
         setSwipeBackEnable(false);
-
+        judgeIsLogin();
     }
 
     @Override
@@ -124,12 +109,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 //                        next(MyShareOrderActivity.class);
 //                        break;
                     case R.id.dealDetail:
-                        if (UserManager.getInstance().isLogin()) {
-                            next(DealDetailFragmentActivity.class);
-                        } else {
-                            ToastUtils.show(context, "请先登录");
-                            ActivityUtil.nextLogin(context);
-                        }
+                        next(DealDetailFragmentActivity.class);
                         break;
 //                    case R.id.feedback:
 //                        next(RechargeRecordActivity.class);
@@ -141,26 +121,15 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 //                        next(AddBankInfoActivity.class);
 //                        break;
                     case R.id.myCashOut:
-                        if (UserManager.getInstance().isLogin()) {
-                            ToastUtils.show(context, "提现");
-                            next(CashActivity.class);
-                        } else {
-                            ToastUtils.show(context, "请先登录");
-                            ActivityUtil.nextLogin(context);
-                        }
+                        next(CashActivity.class);
                         break;
                     case R.id.myRecharge:
-                        if (UserManager.getInstance().isLogin()) {
-                            ToastUtils.show(context, "充值");
-                            next(RechargeActivity.class);
-                        } else {
-                            ToastUtils.show(context, "请先登录");
-                            ActivityUtil.nextLogin(context);
-                        }
+                        next(RechargeActivity.class);
                         break;
                     case R.id.logout:
                         UserManager.getInstance().logout();
                         ToastUtils.show(context, "退出登录");
+                        next(LoginActivity.class);
                         break;
                 }
             }
@@ -182,20 +151,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
             @Override
             public void onDrawerStateChanged(int newState) {
-            }
-        });
-        SocketAPINettyBootstrap.getInstance().setOnConnectListener(new SocketAPINettyBootstrap.OnConnectListener() {
-            @Override
-            public void onExist() {
-            }
-
-            @Override
-            public void onSuccess() {
-                judgeIsLogin();
-            }
-
-            @Override
-            public void onFailure() {
             }
         });
     }
@@ -220,7 +175,11 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
     @Override
     public void onUserUpdate(boolean isLogin) {
-        leftFragment.userUpdate(isLogin);
+        LogUtil.d("执行onUserUpdate");
+        if (isLogin) {
+            leftFragment.update();
+        }
+
     }
 
     public void onClickSelect(View view) {
@@ -269,33 +228,16 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     @Override
     protected void onResume() {
         super.onResume();
+        LogUtil.d("执行onResume");
         if (UserManager.getInstance().isLogin()) {
-            leftFragment.userUpdate(true);
+            leftFragment.userUpdate();
         }
+
     }
 
     private void judgeIsLogin() {
-        LogUtil.d("校验token登录是否失效");
-        //判断是否登录
-        if (UserManager.getInstance().isLogin()) {
-            //利用token登录
-            String phone = UserManager.getInstance().getUserEntity().getName();
-            String token = UserManager.getInstance().getUserEntity().getToken();
-
-            NetworkAPIFactoryImpl.getUserAPI().loginWithToken(phone, token, new OnAPIListener<LoginReturnEntity>() {
-                @Override
-                public void onError(Throwable ex) {
-                    ex.printStackTrace();
-                    LogUtil.d("登录失败.token已经失效");
-                    UserManager.getInstance().logout();
-                    next(LoginActivity.class);
-                }
-
-                @Override
-                public void onSuccess(LoginReturnEntity loginReturnEntity) {
-                    LogUtil.d("登陆成功,token登录用户信息登陆成功" + loginReturnEntity.toString());
-                }
-            });
+        if (!UserManager.getInstance().isLogin()) {
+            next(LoginActivity.class);
         }
     }
 }

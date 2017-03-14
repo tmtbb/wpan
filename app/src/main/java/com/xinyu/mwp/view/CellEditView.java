@@ -2,6 +2,7 @@ package com.xinyu.mwp.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -112,5 +113,15 @@ public class CellEditView extends BaseFrameLayout implements OnTextChangeListene
         if (edit != null && !TextUtils.isEmpty(str)) {
             edit.setText(str);
         }
+    }
+
+    public void setEditTextTypeToPwd(String str) {
+        if (edit != null && !TextUtils.isEmpty(str)) {
+            edit.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        }
+    }
+
+    public EditText getEdit() {
+        return edit;
     }
 }

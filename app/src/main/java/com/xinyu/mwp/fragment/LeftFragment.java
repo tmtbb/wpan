@@ -54,25 +54,13 @@ public class LeftFragment extends BaseControllerFragment {
     }
 
     public void update() {
-
+        balance.setText(UserManager.getInstance().getUserEntity().getBalance() + "");
+        LogUtil.d("金额是:" + UserManager.getInstance().getUserEntity().getBalance());
     }
 
-    public void userUpdate(boolean isLogin) {
-        if (isLogin) {
-            userBalanceText.setVisibility(View.VISIBLE);
-            unLoginLayout.setVisibility(View.GONE);
-            balance.setVisibility(View.VISIBLE);
-            logout.setVisibility(View.VISIBLE);
-
-            requestUserBalance();//请求余额信息
-            requestUserDealInfo();//请求总单数,总手数
-        } else {
-            userBalanceText.setVisibility(View.INVISIBLE);
-            unLoginLayout.setVisibility(View.VISIBLE);
-            balance.setVisibility(View.GONE);
-            logout.setVisibility(View.INVISIBLE);
-        }
-
+    public void userUpdate() {
+        requestUserBalance();//请求余额信息
+        requestUserDealInfo();//请求总单数,总手数
     }
 
     private void requestUserDealInfo() {
@@ -118,6 +106,24 @@ public class LeftFragment extends BaseControllerFragment {
     protected void initView() {
         super.initView();
         LogUtil.d("左边的fragment初始化了");
-        userUpdate(UserManager.getInstance().isLogin());
+
+//        initLoginLayout(UserManager.getInstance().isLogin());
+        initLoginLayout(true);
+//        userUpdate();
+    }
+
+    private void initLoginLayout(boolean isLogin) {
+        if (isLogin) {
+            userBalanceText.setVisibility(View.VISIBLE);
+            unLoginLayout.setVisibility(View.GONE);
+            balance.setVisibility(View.VISIBLE);
+            logout.setVisibility(View.VISIBLE);
+
+        } else {
+            userBalanceText.setVisibility(View.INVISIBLE);
+            unLoginLayout.setVisibility(View.VISIBLE);
+            balance.setVisibility(View.GONE);
+            logout.setVisibility(View.INVISIBLE);
+        }
     }
 }
