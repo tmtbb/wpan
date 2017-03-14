@@ -1,12 +1,15 @@
 package com.xinyu.mwp.activity;
 
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.exception.CheckException;
@@ -15,8 +18,8 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
-import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.view.WPEditText;
@@ -43,7 +46,7 @@ public class LoginActivity extends BaseControllerActivity {
     @ViewInject(R.id.loginButton)
     private Button loginButton;
     private CheckHelper checkHelper = new CheckHelper();
-
+    private long exitNow;
 
     @Override
     protected int getContentView() {
@@ -54,8 +57,10 @@ public class LoginActivity extends BaseControllerActivity {
     protected void initView() {
         super.initView();
         setTitle("登录");
+        leftImage.setVisibility(View.INVISIBLE);
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
+        setSwipeBackEnable(false);
     }
 
 
@@ -74,6 +79,7 @@ public class LoginActivity extends BaseControllerActivity {
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(view);
+
                     String pwd = SHA256Util.shaEncrypt(passwordEditText.getEditTextString() + "t1@s#df!");
                     String newPwd = SHA256Util.shaEncrypt(pwd + userNameEditText.getEditTextString());
 
@@ -88,19 +94,21 @@ public class LoginActivity extends BaseControllerActivity {
 
                                 @Override
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
-
                                     closeLoader();
                                     ToastUtils.show(context, "登陆成功");
-                                    NetworkAPIFactoryImpl.getConfig().setUserToken(loginReturnEntity.getToken());
-                                    NetworkAPIFactoryImpl.getConfig().setUserId(loginReturnEntity.getUserinfo().getId());
                                     UserEntity en = new UserEntity();
+                                    en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());
-                                    en.setName(userNameEditText.getEditTextString());
                                     en.setToken(loginReturnEntity.getToken());
+                                    en.setName(loginReturnEntity.getUserinfo().getMemberName());
+                                    en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
+                                    en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
 
-                                    UserManager.getInstance().saveUserEntity(en, true);
+                                    en.setMobile(userNameEditText.getEditTextString());
+                                    UserManager.getInstance().saveUserEntity(en);
                                     UserManager.getInstance().setLogin(true);
-
+                                    MyApplication.getApplication().onUserUpdate(true);
+                                    SPUtils.putString("phone", userNameEditText.getEditTextString());
                                     finish();
                                 }
                             });
@@ -114,8 +122,18 @@ public class LoginActivity extends BaseControllerActivity {
     }
 
     @Override
-    public void back() {
-        Utils.closeSoftKeyboard(rootView);
-        super.back();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)) {
+
+            if ((System.currentTimeMillis() - exitNow) > 2000) {
+                Toast.makeText(this, String.format(getString(R.string.confirm_exit_app), getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
+                exitNow = System.currentTimeMillis();
+            } else if ((System.currentTimeMillis() - exitNow) > 0) {
+                MyApplication.getApplication().exitApp(this);
+                return super.onKeyDown(keyCode, event);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

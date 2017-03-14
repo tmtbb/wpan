@@ -49,9 +49,9 @@ android {
         keystore {
             v2SigningEnabled false
         }
-        debug {
-            storeFile file("../debug.keystore")
-        }
+//        debug {
+//            storeFile file("../debug.keystore")
+//        }
     }
 
 }

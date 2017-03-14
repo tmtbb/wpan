@@ -80,7 +80,7 @@ public class UserEntity extends BaseEntity implements Serializable {
 
     //用户等级
     @FieldJsonKey("levelsName")
-    private String levelsName;
+    private String levelsName;//会员昵称
     @Deprecated
     @FieldJsonKey("levels")
     private String levels = "1";

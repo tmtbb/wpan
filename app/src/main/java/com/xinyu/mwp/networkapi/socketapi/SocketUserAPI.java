@@ -92,12 +92,12 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     }
 
     @Override
-    public void loginWithToken(String phone, String token, OnAPIListener<LoginReturnEntity> listener) {
+    public void loginWithToken( OnAPIListener<LoginReturnEntity> listener) {
         LogUtil.d("用token登录");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("phone", phone);
-        map.put("token", token);
-        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Login,
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Token,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, LoginReturnEntity.class, listener);
     }

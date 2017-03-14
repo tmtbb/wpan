@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
 
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -12,16 +13,22 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xinyu.mwp.activity.LoginActivity;
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.LoginReturnEntity;
+import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.FileCacheUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.Utils;
 
 import org.xutils.x;
@@ -45,7 +52,9 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initImageLoader();
         initUser();
         regToWx();
+        checkToken();
     }
+
 
     private void initNetworkAPIConfig() {
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
@@ -140,8 +149,55 @@ public class MyApplication extends Application implements OnUserUpdateListener {
     }
 
     private void regToWx() {
-        api = WXAPIFactory.createWXAPI(this,APP_ID,true);
+        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);
     }
 
+    private void checkToken() {
+        SocketAPINettyBootstrap.getInstance().setOnConnectListener(new SocketAPINettyBootstrap.OnConnectListener() {
+            @Override
+            public void onExist() {
+            }
+
+            @Override
+            public void onSuccess() {
+                judgeIsLogin();
+            }
+
+            @Override
+            public void onFailure() {
+            }
+        });
+    }
+
+    private void judgeIsLogin() {
+        if (UserManager.getInstance().isLogin()) {
+            LogUtil.d("已经登录,开始校验token");
+            NetworkAPIFactoryImpl.getUserAPI().loginWithToken(new OnAPIListener<LoginReturnEntity>() {
+                @Override
+                public void onError(Throwable ex) {
+                    ex.printStackTrace();
+                    LogUtil.d("登录失败.token已经失效");
+                    UserManager.getInstance().logout();
+                }
+
+                @Override
+                public void onSuccess(LoginReturnEntity loginReturnEntity) {
+                    UserEntity en = new UserEntity();
+                    en.setBalance(loginReturnEntity.getUserinfo().getBalance());
+                    en.setId(loginReturnEntity.getUserinfo().getId());
+                    en.setToken(loginReturnEntity.getToken());
+                    en.setName(loginReturnEntity.getUserinfo().getMemberName());
+                    en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
+                    en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
+
+                    String phone = SPUtils.getString("phone", "");
+                    en.setMobile(phone);
+                    UserManager.getInstance().saveUserEntity(en);
+
+                    onUserUpdate(true);
+                }
+            });
+        }
+    }
 }

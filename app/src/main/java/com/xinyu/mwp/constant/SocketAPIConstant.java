@@ -33,5 +33,6 @@ public interface SocketAPIConstant {
         Short WXPay = 7033;
         Short Cash = 6011;
         Short CashList = 6005;
+        Short Token = 3009;
     }
 }

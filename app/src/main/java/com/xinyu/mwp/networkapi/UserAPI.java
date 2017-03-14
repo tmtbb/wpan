@@ -20,6 +20,6 @@ public interface UserAPI {
     void verifyCode(String phone,int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener);
     void resetDealPwd(String phone,String pwd, String vCode,int type,OnAPIListener<Object> listener); //修改交易/用户密码
     void test(int testID,OnAPIListener<Object> listener);
-    void loginWithToken(String phone, String token, OnAPIListener<LoginReturnEntity> listener);
+    void loginWithToken(OnAPIListener<LoginReturnEntity> listener);
     void balance(OnAPIListener<BalanceInfoEntity> listener);
 }

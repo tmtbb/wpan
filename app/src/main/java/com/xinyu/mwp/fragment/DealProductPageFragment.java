@@ -73,7 +73,7 @@ import java.util.Random;
 
 
 /**
- * @describe : 交易界面 白银/原油/咖啡 详情
+ * @describe : 交易界面 商品详情
  */
 public class DealProductPageFragment extends BaseRefreshAbsListControllerFragment<CurrentPositionListReturnEntity> implements View.OnClickListener {
     private DealProductPageAdapter adapter;

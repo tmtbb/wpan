@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 
 import com.xinyu.mwp.R;
@@ -57,7 +59,6 @@ public class CashActivity extends BaseControllerActivity {
     private String password;
     private String comment;
 
-
     @Override
     protected int getContentView() {
         return R.layout.activity_cash;
@@ -69,6 +70,9 @@ public class CashActivity extends BaseControllerActivity {
         setTitle("提现");
         rightText.setVisibility(View.VISIBLE);
         rightText.setText("提现记录");
+        cardNo.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER);
+        pwd.getEdit().setTransformationMethod(PasswordTransformationMethod.getInstance());//设置密码不可见
+        money.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
     @Override
@@ -105,7 +109,9 @@ public class CashActivity extends BaseControllerActivity {
         String cardNumber = cardNo.getEditTextString();
         String userName = cardName.getEditTextString();
         comment = cash_comments.getEditTextString();
+
         password = pwd.getEditTextString();
+
         price = Double.parseDouble(money.getEditTextString());
     }
 
@@ -140,7 +146,6 @@ public class CashActivity extends BaseControllerActivity {
                         startActivity(intent);
                         break;
                 }
-
             }
         });
     }
