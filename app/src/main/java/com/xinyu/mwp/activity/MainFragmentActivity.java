@@ -178,6 +178,8 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         LogUtil.d("执行onUserUpdate");
         if (isLogin) {
             leftFragment.update();
+        }else{
+            next(LoginActivity.class);
         }
 
     }

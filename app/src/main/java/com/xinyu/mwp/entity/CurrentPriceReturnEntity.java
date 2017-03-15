@@ -19,6 +19,7 @@ public class CurrentPriceReturnEntity extends BaseEntity {
      * lowPrice : 1.01
      * priceTime : 1483137783
      * upDown : 12.1
+     *  "pchg": 0.06,
      */
 
     private String goodType;
@@ -32,6 +33,42 @@ public class CurrentPriceReturnEntity extends BaseEntity {
     private double lowPrice;
     private int priceTime;
     private double upDown;
+    private double pchg;
+    private String symbol;
+    private long sysTime;//当前服务器时间	若当前服务器时间和报价时间相差60s，表示已经休盘或者不能进行交易
+    private String showSymbol;
+
+    public String getShowSymbol() {
+        return showSymbol;
+    }
+
+    public void setShowSymbol(String showSymbol) {
+        this.showSymbol = showSymbol;
+    }
+
+    public double getPchg() {
+        return pchg;
+    }
+
+    public void setPchg(double pchg) {
+        this.pchg = pchg;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public long getSysTime() {
+        return sysTime;
+    }
+
+    public void setSysTime(long sysTime) {
+        this.sysTime = sysTime;
+    }
 
     public String getGoodType() {
         return goodType;

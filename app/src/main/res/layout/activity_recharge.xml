@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/ly_title_bar" />
@@ -41,7 +43,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     core_ptr:cell_arrow_visible="false"
-                    core_ptr:cell_contentleft="EA"
                     core_ptr:cell_contentleft_color="@color/font_333"
                     core_ptr:cell_contentleft_size="18sp"
                     core_ptr:cell_icon="@mipmap/icon_account"
@@ -54,7 +55,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     core_ptr:cell_arrow_visible="false"
-                    core_ptr:cell_contentleft="56.22元"
                     core_ptr:cell_contentleft_color="@color/default_red"
                     core_ptr:cell_contentleft_size="18sp"
                     core_ptr:cell_icon="@mipmap/icon_recharge_money"
@@ -82,9 +82,9 @@
 
 
                 <LinearLayout
-                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_40"
+                    android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -104,11 +104,11 @@
 
                     <EditText
                         android:id="@+id/rechargeMoney"
-                        android:inputType="number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="请输入充值金额"
+                        android:inputType="number"
                         android:paddingBottom="@dimen/dp_5"
                         android:paddingLeft="@dimen/dp_20"
                         android:paddingTop="@dimen/dp_5"

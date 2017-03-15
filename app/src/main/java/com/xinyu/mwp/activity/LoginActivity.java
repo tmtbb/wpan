@@ -1,6 +1,7 @@
 package com.xinyu.mwp.activity;
 
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,8 +17,10 @@ import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
@@ -61,6 +64,7 @@ public class LoginActivity extends BaseControllerActivity {
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
         setSwipeBackEnable(false);
+
     }
 
 
@@ -89,13 +93,18 @@ public class LoginActivity extends BaseControllerActivity {
                                 public void onError(Throwable ex) {
                                     ex.printStackTrace();
                                     closeLoader();
-                                    ToastUtils.show(context, "登录失败");
+                                    if (!SocketAPINettyBootstrap.getInstance().isOpen()){
+                                        ToastUtils.show(context,"网络连接失败,请检查网络连接");
+                                    }else{
+                                        ToastUtils.show(context, "登录失败");
+                                    }
                                 }
 
                                 @Override
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
                                     closeLoader();
                                     ToastUtils.show(context, "登陆成功");
+                                    LogUtil.d("登陆成功:"+loginReturnEntity.toString());
                                     UserEntity en = new UserEntity();
                                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());

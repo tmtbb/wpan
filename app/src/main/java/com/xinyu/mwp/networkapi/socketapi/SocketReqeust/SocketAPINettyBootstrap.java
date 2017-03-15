@@ -4,6 +4,8 @@ package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 import com.xinyu.mwp.listener.OnSuccessListener;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
+import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ToastUtils;
 
 import java.net.InetSocketAddress;
 
@@ -85,6 +87,9 @@ public class SocketAPINettyBootstrap {
             }
         } catch (Exception e) {
             System.out.println("无法连接----------------");
+            if (onConnectListener != null) {
+                onConnectListener.onFailure();
+            }
             return false;
         }
 

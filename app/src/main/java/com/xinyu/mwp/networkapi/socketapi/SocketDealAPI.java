@@ -156,18 +156,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void historyPositionDetail(long positionId, OnAPIListener<HistoryPositionListReturnEntity> listener) {
-        LogUtil.d("请求历史交易详情");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
-        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-        map.put("positionId", positionId);
-        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
-                SocketAPIConstant.ReqeutType.Time, map);
-        requestEntity(socketDataPacket, HistoryPositionListReturnEntity.class, listener);
-    }
-
-    @Override
     public void totalDealInfo(OnAPIListener<TotalDealInfoEntity> listener) {
         LogUtil.d("请求交易总概况数据");
         HashMap<String, Object> map = new HashMap<>();

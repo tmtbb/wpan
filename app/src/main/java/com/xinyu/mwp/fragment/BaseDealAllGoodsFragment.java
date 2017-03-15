@@ -4,39 +4,26 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ListView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.DealDetailActivity;
-import com.xinyu.mwp.activity.base.RefreshListController;
 import com.xinyu.mwp.adapter.DealAllGoodsAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.DealAllGoodsEntity;
-import com.xinyu.mwp.entity.DealAllGoodsItemEntity;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
-import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
-import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.util.LogUtil;
-import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.ToastUtils;
-import com.xinyu.mwp.view.DealAllGoodsHeader;
 
 import org.xutils.view.annotation.ViewInject;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import io.netty.handler.logging.LoggingHandler;
 
 /**
  * Created by Benjamin on 17/1/12.
@@ -107,7 +94,6 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
     }
 
     private void refreshAdapter() {
-
         if (adapter == null) {
             adapter = new DealAllGoodsAdapter(context);
             adapter.setProductDealList(historyPositionList);
@@ -124,10 +110,10 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
         adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
             @Override
             public void onItemChildViewClick(View childView, int position, int action, Object obj) {
-                ToastUtils.show(context, "position = " + position + " | action = " + action + ",obj:" + obj);
-
                 Intent intent = new Intent(context, DealDetailActivity.class);
-                intent.putExtra("positionId", (String) obj);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("historyData", (HistoryPositionListReturnEntity) obj);
+                intent.putExtra("data", bundle);
                 startActivity(intent);
             }
         });

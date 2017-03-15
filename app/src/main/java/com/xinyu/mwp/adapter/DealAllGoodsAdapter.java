@@ -120,7 +120,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-                    onItemChildViewClick(v,0,historyData.getPositionId());
+                    onItemChildViewClick(v,0,historyData);
                     break;
             }
         }
@@ -200,8 +200,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-//                    onItemChildViewClick(v, (int) historyData.getPositionId());
-                    onItemChildViewClick(v,0,historyData.getPositionId());
+                    onItemChildViewClick(v,0,historyData);
                     break;
             }
         }

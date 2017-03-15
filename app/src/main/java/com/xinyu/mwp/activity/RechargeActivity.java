@@ -37,6 +37,7 @@ import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.view.CellEditView;
 import com.xinyu.mwp.view.CellView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
@@ -83,6 +84,8 @@ public class RechargeActivity extends BaseRefreshActivity {
         bannerView.update(TestDataUtil.getIndexBanners(3));
 //rechargeMoney.
 //        requestBalance();
+        Utils.closeSoftKeyboard(rechargeMoney);
+
     }
 
     private void requestBalance() {
@@ -189,12 +192,6 @@ public class RechargeActivity extends BaseRefreshActivity {
     }
 
     @Override
-    public void beforeFinish() {
-//        super.beforeFinish();
-        return;
-    }
-
-    @Override
     protected void initListener() {
         super.initListener();
         setOnRefreshListener(new OnRefreshListener() {
@@ -203,7 +200,6 @@ public class RechargeActivity extends BaseRefreshActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtil.d("当前账户:" + UserManager.getInstance().getUserEntity().getName() + "所有的信息是:" + UserManager.getInstance().getUserEntity().toString());
                         account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
                         money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
 //                        myBankCard.updateContentLeft("3");
@@ -215,5 +211,11 @@ public class RechargeActivity extends BaseRefreshActivity {
                 }, 200);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        requestBalance();
     }
 }

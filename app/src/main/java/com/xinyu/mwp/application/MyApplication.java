@@ -29,6 +29,7 @@ import com.xinyu.mwp.util.FileCacheUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.SPUtils;
+import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 
 import org.xutils.x;
@@ -166,8 +167,14 @@ public class MyApplication extends Application implements OnUserUpdateListener {
 
             @Override
             public void onFailure() {
+                connectionError();
             }
         });
+    }
+
+    private void connectionError() {
+        UserManager.getInstance().setLogin(false);
+        onUserUpdate(false);
     }
 
     private void judgeIsLogin() {
@@ -179,6 +186,7 @@ public class MyApplication extends Application implements OnUserUpdateListener {
                     ex.printStackTrace();
                     LogUtil.d("登录失败.token已经失效");
                     UserManager.getInstance().logout();
+                 //   onUserUpdate(false);
                 }
 
                 @Override

@@ -45,9 +45,6 @@ public interface DealAPI {
     //交易明细--历史记录(根据symbol)
     void historyDealList(int start, int count, String symbol, OnAPIListener<List<HistoryPositionListReturnEntity>> listener);
 
-    //历史记录详情
-    void historyPositionDetail(long positionId, OnAPIListener<HistoryPositionListReturnEntity> listener);
-
     //交易总概况
     void totalDealInfo(OnAPIListener<TotalDealInfoEntity> listener);
 

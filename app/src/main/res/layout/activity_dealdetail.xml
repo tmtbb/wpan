@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <include layout="@layout/ly_space" />
 
@@ -58,14 +58,14 @@
             app:cell_name="交易金额" />
 
         <com.xinyu.mwp.view.CellView
-            android:id="@+id/dealSafe"
+            android:id="@+id/earnest_percent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cell_arrow_visible="false"
             app:cell_content_color="@color/font_666"
             app:cell_content_size="@dimen/dp_16"
             app:cell_icon_visible="false"
-            app:cell_name="最低履约保证金" />
+            app:cell_name="定金比例" />
 
         <com.xinyu.mwp.view.CellView
             android:id="@+id/dealCounter"
