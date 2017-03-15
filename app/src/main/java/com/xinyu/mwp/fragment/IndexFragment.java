@@ -1,18 +1,9 @@
 package com.xinyu.mwp.fragment;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Handler;
-import android.os.Looper;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.URLSpan;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,14 +13,15 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.activity.CashRecordActivity;
-import com.xinyu.mwp.activity.CashResaultActivity;
-import com.xinyu.mwp.activity.MainFragmentActivity;
 import com.xinyu.mwp.constant.Constant;
-import com.xinyu.mwp.entity.IndexItemEntity;
-import com.xinyu.mwp.fragment.base.BaseControllerFragment;
+import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
+import com.xinyu.mwp.entity.ProductEntity;
+import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshFragment;
+import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnRefreshListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.ImageUtil;
@@ -38,14 +30,17 @@ import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.IndexItemView;
-import com.xinyu.mwp.view.MarqueeView;
 import com.xinyu.mwp.view.banner.IndexBannerView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -71,11 +66,24 @@ public class IndexFragment extends BaseRefreshFragment {
 //    private MarqueeView marqueeView;
     @ViewInject(R.id.container)
     private RelativeLayout tittleBar;
+    private List<ProductEntity> symbolProductList;
+    private HashMap<String, String> symbolMap;
+    private List<ProductEntity> productList;  //商品列表集合--大集合
+    private List<CurrentPriceReturnEntity> entitys;
 
     @Override
     protected int getLayoutID() {
         return R.layout.fragment_index;
     }
+
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            reuqestData();
+            handler.postDelayed(this, 3000);
+        }
+    };
 
     @Override
     protected void initView() {
@@ -83,14 +91,94 @@ public class IndexFragment extends BaseRefreshFragment {
         initStatusBar();
         titleText.setText("微盘");
         leftImage.setImageResource(R.mipmap.icon_head);
-
         bannerView.centerDot();
         bannerView.setRefreshLayout(refreshFrameLayout);
         bannerView.update(TestDataUtil.getIndexBanners(3));
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), bottomImageView, DisplayImageOptionsUtil.getInstance().getBannerOptions());
-        // initMarqueeView();
-
+        // initMarqueeView();  //今日头滚动效果
+        reuqestData();  //商品列表
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 3000);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtil.d("不可见");
+        handler.removeCallbacks(runnable);
+    }
+
+    /**
+     * 网络请求商品列表数据
+     */
+    private void reuqestData() {
+        LogUtil.d("网络的状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
+        NetworkAPIFactoryImpl.getDealAPI().products(new OnAPIListener<List<ProductEntity>>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<ProductEntity> productEntities) {
+                if (productList != null) {
+                    productList.clear();
+                }
+                productList = productEntities;
+                processData();
+            }
+        });
+    }
+
+    private void processData() {
+        HashSet<String> setList = new HashSet<>();
+        symbolProductList = new ArrayList<>();
+        for (ProductEntity productEntity : productList) {
+            if (setList.add(productEntity.getShowSymbol())) {
+                symbolProductList.add(productEntity);
+            }
+        }
+        symbolMap = new HashMap();
+        for (ProductEntity productEntity : symbolProductList) {
+            symbolMap.put(productEntity.getSymbol(), productEntity.getShowSymbol());
+        }
+        initProductPrice();//请求报价
+    }
+
+    private ArrayList<SymbolInfosEntity> symbolInfos = new ArrayList<>();
+
+    //请求商品报价数据
+    private void initProductPrice() {
+        LogUtil.d("请求报价");
+        if (symbolInfos.size() > 0) {
+            symbolInfos.clear();
+        }
+        for (ProductEntity productEntity : symbolProductList) {
+            SymbolInfosEntity entity = new SymbolInfosEntity();
+            entity.setAType(4);
+            entity.setSymbol(productEntity.getSymbol());
+            entity.setPlatformName(productEntity.getPlatformName());
+            entity.setExchangeName(productEntity.getExchangeName());
+            symbolInfos.add(entity);
+        }
+        NetworkAPIFactoryImpl.getDealAPI().currentPrice(symbolInfos, new OnAPIListener<List<CurrentPriceReturnEntity>>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<CurrentPriceReturnEntity> currentPriceReturnEntities) {
+                entitys = currentPriceReturnEntities;
+                doRefresh();
+            }
+        });
+    }
+
 //头条滚动效果
 //    private void initMarqueeView() {
 //        List<CharSequence> list = new ArrayList<>();
@@ -124,44 +212,7 @@ public class IndexFragment extends BaseRefreshFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        itemLayout.removeAllViews();
-                        for (int i = 0; i < 3; i++) {
-                            IndexItemEntity indexItemEntity = new IndexItemEntity();
-                            if (i == 0) {
-                                indexItemEntity.setTitle("上海-法兰克福");
-                                indexItemEntity.setPrice("3780");
-                                indexItemEntity.setPercent("-0.47%");
-                                indexItemEntity.setPriceChange("0.5659");
-                                indexItemEntity.setHighPrice("3900");
-                                indexItemEntity.setLowPrice("3650");
-                                indexItemEntity.setTodayPrice("3755");
-                                indexItemEntity.setYesterdayPrice("3600");
-                            } else if (i == 1) {
-                                indexItemEntity.setTitle("上海-纽约");
-                                indexItemEntity.setPriceChange("0.1235");
-                                indexItemEntity.setPrice("3780");
-                                indexItemEntity.setPercent("+0.47%");
-                                indexItemEntity.setHighPrice("3900");
-                                indexItemEntity.setLowPrice("3650");
-                                indexItemEntity.setTodayPrice("3755");
-                                indexItemEntity.setYesterdayPrice("3600");
-                            } else {
-                                indexItemEntity.setTitle("上海-东京");
-                                indexItemEntity.setPriceChange("0.5454");
-                                indexItemEntity.setPrice("3780");
-                                indexItemEntity.setPercent("-0.47%");
-                                indexItemEntity.setHighPrice("3900");
-                                indexItemEntity.setLowPrice("3650");
-                                indexItemEntity.setTodayPrice("3755");
-                                indexItemEntity.setYesterdayPrice("3600");
-                            }
-
-                            IndexItemView indexItemView = new IndexItemView(context);
-                            indexItemView.update(indexItemEntity);
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(96, context));
-                            params.topMargin = DisplayUtil.dip2px(1, context);
-                            itemLayout.addView(indexItemView, params);
-                        }
+                        doRefresh();
                         getRefreshController().refreshComplete();
                     }
                 }, 500);
@@ -169,6 +220,22 @@ public class IndexFragment extends BaseRefreshFragment {
         });
     }
 
+    private void doRefresh() {
+        itemLayout.removeAllViews();
+        if (entitys == null) {
+            ToastUtils.show(context, "数据为空,请检查网络");
+        }
+        for (CurrentPriceReturnEntity entity : entitys) {
+            if (symbolMap.containsKey(entity.getSymbol())) {
+                entity.setShowSymbol(symbolMap.get(entity.getSymbol()));
+            }
+            IndexItemView indexItemView = new IndexItemView(context);
+            indexItemView.update(entity);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, DisplayUtil.dip2px(96, context));
+            params.topMargin = DisplayUtil.dip2px(1, context);
+            itemLayout.addView(indexItemView, params);
+        }
+    }
 
     @Event(value = {R.id.followView, R.id.leftImage})
     private void click(View v) {

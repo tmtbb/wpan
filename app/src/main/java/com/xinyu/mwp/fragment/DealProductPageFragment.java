@@ -1,15 +1,10 @@
 package com.xinyu.mwp.fragment;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,20 +16,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
-import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.activity.RechargeActivity;
@@ -58,7 +39,6 @@ import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
-import com.xinyu.mwp.util.TimeUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.MyTransformation;
@@ -69,7 +49,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
+
 
 
 /**
@@ -382,11 +362,16 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      */
     private void processPriceInfo() {
         String resultPrice = NumberUtils.halfAdjust4(entitys.get(mViewPager.getCurrentItem()).getCurrentPrice());
+        if (entitys.get(mViewPager.getCurrentItem()).getChange() < 0) {
+            currentPrice.setTextColor(getResources().getColor(R.color.default_green));
+        } else {
+            currentPrice.setTextColor(getResources().getColor(R.color.default_red));
+        }
         currentPrice.setText(resultPrice);
         String resultChange = NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getChange());
         changePrice.setText(resultChange);
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setMaximumFractionDigits(2);
+        NumberFormat numberFormat = NumberFormat.getPercentInstance();
+        numberFormat.setMinimumFractionDigits(2);
         String resultPercent = numberFormat.format(entitys.get(mViewPager.getCurrentItem()).getChange() / entitys.get(mViewPager.getCurrentItem()).getCurrentPrice() * 100);
         changePercent.setText(resultPercent);
         highPrice.setText(NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getHighPrice()));

@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIException;
+import com.xinyu.mwp.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -67,6 +68,7 @@ public class SocketAPIRequestManage {
                 int statusCode = socketAPIResponse.statusCode();
                 if( statusCode == 0 ) {
                     socketAPIRequest.onSuccess(socketAPIResponse);
+                    LogUtil.d("jsonResponse:"+socketAPIResponse.jsonObject());
                 }
                 else {
                     socketAPIRequest.onErrorCode(statusCode);

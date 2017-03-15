@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/ll_item_price"
+    android:visibility="invisible">
 
     <TextView
         android:id="@+id/titleView"
@@ -33,11 +35,16 @@
             android:layout_marginLeft="@dimen/dp_9"
             android:layout_weight="0.6"
             android:gravity="center"
-            android:text="7.2890"
+            android:text="*.***"
             android:textColor="@color/default_green"
             android:textSize="@dimen/fontSize_32sp" />
 
-
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_24"
+            android:layout_gravity="start"
+            android:src="@mipmap/icon_arrow_up" />
         <!--第二个-->
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,7 +57,7 @@
                 android:id="@+id/percentView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-0.47%"
+                android:text="-0.00%"
                 android:textColor="@drawable/sel_index_item_text"
                 android:textSize="@dimen/fontSize_12sp" />
 
@@ -58,8 +65,8 @@
                 android:id="@+id/price_change"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_13"
-                android:text="-0.0033"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="-0.0000"
                 android:textColor="@drawable/sel_index_item_text"
                 android:textSize="@dimen/fontSize_12sp" />
 
@@ -87,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_toRightOf="@id/tv_desc_high_priceView"
-                android:text="7.3090"
+                android:text="0.0000"
                 android:textColor="@color/default_red"
                 android:textSize="@dimen/fontSize_12sp" />
 
@@ -108,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_6"
                 android:layout_toRightOf="@id/tv_desc_todayPriceView"
-                android:text="7.3755"
+                android:text="0.0000"
                 android:textColor="@color/font_333"
                 android:textSize="@dimen/fontSize_12sp" />
 
@@ -117,10 +124,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/high_priceView"
-                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_10"
                 android:text="最低:"
                 android:textColor="@color/font_333"
-                android:textSize="@dimen/fontSize_13sp" />
+                android:textSize="@dimen/fontSize_12sp" />
 
 
             <TextView
@@ -129,11 +136,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/high_priceView"
                 android:layout_marginLeft="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_toRightOf="@id/tv_desc_lowPriceView"
-                android:text="7.3650"
+                android:text="0.0000"
                 android:textColor="@color/default_green"
-                android:textSize="@dimen/fontSize_13sp" />
+                android:textSize="@dimen/fontSize_12sp" />
 
             <TextView
                 android:id="@+id/tv_desc_yesterdayPriceView"
@@ -153,7 +160,7 @@
                 android:layout_alignTop="@id/lowPriceView"
                 android:layout_marginLeft="@dimen/dp_6"
                 android:layout_toRightOf="@id/tv_desc_yesterdayPriceView"
-                android:text="7.3600"
+                android:text="0.0000"
                 android:textColor="@color/font_333"
                 android:textSize="@dimen/fontSize_12sp" />
 
