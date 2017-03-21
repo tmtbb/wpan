@@ -22,16 +22,12 @@ public class CurrentTimeLineReturnEntity extends BaseEntity{
     private double closedYesterdayPrice;
     private double highPrice;
     private double lowPrice;
-    private double priceTime;
+    private long priceTime;
     private double upDown;
-
-    public double getPriceTime() {
-        return priceTime;
-    }
-
-    public void setPriceTime(double priceTime) {
-        this.priceTime = priceTime;
-    }
+    private String exchangeName;
+    private double pchg;
+    private String platformName;
+    private String symbol;
 
     public double getCurrentPrice() {
         return currentPrice;
@@ -81,11 +77,51 @@ public class CurrentTimeLineReturnEntity extends BaseEntity{
         this.lowPrice = lowPrice;
     }
 
+    public long getPriceTime() {
+        return priceTime;
+    }
+
+    public void setPriceTime(long priceTime) {
+        this.priceTime = priceTime;
+    }
+
     public double getUpDown() {
         return upDown;
     }
 
     public void setUpDown(double upDown) {
         this.upDown = upDown;
+    }
+
+    public String getExchangeName() {
+        return exchangeName;
+    }
+
+    public void setExchangeName(String exchangeName) {
+        this.exchangeName = exchangeName;
+    }
+
+    public double getPchg() {
+        return pchg;
+    }
+
+    public void setPchg(double pchg) {
+        this.pchg = pchg;
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

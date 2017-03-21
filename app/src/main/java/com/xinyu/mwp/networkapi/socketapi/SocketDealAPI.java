@@ -13,6 +13,7 @@ import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.DealAPI;
+import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketDataPacket;
 import com.xinyu.mwp.util.LogUtil;
@@ -52,8 +53,8 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("platformName", platformName);
         map.put("symbol", symbol);
         map.put("aType", aType);  //4
-//        double b = 1488363500;
-//        map.put("startTime", b);  //加时间戳 历史数据
+        map.put("start", 1);
+        map.put("count", 50);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.TimeLine,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "priceinfo", CurrentTimeLineReturnEntity.class, listener);
@@ -67,8 +68,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-//        map.put("id", 100002);
-//        map.put("token", "adc28ac69625652b46d5c00b");
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(symbolInfos.toString());
@@ -86,12 +85,12 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     public void kchart(String exchangeName, String platformName, String symbol, int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener) {
         LogUtil.d("请求K线数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("exchangeName", exchangeName);
         map.put("platformName", platformName);
         map.put("symbol", symbol);
-        map.put("aType", aType);  //4
+//        map.put("aType", aType);  //4
         map.put("chartType", chartType);//K线类型	60-1分钟K线，300-5分K线，900-15分K线，1800-30分K线，3600-60分K线，5-日K线
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.KChart,
                 SocketAPIConstant.ReqeutType.Time, map);
@@ -121,8 +120,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", 32);
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-//        map.put("start", );
-//        map.put("count", 5);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.ProductList,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "positioninfo", CurrentPositionListReturnEntity.class, listener);
@@ -136,7 +133,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("start", start);
         map.put("count", count);
-//        map.put("page", page);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
@@ -160,7 +156,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         LogUtil.d("请求交易总概况数据");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
-//        map.put("id", 32);
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Total,
                 SocketAPIConstant.ReqeutType.History, map);
@@ -172,7 +167,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         LogUtil.d("请求微信支付");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
-//        map.put("id", 32);
         map.put("title", title);
         map.put("price", price);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXPay,

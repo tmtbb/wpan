@@ -1,6 +1,10 @@
 package com.xinyu.mwp.util;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import com.xinyu.mwp.application.MyApplication;
 
 /**
  * Created by Benjamin on 16/5/24.
@@ -33,5 +37,26 @@ public class ViewUtils {
         int[] xy = new int[2];
         view.getLocationInWindow(xy);
         return xy[index];
+    }
+
+    /**
+     * 在主线程执行一段任务
+     * @param r
+     */
+    public static void runOnUIThread(Runnable r){
+        MyApplication.mainHandler.post(r);
+    }
+    /**
+     * 移除子View
+     * @param child
+     */
+    public static void removeSelfFromParent(View child){
+        if(child!=null){
+            ViewParent parent = child.getParent();
+            if(parent!=null && parent instanceof ViewGroup){
+                ViewGroup group = (ViewGroup) parent;
+                group.removeView(child);//移除子View
+            }
+        }
     }
 }

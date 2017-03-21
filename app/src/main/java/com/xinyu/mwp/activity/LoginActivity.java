@@ -77,25 +77,23 @@ public class LoginActivity extends BaseControllerActivity {
 //            case R.id.findPwd:    //去掉修改登录密码功能
 //                ActivityUtil.nextResetUserPwd(context);
 //                break;
-            case R.id.loginButton: {
+            case R.id.loginButton:
                 showLoader("正在登录...");
+                LogUtil.d("登录,此时的网络链接状态是:"+SocketAPINettyBootstrap.getInstance().isOpen());
                 CheckException exception = new CheckException();
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
                     Utils.closeSoftKeyboard(view);
-
-                    String pwd = SHA256Util.shaEncrypt(passwordEditText.getEditTextString() + "t1@s#df!");
-                    String newPwd = SHA256Util.shaEncrypt(pwd + userNameEditText.getEditTextString());
-
+                    String newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(passwordEditText.getEditTextString() + "t1@s#df!") + userNameEditText.getEditTextString());
                     NetworkAPIFactoryImpl.getUserAPI().login(userNameEditText.getEditTextString(), newPwd, null,
                             new OnAPIListener<LoginReturnEntity>() {
                                 @Override
                                 public void onError(Throwable ex) {
                                     ex.printStackTrace();
                                     closeLoader();
-                                    if (!SocketAPINettyBootstrap.getInstance().isOpen()){
-                                        ToastUtils.show(context,"网络连接失败,请检查网络连接");
-                                    }else{
+                                    if (!SocketAPINettyBootstrap.getInstance().isOpen()) {
+                                        ToastUtils.show(context, "网络连接失败,请检查网络连接");
+                                    } else {
                                         ToastUtils.show(context, "登录失败");
                                     }
                                 }
@@ -104,7 +102,7 @@ public class LoginActivity extends BaseControllerActivity {
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
                                     closeLoader();
                                     ToastUtils.show(context, "登陆成功");
-                                    LogUtil.d("登陆成功:"+loginReturnEntity.toString());
+                                    LogUtil.d("登陆成功:" + loginReturnEntity.toString());
                                     UserEntity en = new UserEntity();
                                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());
@@ -125,7 +123,6 @@ public class LoginActivity extends BaseControllerActivity {
                     closeLoader();
                     showToast(exception.getErrorMsg());
                 }
-            }
             break;
         }
     }

@@ -54,8 +54,9 @@ public class LeftFragment extends BaseControllerFragment {
     }
 
     public void update() {
+      //  LogUtil.d("金额是:" + UserManager.getInstance().getUserEntity().getBalance());
         balance.setText(UserManager.getInstance().getUserEntity().getBalance() + "");
-        LogUtil.d("金额是:" + UserManager.getInstance().getUserEntity().getBalance());
+
     }
 
     public void userUpdate() {

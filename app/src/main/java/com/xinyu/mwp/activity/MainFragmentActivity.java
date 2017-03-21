@@ -22,6 +22,7 @@ import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
+import org.apache.http.impl.conn.LoggingSessionInputBuffer;
 import org.xutils.view.annotation.ViewInject;
 
 
@@ -109,7 +110,12 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 //                        next(MyShareOrderActivity.class);
 //                        break;
                     case R.id.dealDetail:
-                        next(DealDetailFragmentActivity.class);
+                        if (UserManager.getInstance().isLogin()){
+                            next(DealDetailFragmentActivity.class);
+                        }else{
+                            next(LoginActivity.class);
+                        }
+
                         break;
 //                    case R.id.feedback:
 //                        next(RechargeRecordActivity.class);
@@ -175,13 +181,11 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 
     @Override
     public void onUserUpdate(boolean isLogin) {
-        LogUtil.d("执行onUserUpdate");
         if (isLogin) {
             leftFragment.update();
         }else{
             next(LoginActivity.class);
         }
-
     }
 
     public void onClickSelect(View view) {
