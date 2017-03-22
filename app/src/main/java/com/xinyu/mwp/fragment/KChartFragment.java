@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -17,14 +16,17 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
-import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TimeUtil;
-import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.BaseFrameLayout;
+import com.xinyu.mwp.view.LineMarkerView;
+import com.xinyu.mwp.view.NewMarkerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,7 +45,12 @@ public class KChartFragment extends BaseFrameLayout {
     private int colorText;
     private int colorLine;
     private CombinedChart mChart;
-
+    private NewMarkerView mvK;
+    private LineMarkerView mvLine;
+    private List<CurrentTimeLineReturnEntity> newCurrentTimeLineEntities;
+    private int chartType = 0;
+    private static int preChartType = 0;
+    private List<CandleEntry> candleEntries;
 
     public KChartFragment(Context context) {
         super(context);
@@ -86,6 +93,9 @@ public class KChartFragment extends BaseFrameLayout {
         //设置绘制顺序
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});
 
+        mChart.setExtraLeftOffset(5);
+        mChart.setExtraRightOffset(5);
+
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
@@ -93,6 +103,7 @@ public class KChartFragment extends BaseFrameLayout {
         xAxis.setTextColor(colorText);
         xAxis.setSpaceBetweenLabels(4);// 轴刻度间的宽度，默认值是4
         xAxis.setEnabled(false);
+        xAxis.setAvoidFirstLastClipping(true);
 
         YAxis rightAxis = mChart.getAxisRight();
         rightAxis.setLabelCount(7, false);
@@ -102,71 +113,65 @@ public class KChartFragment extends BaseFrameLayout {
         rightAxis.setTextColor(colorText);
         rightAxis.setDrawGridLines(false);
         rightAxis.setStartAtZero(false);
-
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setEnabled(false);
-
-//        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(Entry entry, int i, Highlight highlight) {
-//                CandleEntry candleEntry = (CandleEntry) entry;
-//                float change = (candleEntry.getClose() - candleEntry.getOpen()) / candleEntry.getOpen();
-//                NumberFormat nf = NumberFormat.getPercentInstance();
-//                nf.setMaximumFractionDigits(2);
-//                String changePercentage = nf.format(Double.valueOf(String.valueOf(change)));
-//                LogUtil.d("qqq", "最高" + candleEntry.getHigh() + " 最低" + candleEntry.getLow() +
-//                        " 开盘" + candleEntry.getOpen() + " 收盘" + candleEntry.getClose() +
-//                        " 涨跌幅" + changePercentage);
-//            }
-//            @Override
-//            public void onNothingSelected() {
-//            }
-//        });
+        refreshMarkerView(chartType);
     }
 
-    private List<CurrentTimeLineReturnEntity> currentTimeLineEntities;
-
     public void loadChartData(List<CurrentTimeLineReturnEntity> currentTimeLineEntities, int chartType) {
+        this.chartType = chartType;
         mChart.resetTracking();
-        this.currentTimeLineEntities = currentTimeLineEntities;
-        if (currentTimeLineEntities == null) {
-            ToastUtils.show(context, "当前数据为空");
+        if (preChartType != 0 && chartType == 0) {
+            preChartType = 0;
+            refreshMarkerView(0);
+        } else if (preChartType == 0 && chartType != 0) {
+            preChartType = 1;
+            refreshMarkerView(1);
+        }
+        Collections.reverse(currentTimeLineEntities);
+        this.newCurrentTimeLineEntities = currentTimeLineEntities;
+        if (newCurrentTimeLineEntities.size() == 0) {
             return;
         }
-        candleEntries = getCandleEntries(currentTimeLineEntities, 0);//获取处理过的集合
-        itemcount = currentTimeLineEntities.size();
+        candleEntries = getCandleEntries(newCurrentTimeLineEntities, 0);//获取处理过的集合
+        itemcount = newCurrentTimeLineEntities.size();
         xVals = new ArrayList<>();  //X集合
         for (int i = 0; i < itemcount; i++) {
-            double time = currentTimeLineEntities.get(i).getPriceTime() * 1000;
+            double time = newCurrentTimeLineEntities.get(i).getPriceTime() * 1000;
             String dateAndTime = TimeUtil.getDateAndTime((long) time);
             xVals.add(dateAndTime);  //日期集合
         }
         combinedData = new CombinedData(xVals);
-        if (chartType == 0) {
-            //分时图
-            LogUtil.d("分时图");
-        } else {
-               /*k line*/
+        if (chartType == 0) {   //分时图
+            ArrayList<Entry> yVals = new ArrayList<Entry>();
+            for (int index = 0; index < itemcount; index++) {
+                float currentPrice = (float) newCurrentTimeLineEntities.get(index).getCurrentPrice();
+                yVals.add(new Entry((currentPrice), index));
+            }
+            LineDataSet lineDataSet = generateLineDataSet(yVals, colorLine, "");
+            List<LineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(lineDataSet);
+            LineData lineData = new LineData(xVals, dataSets);
+            combinedData.setData(lineData); //加入MA5\MA10\MA20三种折线图数据
+        } else {   /*k line*/
             candleData = generateCandleData();
             combinedData.setData(candleData);
         }
-
-         /*ma10*/
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-        for (int index = 0; index < itemcount; index++) {
-            float currentPrice = (float) currentTimeLineEntities.get(index).getCurrentPrice();
-            yVals.add(new Entry((currentPrice), index));
-        }
-        LineDataSet lineDataSet = generateLineDataSet(yVals, colorLine, "");
-        List<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(lineDataSet);
-        LineData lineData = new LineData(xVals, dataSets);
-        combinedData.setData(lineData); //加入MA5\MA10\MA20三种折线图数据
         mChart.setData(combinedData);//当前屏幕会显示所有的数据
+        mChart.setVisibleXRange(30, 100);
         mChart.invalidate();
     }
 
-    private List<CandleEntry> candleEntries;
+    public void refreshMarkerView(int type) {
+        mvK = new NewMarkerView(context, R.layout.ly_marker_view);
+        mvLine = new LineMarkerView(context, R.layout.ly_marker_line);
+        if (type == 0) {
+            mChart.setMarkerView(mvLine);
+        } else {
+            mChart.setMarkerView(mvK);
+        }
+    }
+
     private LineDataSet generateLineDataSet(List<Entry> entries, int color, String label) {
         LineDataSet set = new LineDataSet(entries, label);
         set.setColor(color);
@@ -187,16 +192,15 @@ public class KChartFragment extends BaseFrameLayout {
         CandleDataSet set = new CandleDataSet(candleEntries, "");
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
         set.setShadowWidth(0.7f);
-        set.setDecreasingColor(Color.RED);
+        set.setDecreasingColor(Color.GREEN);
         set.setDecreasingPaintStyle(Paint.Style.FILL);
-        set.setIncreasingColor(Color.GREEN);
-        set.setIncreasingPaintStyle(Paint.Style.STROKE);
-        //set.setNeutralColor(Color.RED);
+        set.setIncreasingColor(Color.RED);
+        set.setIncreasingPaintStyle(Paint.Style.FILL);
+//        set.setNeutralColor(Color.RED);
         set.setShadowColorSameAsCandle(true);
         set.setHighlightLineWidth(0.5f);
-        set.setHighLightColor(Color.WHITE);
+        set.setHighLightColor(R.color.color_666666);
         set.setDrawValues(false);
-
         CandleData candleData = new CandleData(xVals);
         candleData.addDataSet(set);
 
@@ -211,12 +215,10 @@ public class KChartFragment extends BaseFrameLayout {
      * @return
      */
     public static List<CandleEntry> getCandleEntries(List<CurrentTimeLineReturnEntity> rawData, int startIndex) {
-        startIndex = 0;
         List<CandleEntry> entries = new ArrayList<>();
         for (int i = 0; i < rawData.size(); i++) {
             CurrentTimeLineReturnEntity stock = rawData.get(i);
             if (stock == null) {
-                Log.e("xxx", "第" + i + "StockBean==null");
                 continue;
             }
             CandleEntry entry = new CandleEntry(startIndex + i, (float) stock.getHighPrice(), (float) stock.getLowPrice(), (float) stock.getOpeningTodayPrice(),
@@ -226,4 +228,24 @@ public class KChartFragment extends BaseFrameLayout {
         return entries;
     }
 
+    @Override
+    protected void initListener() {
+        super.initListener();
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry entry, int i, Highlight highlight) {
+                long time = newCurrentTimeLineEntities.get(entry.getXIndex()).getPriceTime() * 1000;
+                entry.setData(TimeUtil.getHourAndMin(time));
+                if (chartType != 0) {
+                    mvK.refreshContent(entry, highlight);
+                } else {
+                    mvLine.refreshContent(entry, highlight);
+                }
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+    }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
@@ -44,6 +45,7 @@ public class MyApplication extends Application implements OnUserUpdateListener {
     public static List<Activity> activityList = new ArrayList<Activity>();
     public IWXAPI api;
     private static final String APP_ID = "wx9dc39aec13ee3158";//需要换成正式的id
+    public static Handler mainHandler;
 
     @Override
     public void onCreate() {
@@ -54,6 +56,7 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initUser();
         regToWx();
         checkToken();
+        mainHandler = new Handler();
     }
 
 
@@ -186,7 +189,7 @@ public class MyApplication extends Application implements OnUserUpdateListener {
                     ex.printStackTrace();
                     LogUtil.d("登录失败.token已经失效");
                     UserManager.getInstance().logout();
-                 //   onUserUpdate(false);
+                    onUserUpdate(false);
                 }
 
                 @Override

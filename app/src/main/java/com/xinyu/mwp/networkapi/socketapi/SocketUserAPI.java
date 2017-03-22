@@ -30,9 +30,8 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         LogUtil.d("开始登录");
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", phone);
-        map.put("pwd", "d2337e370831e755254797c9a2d3139aa9a53bb977ad7ad27e213d30eccade2d");
+        map.put("pwd", password);
         map.put("source", 2);
-        LogUtil.d("phone:" + phone + "pwd:" + password);
 //        map.put("deviceId", deviceId);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Login,
                 SocketAPIConstant.ReqeutType.User, map);
@@ -45,7 +44,7 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         map.put("phone", phone);
         map.put("pwd", password);
         map.put("vCode", vCode);
-        map.put("timestamp", RegisterVerifyCodeEntry.timestamp);
+        map.put("timeStamp", RegisterVerifyCodeEntry.timestamp);
         map.put("vToken", RegisterVerifyCodeEntry.vToken);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Register,
                 SocketAPIConstant.ReqeutType.User, map);
@@ -85,7 +84,6 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         LogUtil.d("心跳包-----------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", testID);
-        LogUtil.d("发送的id是:" + testID);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Test,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, VerifyCodeReturnEntry.class, listener);

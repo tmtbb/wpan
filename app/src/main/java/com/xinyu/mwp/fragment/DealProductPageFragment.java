@@ -485,7 +485,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 ToastUtils.show(context, "分时线,加载数据");
                 if (symbolInfos == null) {
                     processTimeLine();//请求分时数据
-
                 }
                 isTimeLine = true;
                 break;
@@ -522,7 +521,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private void processKChartData(final int chartType) {
         isTimeLine = false;
         LogUtil.d("模拟加载K线数据");
-        if (symbolInfos == null) {
+        if (symbolInfos.size() == 0) {
             ToastUtils.show(context, "请求网络数据失败");
             return;
         }

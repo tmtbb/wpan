@@ -1,5 +1,6 @@
 package com.xinyu.mwp.fragment;
 
+import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -70,6 +71,11 @@ public class IndexFragment extends BaseRefreshFragment {
     private HashMap<String, String> symbolMap;
     private List<ProductEntity> productList;  //商品列表集合--大集合
     private List<CurrentPriceReturnEntity> entitys;
+    @ViewInject(R.id.rl_error_message)
+    private RelativeLayout errorMessage;
+    private static final int REQUEST_ERROR = 0;
+    private static final int REQUEST_SUCCESS = 1;
+    private int requestState = REQUEST_ERROR;
 
     @Override
     protected int getLayoutID() {
@@ -85,18 +91,35 @@ public class IndexFragment extends BaseRefreshFragment {
         }
     };
 
+    //设置网络状态的监听
+    public interface OnRequestDataStateListener {
+        void onError();
+
+        void onSuccess();
+    }
+
+    private OnRequestDataStateListener onRequestDataStateListener;
+
+    public void setOnRequestDataStateListener(OnRequestDataStateListener onRequestDataStateListener) {
+        this.onRequestDataStateListener = onRequestDataStateListener;
+    }
+
     @Override
     protected void initView() {
         super.initView();
         initStatusBar();
         titleText.setText("微盘");
         leftImage.setImageResource(R.mipmap.icon_head);
+        reuqestData();  //商品列表
+
         bannerView.centerDot();
         bannerView.setRefreshLayout(refreshFrameLayout);
         bannerView.update(TestDataUtil.getIndexBanners(3));
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), bottomImageView, DisplayImageOptionsUtil.getInstance().getBannerOptions());
+        bottomImageView.setVisibility(View.VISIBLE);
         // initMarqueeView();  //今日头滚动效果
-        reuqestData();  //商品列表
+        showLoader();
+        processErrorMessage();
     }
 
     @Override
@@ -121,14 +144,17 @@ public class IndexFragment extends BaseRefreshFragment {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                if (onRequestDataStateListener != null) {
+                    onRequestDataStateListener.onError();
+                }
             }
 
             @Override
             public void onSuccess(List<ProductEntity> productEntities) {
-                if (productList != null) {
-                    productList.clear();
-                }
                 productList = productEntities;
+                if (onRequestDataStateListener != null) {
+                    onRequestDataStateListener.onSuccess();
+                }
                 processData();
             }
         });
@@ -218,12 +244,44 @@ public class IndexFragment extends BaseRefreshFragment {
                 }, 500);
             }
         });
+
+        setOnRequestDataStateListener(new OnRequestDataStateListener() {
+            @Override
+            public void onError() {
+                LogUtil.d("请求数据错误");
+                if (requestState != REQUEST_ERROR) {
+                    requestState = REQUEST_ERROR;
+                    processErrorMessage();
+                }
+            }
+
+            @Override
+            public void onSuccess() {
+                LogUtil.d("请求数据成功");
+                if (requestState != REQUEST_SUCCESS) {
+                    requestState = REQUEST_SUCCESS;
+                    processErrorMessage();
+                }
+            }
+        });
+    }
+
+    private void processErrorMessage() {
+        if (requestState == REQUEST_ERROR) {
+            LogUtil.d("数据为空,展示错误界面");
+            errorMessage.setVisibility(View.VISIBLE);
+        } else {
+            LogUtil.d("数据不为空,展示正常的界面");
+            errorMessage.setVisibility(View.GONE);
+        }
     }
 
     private void doRefresh() {
         itemLayout.removeAllViews();
         if (entitys == null) {
             ToastUtils.show(context, "数据为空,请检查网络");
+            LogUtil.d("entity为空");
+            return;
         }
         for (CurrentPriceReturnEntity entity : entitys) {
             if (symbolMap.containsKey(entity.getSymbol())) {
