@@ -16,10 +16,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.activity.RechargeActivity;
-import com.xinyu.mwp.activity.UserAssetsActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
 import com.xinyu.mwp.adapter.GalleryAdapter;
 import com.xinyu.mwp.adapter.LoopPagerAdapter;
@@ -36,6 +36,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
+import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
@@ -51,21 +52,17 @@ import java.util.HashSet;
 import java.util.List;
 
 
-
 /**
  * @describe : 交易界面 商品详情
  */
 public class DealProductPageFragment extends BaseRefreshAbsListControllerFragment<CurrentPositionListReturnEntity> implements View.OnClickListener {
     private DealProductPageAdapter adapter;
-
     private RadioGroup radioGroupChart;
     private FrameLayout mChartContainer;
-
     private ListView listView;
     private ViewPager mViewPager;
     private RelativeLayout mViewPagerContainer;
     private int halfScreenWidth;
-
     private LoopPagerAdapter loopPagerAdapter;
     private List<ProductEntity> mUnitViewList = new ArrayList<>();
     private TextView currentPrice;
@@ -76,19 +73,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private TextView openingTodayPrice;
     private TextView closedYesterdayPrice;
     private List<CurrentPriceReturnEntity> entitys;
-    private ArrayList<SymbolInfosEntity> symbolInfos = new ArrayList<>();
-    ;  //商品信息集合
+    private ArrayList<SymbolInfosEntity> symbolInfos = new ArrayList<>();//商品信息集合
     private List<CurrentPositionListReturnEntity> currentPositionList; //仓位列表集合
-
-    Handler handler = new Handler();
-    Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            LogUtil.d("每3秒执行一次");
-            reuqestData();  //商品列表
-            handler.postDelayed(this, 3000);
-        }
-    };
     private List<String> mTitleList;
     private GalleryAdapter mAdapter;
     private List<ProductEntity> productList;  //商品列表集合--大集合
@@ -97,11 +83,19 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private boolean isRequestFail = true;
     private List<CurrentTimeLineReturnEntity> currentTimeLineEntities; //当前分时数据
     private KChartFragment kChartFragment;
+    private static int currentType = Constant.MIN_LINE1;
+    private static long count = 0;
+    private Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            reuqestData();  //商品列表
+            handler.postDelayed(this, 3000);
+        }
+    };
 
     public DealProductPageFragment() {
     }
-
-    private CurrentPriceReturnEntity priceReturnEntity;//价格信息
 
     @Override
     protected int getLayoutID() {
@@ -170,7 +164,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             mRecyclerView.setLayoutManager(linearLayoutManager);
-
             mAdapter = new GalleryAdapter(context, mTitleList);
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -179,11 +172,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             @Override
             public void OnClick(View view, int position) {
                 mUnitViewList = products.get(position); //通多点击的位置,获取不同unit的集合
-                LogUtil.d("点击的位置是:" + position + "当前获取的vp集合长度:" + mUnitViewList.size());
-                ToastUtils.show(context, mTitleList.get(position) + "刷新数据");
+                count = 0;
+                initProductPrice();  //点击后请求报价
                 mAdapter.setPosition(position);
                 mAdapter.notifyDataSetChanged();
-                initProductPrice();  //点击后请求报价
             }
 
             @Override
@@ -266,6 +258,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         RadioButton rbMinHour60 = (RadioButton) headView.findViewById(R.id.rb_min_60); //60分时线
         RadioButton rbMinHourDay = (RadioButton) headView.findViewById(R.id.rb_day_hour); //日时线
 
+        tvExchangeAssets.setText(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
         tvExchangeAssets.setOnClickListener(this);
         ivAssetsAdd.setOnClickListener(this);
         buyMinus.setOnClickListener(this);
@@ -281,12 +274,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mViewPagerContainer = (RelativeLayout) headView.findViewById(R.id.rl_viewPagerContainer);
     }
 
-
     //请求商品报价数据
     private void initProductPrice() {
-        LogUtil.d("请求报价");
-
-
         if (mUnitViewList.size() == 0) {
             mUnitViewList = products.get(0);
         }
@@ -311,24 +300,54 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
             @Override
             public void onSuccess(List<CurrentPriceReturnEntity> currentPriceReturnEntities) {
-                LogUtil.d("============当前报价,请求网络成功:" + currentPriceReturnEntities.toString());
                 entitys = currentPriceReturnEntities;
                 initViewPager();
                 processPriceInfo();
 //                mViewPager.setCurrentItem(0);//默认在中间
-
-                processTimeLine();//加载分时图
+                refreshChartData();  //请求报价成功后,根据currentType刷新chart数据
             }
         });
+    }
+
+    /**
+     * 根据currentType刷新chart数据
+     */
+    private void refreshChartData() {
+        switch (currentType) {
+            case Constant.MIN_LINE1:  //加载分时图
+                if (count % 5 == 0) {
+                    processTimeLine();
+                }
+                break;
+            case Constant.MIN_LINE5:  //5分时K线图
+                if (count % 25 == 0) {
+                    processKChartData(Constant.MIN_LINE5);
+                }
+                break;
+            case Constant.MIN_LINE15:  //15分时K线图
+                if (count % 100 == 0) {
+                    processKChartData(Constant.MIN_LINE15);
+                }
+                break;
+            case Constant.MIN_LINE30:  //30分时K线图   10分钟更新一次
+                if (count % 200 == 0) {
+                    processKChartData(Constant.MIN_LINE30);
+                }
+                break;
+
+            case Constant.MIN_LINE60:  //60分时K线图,20分钟更新一次
+                if (count % 1200 == 0) {
+                    processKChartData(Constant.MIN_LINE60);
+                }
+                break;
+        }
+        count++;
     }
 
     /**
      * 加载分时数据
      */
     private void processTimeLine() {
-        if (!isTimeLine) {
-            return;   //如果为false,不用刷新请求数据
-        }
         if (symbolInfos.size() == 0) {
             ToastUtils.show(context, "请求数据失败,请检查网络连接");
             return;
@@ -349,12 +368,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onSuccess(List<CurrentTimeLineReturnEntity> currentTimeLineReturnEntities) {
                 LogUtil.d("分时请求网络成功" + currentTimeLineReturnEntities.toString());
                 currentTimeLineEntities = currentTimeLineReturnEntities;
-//                kChartFragment.initChart();
                 kChartFragment.loadChartData(currentTimeLineEntities, 0);
             }
         });
-
-
     }
 
     /**
@@ -455,8 +471,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         });
     }
 
-    private boolean isTimeLine = true;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -465,14 +479,12 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 next(RechargeActivity.class);
                 break;
             case R.id.tv_exchange_assets:
-                showToast("个人资产");
-                next(UserAssetsActivity.class);
+//                showToast("个人资产");
+//                next(UserAssetsActivity.class);
                 break;
-
             case R.id.ll_history_record:  //仓位历史记录
                 next(PositionHistoryActivity.class);
                 break;
-
             case R.id.tv_exchange_buy_plus:
                 ToastUtils.show(context, "买涨");
                 showDialog(Constant.TYPE_BUY_PLUS);
@@ -482,68 +494,48 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 showDialog(Constant.TYPE_BUY_MINUS);
                 break;
             case R.id.rb_min_hour:
-                ToastUtils.show(context, "分时线,加载数据");
-                if (symbolInfos == null) {
-                    processTimeLine();//请求分时数据
-                }
-                isTimeLine = true;
+                currentType = Constant.MIN_LINE1;
+                processTimeLine();//请求分时数据
                 break;
             case R.id.rb_min_5:
-                ToastUtils.show(context, "5分时线");
-                processKChartData(MIN_LINE5);
+                processKChartData(Constant.MIN_LINE5);
                 break;
             case R.id.rb_min_15:
-                ToastUtils.show(context, "15分时线,加载数据");
-                processKChartData(MIN_LINE15); //请求K线数据
+                processKChartData(Constant.MIN_LINE15); //请求K线数据
                 break;
             case R.id.rb_min_60:
-                ToastUtils.show(context, "30分时线,加载数据");
-                processKChartData(MIN_LINE30); //请求K线数据
+                processKChartData(Constant.MIN_LINE30); //请求K线数据
                 break;
             case R.id.rb_day_hour:
-                ToastUtils.show(context, "60分时线,加载数据");
-                processKChartData(MIN_LINE60);   //请求K线数据
+                processKChartData(Constant.MIN_LINE60);   //请求K线数据
                 break;
         }
     }
 
-    //    60-1分钟K线，300-5分K线，900-15分K线，1800-30分K线，3600-60分K线，5-日K线
-//    private static int MIN_LINE1 = 60;
-    private static int MIN_LINE5 = 300;
-    private static int MIN_LINE15 = 900;
-    private static int MIN_LINE30 = 1800;
-    private static int MIN_LINE60 = 3600;
-
-
     /**
      * 请求K线数据
      */
-    private void processKChartData(final int chartType) {
-        isTimeLine = false;
-        LogUtil.d("模拟加载K线数据");
+    private void processKChartData(int chartType) {
+        currentType = chartType;
         if (symbolInfos.size() == 0) {
             ToastUtils.show(context, "请求网络数据失败");
             return;
         }
-
         SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
         int aType = symbolInfosentity.getAType();
         String exchangeName = symbolInfosentity.getExchangeName();
         String platformName = symbolInfosentity.getPlatformName();
         String symbol = symbolInfosentity.getSymbol();
         NetworkAPIFactoryImpl.getDealAPI().kchart(exchangeName, platformName,
-                symbol, aType, chartType, new OnAPIListener<List<CurrentTimeLineReturnEntity>>() {
+                symbol, aType, currentType, new OnAPIListener<List<CurrentTimeLineReturnEntity>>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
-                        LogUtil.d("K线请求网络错了");
                     }
 
                     @Override
                     public void onSuccess(List<CurrentTimeLineReturnEntity> currentTimeLineReturnEntities) {
-                        LogUtil.d("K线数据,请求成功:" + currentTimeLineReturnEntities.toString());
-//                kChartFragment.initChart();
-                        kChartFragment.loadChartData(currentTimeLineReturnEntities, chartType);
+                        kChartFragment.loadChartData(currentTimeLineReturnEntities, currentType);
                     }
                 });
     }
@@ -591,7 +583,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        //取消点击后操作
                         ToastUtils.show(context, "取消");
                     }
                 });
@@ -642,7 +633,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 LogUtil.d("建仓请求网络成功" + openPositionReturnEntity.toString());
                 //刷新当前建仓列表数据
                 initCurrentPositionList();
-
                 processPositionList();
             }
         });
@@ -653,6 +643,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     public void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+        count = 0;
     }
 }
 

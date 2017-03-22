@@ -15,7 +15,6 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
@@ -78,7 +77,6 @@ public class KChartFragment extends BaseFrameLayout {
         colorText = getResources().getColor(R.color.color_666666);
         colorLine = getResources().getColor(R.color.red);//条目
 
-
         mChart.setDescription("");//描述信息
         mChart.setDrawGridBackground(false); //是否显示表格颜色
         mChart.setBackgroundColor(colorHomeBg);
@@ -87,15 +85,14 @@ public class KChartFragment extends BaseFrameLayout {
         mChart.setPinchZoom(true); //如果禁用,扩展可以在x轴和y轴分别完成
         mChart.setNoDataText("加载中...");
         mChart.setAutoScaleMinMaxEnabled(true);
-        mChart.setDragEnabled(false); //可以拖拽
+        mChart.setDragEnabled(true); //可以拖拽
         mChart.setScaleEnabled(false);  //放大缩小
         mChart.getLegend().setEnabled(false);//图例
-        //设置绘制顺序
-        mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});
+        mChart.setTouchEnabled(true);
+        mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});  //设置绘制顺序
 
-        mChart.setExtraLeftOffset(5);
-        mChart.setExtraRightOffset(5);
-
+        mChart.setExtraLeftOffset(10);
+        mChart.setExtraRightOffset(10);
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(true);
@@ -106,7 +103,7 @@ public class KChartFragment extends BaseFrameLayout {
         xAxis.setAvoidFirstLastClipping(true);
 
         YAxis rightAxis = mChart.getAxisRight();
-        rightAxis.setLabelCount(7, false);
+        rightAxis.setLabelCount(6, false);
         rightAxis.setDrawGridLines(false);
         rightAxis.setDrawAxisLine(false);
         rightAxis.setGridColor(colorLine);
@@ -185,6 +182,7 @@ public class KChartFragment extends BaseFrameLayout {
         set.setDrawValues(false);
         set.setHighlightEnabled(true);
         set.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        set.setHighLightColor(R.color.color_666666);
         return set;
     }
 
@@ -196,14 +194,12 @@ public class KChartFragment extends BaseFrameLayout {
         set.setDecreasingPaintStyle(Paint.Style.FILL);
         set.setIncreasingColor(Color.RED);
         set.setIncreasingPaintStyle(Paint.Style.FILL);
-//        set.setNeutralColor(Color.RED);
         set.setShadowColorSameAsCandle(true);
         set.setHighlightLineWidth(0.5f);
-        set.setHighLightColor(R.color.color_666666);
+        set.setHighLightColor(R.color.font_9e9e9e);
         set.setDrawValues(false);
         CandleData candleData = new CandleData(xVals);
         candleData.addDataSet(set);
-
         return candleData;
     }
 

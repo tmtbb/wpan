@@ -15,4 +15,10 @@ public interface Constant {
 
     int TYPE_BUY_MINUS = 0; //买跌
     int TYPE_BUY_PLUS = 1; //买跌
+    //    60-1分钟K线，300-5分K线，900-15分K线，1800-30分K线，3600-60分K线，5-日K线
+    int MIN_LINE1 = 0;
+    int MIN_LINE5 = 300;
+    int MIN_LINE15 = 900;
+    int MIN_LINE30 = 1800;
+    int MIN_LINE60 = 3600;
 }
