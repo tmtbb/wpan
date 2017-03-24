@@ -18,5 +18,9 @@
     <string name="jar">银联sdk接入</string>
     <string name="payBYAPK">APK接入</string>
     <string name="payBYJAR">JAR接入</string>
+    <string name="insufficient_balance">余额不足</string>
+    <string name="recharge_prompt">您的余额不足,是否立即充值?</string>
+
+
 
 </resources>

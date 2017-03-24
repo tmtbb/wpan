@@ -3,6 +3,7 @@ package com.xinyu.mwp.fragment;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,9 +34,8 @@ import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.listener.OnRefreshPageListener;
+import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
@@ -85,6 +85,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private KChartFragment kChartFragment;
     private static int currentType = Constant.MIN_LINE1;
     private static long count = 0;
+    private static int start = 1;
+    private int requestCount = 30;  //请求仓位列表的个数
     private Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -93,6 +95,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             handler.postDelayed(this, 3000);
         }
     };
+    private double turnoverPrice;
+    private double earnestMoney;
 
     public DealProductPageFragment() {
     }
@@ -111,7 +115,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * 网络请求商品列表数据
      */
     private void reuqestData() {
-        LogUtil.d("网络的状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
         NetworkAPIFactoryImpl.getDealAPI().products(new OnAPIListener<List<ProductEntity>>() {
             @Override
             public void onError(Throwable ex) {
@@ -190,15 +193,15 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         super.initView();
         reuqestData();  //商品列表
         handler.postDelayed(runnable, 3000);//每两秒执行一次runnable.
-        initCurrentPositionList();  //请求仓位列表数据
+        initCurrentPositionList(start, requestCount);  //请求仓位列表数据
         initHeadView();  //初始化头布局
     }
 
     /**
      * 请求当前仓位列表
      */
-    private void initCurrentPositionList() {
-        NetworkAPIFactoryImpl.getDealAPI().currentPositionList(new OnAPIListener<List<CurrentPositionListReturnEntity>>() {
+    private void initCurrentPositionList(int num, int requestCount) {
+        NetworkAPIFactoryImpl.getDealAPI().currentPositionList(num, requestCount, new OnAPIListener<List<CurrentPositionListReturnEntity>>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
@@ -214,9 +217,17 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     currentPositionList.clear();
                 }
                 currentPositionList = currentPositionListReturnEntities;
+                proofCountdown();// 校对倒计时
                 processPositionList();
             }
         });
+    }
+
+    private void proofCountdown() {
+        long curTime = System.currentTimeMillis();
+        for (CurrentPositionListReturnEntity currentPositionListReturnEntity : currentPositionList) {
+            currentPositionListReturnEntity.setEndTime((long) (currentPositionListReturnEntity.getInterval()*1000 +curTime));
+        }
     }
 
     /**
@@ -426,25 +437,14 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 //        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);//默认在中间
     }
 
-
     @Override
     protected void initListener() {
         super.initListener();
         getRefreshController().setAutoPullDownRefresh(false);
-        setOnRefreshPageListener(new OnRefreshPageListener() {
+        setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh(int pageIndex) {
-                if (isRequestFail) {
-                    return;
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        initCurrentPositionList();  //请求仓位列表数据
-                        getRefreshController().refreshComplete(currentPositionList);
-                        ToastUtils.show(context, "没有更多数据");
-                    }
-                }, 500);
+            public void onRefresh() {
+                doRefresh();
             }
         });
 
@@ -465,10 +465,23 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
             @Override
             public void refreshData() {
-                initCurrentPositionList();//刷新仓位列表
+                initCurrentPositionList(start, requestCount);//刷新仓位列表
                 LogUtil.d("刷新仓位列表了---------");
             }
         });
+    }
+
+    public void doRefresh() {
+        initCurrentPositionList(start, requestCount);  //请求仓位列表数据
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (currentPositionList == null) {
+                    ToastUtils.show(context, "没有更多数据");
+                }
+                getRefreshController().refreshComplete(currentPositionList);
+            }
+        }, 500);
     }
 
     @Override
@@ -563,31 +576,61 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void processData(int amount) {
                 initDialogData(amount);
             }
-        });
-        builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
+        }).setPositiveButton(buyType, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
                 int progress = CustomDialog.mSeekBar.getProgress();
-                double amount = progress + 1;
-                int codeId = mUnitViewList.get(mViewPager.getCurrentItem()).getId();
-                int deferred = 1; //是否过滤
-                if (mUnitViewList.get(mViewPager.getCurrentItem()).getDeferred() != 0) {
-                    deferred = (int) mUnitViewList.get(mViewPager.getCurrentItem()).getDeferred();
+                final double amount = progress + 1;
+                final int codeId = mUnitViewList.get(mViewPager.getCurrentItem()).getId();
+                final boolean deferred;
+                if (mUnitViewList.get(mViewPager.getCurrentItem()).getDeferred() == 1) {
+                    deferred = true;                        //是否过滤
+                } else {
+                    deferred = false;
                 }
-                ToastUtils.show(context, finalBuyType);
-                requestOpenPosition(codeId, finalBuySell, amount, deferred);    //买涨点击后操作
+                if (earnestMoney > UserManager.getInstance().getUserEntity().getBalance()) {
+                    showRechargeDialog();//余额不足,提示弹窗
+                } else {
+                    showLoader("正在提交订单...");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1000);
+                                requestOpenPosition(codeId, finalBuySell, amount, deferred);    //买涨点击后操作
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                }
+                dialog.dismiss();
             }
-        });
-
-        builder.setNegativeButton("取消",
+        }).setNegativeButton("取消",
                 new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         ToastUtils.show(context, "取消");
                     }
-                });
-        builder.create().show();
+                }).create().show();
         initDialogData(1);
+    }
+
+    private void showRechargeDialog() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(context, Constant.TYPE_INSUFFICIENT_BALANCE);
+        builder.setTitle(getResources().getString(R.string.insufficient_balance))
+                .setMessage(getResources().getString(R.string.recharge_prompt))
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        next(RechargeActivity.class);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     /**
@@ -601,10 +644,13 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             return;
         }
         double unit = getCurrentUnit();  //获取当前商品 的单价
-        CustomDialog.mEarnestMoney.setText("¥ " + NumberUtils.halfAdjust2(unit * amount)); //定金
+        CustomDialog.mCurrentCount.setText(amount + "");
+        earnestMoney = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount)); //定金-实际付的钱
+        CustomDialog.mEarnestMoney.setText("¥ " + earnestMoney); //定金
         double chargeFree = mUnitViewList.get(mViewPager.getCurrentItem()).getOpenChargeFee() * unit * amount;//手续费
-        CustomDialog.mServiceCharge.setText(NumberUtils.halfAdjust2(chargeFree) + "");
-        CustomDialog.mTurnoverMoney.setText("¥ " + NumberUtils.halfAdjust2(unit * amount - chargeFree));//成交额
+        CustomDialog.mServiceCharge.setText(NumberUtils.halfAdjust2(chargeFree));
+        turnoverPrice = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount - chargeFree));
+        CustomDialog.mTurnoverMoney.setText("¥ " + turnoverPrice);//成交额
     }
 
     private double getCurrentUnit() {
@@ -621,19 +667,23 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount       建仓手数
      * @param deferred     是否过滤
      */
-    private void requestOpenPosition(int codeId, int finalBuySell, double amount, int deferred) {
-        NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, deferred, new OnAPIListener<OpenPositionReturnEntity>() {
+    private void requestOpenPosition(int codeId, int finalBuySell, double amount, boolean deferred) {
+        NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<OpenPositionReturnEntity>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                closeLoader();
+                ToastUtils.show(context, "建仓失败");
             }
 
             @Override
             public void onSuccess(OpenPositionReturnEntity openPositionReturnEntity) {
                 LogUtil.d("建仓请求网络成功" + openPositionReturnEntity.toString());
+                closeLoader();
+                ToastUtils.show(context, "交易成功");
                 //刷新当前建仓列表数据
-                initCurrentPositionList();
-                processPositionList();
+                initCurrentPositionList(start, requestCount);
+                listView.setSelection(0);  //跳到顶部
             }
         });
     }
