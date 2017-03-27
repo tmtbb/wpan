@@ -34,10 +34,10 @@ public interface DealAPI {
     void kchart(String exchangeName, String platformName, String symbol, int aType, int chartType, OnAPIListener<List<CurrentTimeLineReturnEntity>> listener);
 
     //建仓
-    void openPosition(int codeId, int buySell, double amount, int isDeferred, OnAPIListener<OpenPositionReturnEntity> listener);
+    void openPosition(long codeId, int buySell, double amount,double price, boolean isDeferred, OnAPIListener<OpenPositionReturnEntity> listener);
 
     //当前仓位列表
-    void currentPositionList(OnAPIListener<List<CurrentPositionListReturnEntity>> listener);
+    void currentPositionList(int start, int count,OnAPIListener<List<CurrentPositionListReturnEntity>> listener);
 
     //历史记录(处理/已处理)
     void historyPositionList(int start, int count, OnAPIListener<List<HistoryPositionListReturnEntity>> listener);

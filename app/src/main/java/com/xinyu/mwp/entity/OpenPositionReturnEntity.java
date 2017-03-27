@@ -28,7 +28,7 @@ public class OpenPositionReturnEntity extends BaseEntity {
      * interval : 10
      */
 
-    public static int positionId = 0;
+    public static long positionId = 0;
     public static int id = 0;
     public static int codeId = 0;
     public static String typeCode = "";
@@ -36,7 +36,7 @@ public class OpenPositionReturnEntity extends BaseEntity {
     public static int buySell = 0;
     public static double amount = 0;
     public static double openPrice = 0;
-    public static int positionTime = 0;
+    public static long positionTime = 0;
     public static double openCost = 0;
     public static double openCharge = 0;
     public static int closeTime = 0;
@@ -45,9 +45,10 @@ public class OpenPositionReturnEntity extends BaseEntity {
     public static double limit = 0;
     public static double stop = 0;
     public static int closeType = 0;
-    public static int isDeferred = 0;
+    public static boolean isDeferred = false;
     public static double deferred = 0;
-    public static int interval = 0;
+    public static double interval = 0;
+    public static String symbol = "";
 
 //    public void setAmount(double amount) {
 //        this.amount = amount;

@@ -41,7 +41,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
         return R.layout.activity_listview;
     }
 
-    private int start = 0;
+    private int start = 1;
     private int count = 10;
 
     @Override
@@ -75,7 +75,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
             public void onRefresh(int pageIndex) {
                 if (pageIndex == 1) {
                     LogUtil.d("可能下拉,page:" + pageIndex);
-                    start = 0;
+                    start = 1;
                     doRefresh(start);
                 } else {
                     start = start + 10;

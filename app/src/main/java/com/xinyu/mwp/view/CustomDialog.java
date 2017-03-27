@@ -3,6 +3,7 @@ package com.xinyu.mwp.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.constant.Constant;
+import com.xinyu.mwp.util.LogUtil;
 
 /**
  * 自定义dialog
@@ -31,8 +34,10 @@ public class CustomDialog extends Dialog {
     public static TextView mServiceCharge;
     private static RadioButton mFreight;
     private static RadioButton mReturnDouble;
-    private static TextView mCurrentCount;
+    public static TextView mCurrentCount;
     private static TextView mCurrentCountShow;
+    private static TextView mTitle;
+    private static TextView mMessage;
 
 
     public CustomDialog(Context context) {
@@ -51,6 +56,8 @@ public class CustomDialog extends Dialog {
         private DialogInterface.OnClickListener positiveButtonClickListener;
         private DialogInterface.OnClickListener negativeButtonClickListener;
         private View layout;
+        private String title;
+        private String message;
 
         public Builder(Context context, int type) {
             this.context = context;
@@ -78,6 +85,16 @@ public class CustomDialog extends Dialog {
             return this;
         }
 
+        public Builder setTitle(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder setMessage(String message) {
+            this.message = message;
+            return this;
+        }
+
         public Builder setNegativeButton(int negativeButtonText,
                                          DialogInterface.OnClickListener listener) {
             this.negativeButtonText = (String) context
@@ -96,21 +113,26 @@ public class CustomDialog extends Dialog {
         public CustomDialog create() {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            // instantiate the dialog with the custom Theme
             final CustomDialog dialog = new CustomDialog(context, R.style.custom_dialog);
-
-            if (type == 0) {
+            double ratio;
+            if (type == Constant.TYPE_BUY_MINUS) {
                 layout = inflater.inflate(R.layout.dialog_buy_minus, null);
-            } else {
+                initView();
+                initSeekBar();
+                ratio = 0.9;
+            } else if (type == Constant.TYPE_BUY_PLUS) {
                 layout = inflater.inflate(R.layout.dialog_buy_plus, null);
+                initView();
+                initSeekBar();
+                ratio = 0.9;
+            } else {
+                layout = inflater.inflate(R.layout.dialog_insufficient_balance, null);
+                initView();
+                ratio = 0.8;
             }
-
-            initView();
-            initSeekBar();
 
             dialog.addContentView(layout, new LayoutParams(
                     LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-            // set the confirm button
             if (positiveButtonText != null) {
                 mPositiveButton.setText(positiveButtonText);
                 if (positiveButtonClickListener != null) {
@@ -125,8 +147,6 @@ public class CustomDialog extends Dialog {
                 mPositiveButton.setVisibility(
                         View.GONE);
             }
-
-            mNegativeButton = (Button) layout.findViewById(R.id.btn_buy_negative);
             if (negativeButtonText != null) {
                 mNegativeButton.setText(negativeButtonText);
                 if (negativeButtonClickListener != null) {
@@ -140,12 +160,18 @@ public class CustomDialog extends Dialog {
             } else {
                 mNegativeButton.setVisibility(View.GONE);
             }
+            if (title != null) {
+                mTitle.setText(title);
+            }
+            if (message != null) {
+                mMessage.setText(message);
+            }
 
             dialog.setContentView(layout);
-            Window dialogWindow =  dialog.getWindow();
+            Window dialogWindow = dialog.getWindow();
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
             DisplayMetrics d = context.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
-            lp.width = (int) (d.widthPixels * 0.9); // 宽度设置为屏幕的0.9
+            lp.width = (int) (d.widthPixels * ratio); // 宽度设置为屏幕的0.9 /0.8
             dialogWindow.setAttributes(lp);
             dialog.setCanceledOnTouchOutside(false);// 设置点击屏幕Dialog不消失
             return dialog;
@@ -153,6 +179,10 @@ public class CustomDialog extends Dialog {
 
         private void initView() {
             mPositiveButton = (Button) layout.findViewById(R.id.btn_buy_positive); //买涨/买跌
+            mNegativeButton = (Button) layout.findViewById(R.id.btn_buy_negative);
+            mTitle = (TextView) layout.findViewById(R.id.dialog_title);
+            mMessage = (TextView) layout.findViewById(R.id.dialog_message);
+
             //当前选择手数
             mCurrentCount = (TextView) layout.findViewById(R.id.tv_current_choose_count);
             //当前选择手数显示图标
@@ -180,8 +210,8 @@ public class CustomDialog extends Dialog {
             mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (progressChangeListener != null){
-                        progressChangeListener.processData(progress +1);
+                    if (progressChangeListener != null) {
+                        progressChangeListener.processData(progress + 1);
                     }
                     mCurrentCount.setText(progress + 1 + "");
                     mCurrentCountShow.setText(progress + 1 + "");
@@ -189,9 +219,9 @@ public class CustomDialog extends Dialog {
                     float seekbarWidth = mSeekBar.getX(); //距边框的距离
                     float width = ((progress) * x) / 10 + seekbarWidth; //进度的位置 坐标
 
-                    mCurrentCountShow.setX(width);
-                    //  LogUtil.d("process是:" + progress + ",宽度:" + seekbarWidth + ",seekbar当前位置的宽度:" + width + ",seekBar控件的宽度是:" + x + ",获取的可能的宽度是:" + seekbarWidth);
-                    //设置定金,运费,成交额,手续费
+                    int intrinsicWidth = seekBar.getThumb().getIntrinsicWidth();
+                    float newWith = width - mCurrentCountShow.getWidth() / 2 + intrinsicWidth / 2;  //纠正滑块位置
+                    mCurrentCountShow.setX(newWith);
                 }
 
                 @Override
@@ -205,13 +235,15 @@ public class CustomDialog extends Dialog {
             });
         }
 
-        public interface ProgressChangeListener{
-             void processData(int process);
+        public interface ProgressChangeListener {
+            void processData(int process);
         }
+
         private ProgressChangeListener progressChangeListener;
 
-        public void setProgressChangeListener(ProgressChangeListener progressChangeListener) {
+        public Builder setProgressChangeListener(ProgressChangeListener progressChangeListener) {
             this.progressChangeListener = progressChangeListener;
+            return this;
         }
     }
 

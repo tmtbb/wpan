@@ -47,7 +47,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
                          OnAPIListener<List<CurrentTimeLineReturnEntity>> listener) {
         LogUtil.d("----------------请求分时数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("exchangeName", exchangeName);
         map.put("platformName", platformName);
@@ -99,27 +99,29 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
 
 
     @Override
-    public void openPosition(int codeId, int buySell, double amount, int isDeferred, OnAPIListener<OpenPositionReturnEntity> listener) {
+    public void openPosition(long codeId, int buySell, double amount, double price, boolean isDeferred, OnAPIListener<OpenPositionReturnEntity> listener) {
         LogUtil.d("请求建仓数据");
         HashMap<String, Object> map = new HashMap<>();
-//        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("codeId", codeId);
         map.put("buySell", buySell);  //建仓方向
         map.put("amount", amount);
         map.put("deferred", isDeferred);
+        map.put("price", price);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Position,
                 SocketAPIConstant.ReqeutType.Deal, map);
         requestEntity(socketDataPacket, OpenPositionReturnEntity.class, listener);
     }
 
     @Override
-    public void currentPositionList(OnAPIListener<List<CurrentPositionListReturnEntity>> listener) {
+    public void currentPositionList(int start, int count, OnAPIListener<List<CurrentPositionListReturnEntity>> listener) {
         LogUtil.d("当前仓位列表请求数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("start", start);
+        map.put("count", count);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.ProductList,
                 SocketAPIConstant.ReqeutType.Time, map);
         requestEntitys(socketDataPacket, "positioninfo", CurrentPositionListReturnEntity.class, listener);
@@ -129,7 +131,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     public void historyPositionList(int start, int count, OnAPIListener<List<HistoryPositionListReturnEntity>> listener) {
         LogUtil.d("仓位历史记录请求数据");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("start", start);
         map.put("count", count);
@@ -141,7 +143,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     @Override
     public void historyDealList(int start, int count, String symbol, OnAPIListener<List<HistoryPositionListReturnEntity>> listener) {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", 32);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("start", start);
         map.put("count", count);
