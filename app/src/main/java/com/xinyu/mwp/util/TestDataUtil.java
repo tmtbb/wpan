@@ -1,5 +1,7 @@
 package com.xinyu.mwp.util;
 
+import com.xinyu.mwp.constant.ActionConstant;
+import com.xinyu.mwp.entity.BalanceInfoEntity;
 import com.xinyu.mwp.entity.IndexBannerEntity;
 import com.xinyu.mwp.entity.MyPushOrderEntity;
 import com.xinyu.mwp.entity.MyPushOrderItemEntity;
@@ -10,6 +12,9 @@ import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.entity.UnitEntity;
 import com.xinyu.mwp.entity.UserAssetsEntity;
 import com.xinyu.mwp.entity.UserAssetsItemEntity;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,14 +100,14 @@ public class TestDataUtil {
             List<RechargeRecordItemEntity> itemEntities = new ArrayList<>();
             for (int j = 0; j < 30; j++) {
                 RechargeRecordItemEntity itemEntity = new RechargeRecordItemEntity();
-                itemEntity.setMoney(String.valueOf(1999 + i));
-                itemEntity.setStatus(String.valueOf(new Random().nextInt(2)));
-                itemEntity.setIcon(ImageUtil.getRandomUrl());
-                itemEntity.setInfo("招商银行  尾号8898");
-                itemEntity.setTime("11:23:12");
-                itemEntity.setTimeDate("11-11");
-                itemEntity.setTimeWeek("周五");
-                itemEntities.add(itemEntity);
+//                itemEntity.setMoney(String.valueOf(1999 + i));
+////                itemEntity.setStatus(String.valueOf(new Random().nextInt(2)));
+//                itemEntity.setIcon(ImageUtil.getRandomUrl());
+//                itemEntity.setInfo("招商银行  尾号8898");
+//                itemEntity.setTime("11:23:12");
+//                itemEntity.setTimeDate("11-11");
+//                itemEntity.setTimeWeek("周五");
+//                itemEntities.add(itemEntity);
             }
             entity.setInfo(itemEntities);
             rrEntities.add(entity);
@@ -185,10 +190,47 @@ public class TestDataUtil {
         for (int i = 0; i < 10; i++) {
             itemEntity = new MyPushOrderItemEntity();
             itemEntity.setOrderNname("上海-法兰克福" + new Random().nextInt(10));
-            itemEntity.setTime("17-01-25 17:"+ new Random().nextInt(60));
+            itemEntity.setTime("17-01-25 17:" + new Random().nextInt(60));
             itemEntity.setOrderPrice("" + new Random().nextInt(10000));
             orderList.add(itemEntity);
         }
         return orderList;
+    }
+
+    public static List<IndexBannerEntity> getIndexBannersInfo() {
+        List<IndexBannerEntity> banners = new ArrayList<>();
+        IndexBannerEntity banner1 = new IndexBannerEntity();
+        banner1.setImg(ImageUtil.FLIGHT_INFO1);
+        banner1.setJumpCategory(ActionConstant.JumpCategory.INDEX_POSITION_INFO);
+        banner1.setJumpType("1");
+        banner1.setTitle("交易规则");
+        banner1.setJumpUrl(ActionConstant.fileName1);
+        banners.add(banner1);
+
+        IndexBannerEntity banner2 = new IndexBannerEntity();
+        banner2.setImg(ImageUtil.FLIGHT_INFO2);
+        banner2.setJumpCategory(ActionConstant.JumpCategory.INDEX_POSITION_INFO);
+        banner2.setJumpType("2");
+        banner2.setTitle("航班信息");
+        banner2.setJumpUrl(ActionConstant.fileName2);
+        banners.add(banner2);
+        return banners;
+    }
+
+    /**
+     * 请求余额
+     */
+    public static void requestBalance() {
+        NetworkAPIFactoryImpl.getUserAPI().balance(new OnAPIListener<BalanceInfoEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(BalanceInfoEntity balanceInfoEntity) {
+                UserManager.getInstance().getUserEntity().setBalance(balanceInfoEntity.getBalance());
+            }
+        });
     }
 }

@@ -5,12 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.RechargeRecordItemEntity;
-import com.xinyu.mwp.util.DisplayImageOptionsUtil;
+import com.xinyu.mwp.util.LogUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -64,14 +63,21 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
 
         @Override
         protected void update(RechargeRecordItemEntity data) {
-            date_1.setText(data.getTimeWeek());
-            date_2.setText(data.getTimeDate());
-            ImageLoader.getInstance().displayImage(data.getIcon(), icon, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
-            money.setText(data.getMoney());
-            info.setText(data.getInfo());
-            time.setText(data.getTime());
+            date_1.setText(data.getDepositTime().substring(0, 10));
+            date_2.setText(data.getDepositTime().substring(11));
+            LogUtil.d("date1:" + data.getDepositTime().substring(0, 10) + ",date2:" + data.getDepositTime().substring(11));
 
-            if ("1".equals(data.getStatus())) {
+
+//            ImageLoader.getInstance().displayImage(data.getIcon(), icon, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
+            if (data.getDepositName().equals("微信")) {
+                icon.setImageResource(R.mipmap.icon_wx);
+            } else {
+                icon.setImageResource(R.mipmap.icon_bank_union_pay);
+            }
+            money.setText(data.getAmount() + "");
+            info.setText(data.getDepositName());
+
+            if (data.getStatus() == 1) {
                 status.setText("充值成功");
                 date_1.setTextColor(context.getResources().getColor(R.color.font_999));
                 date_2.setTextColor(context.getResources().getColor(R.color.font_999));

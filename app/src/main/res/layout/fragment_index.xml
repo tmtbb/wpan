@@ -46,7 +46,6 @@
                         android:layout_height="161dp" />
 
                 </RelativeLayout>
-
                 <!--隐藏头条推送,推单-->
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -55,7 +54,6 @@
                     android:paddingLeft="@dimen/dp_12"
                     android:paddingRight="@dimen/dp_12"
                     android:visibility="gone">
-
                     <TextView
                         android:id="@+id/followView"
                         android:layout_width="71dp"

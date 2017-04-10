@@ -61,12 +61,11 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                LogUtil.d("提现列表请求网络失败");
             }
 
             @Override
             public void onSuccess(List<WithDrawCashReturnEntity> withDrawCashReturnEntities) {
-                LogUtil.d("提现列表请求网络成功:" + withDrawCashReturnEntities.toString());
+//                LogUtil.d("提现列表请求网络成功:" + withDrawCashReturnEntities.toString());
                 drawCashEntityList = withDrawCashReturnEntities;
             }
         });
@@ -88,13 +87,13 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
             }
         });
 
-        adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
-            @Override
-            public void onItemChildViewClick(View childView, int position, int action, Object obj) {
+//        adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
+//            @Override
+//            public void onItemChildViewClick(View childView, int position, int action, Object obj) {
 //                next(CashDetailActivity.class);
-                ToastUtils.show(context, "暂未处理");
-            }
-        });
+//        ToastUtils.show(context, "暂未处理");
+//            }
+//        });
     }
 
     private void doRefresh(int number) {

@@ -35,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="71dp"
         android:background="@color/default_main_color_light"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/allOrdersLayout"

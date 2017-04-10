@@ -3,7 +3,6 @@ package com.xinyu.mwp.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.constant.Constant;
-import com.xinyu.mwp.util.LogUtil;
 
 /**
  * 自定义dialog
@@ -28,10 +26,11 @@ public class CustomDialog extends Dialog {
     private static Button mPositiveButton;
     private static Button mNegativeButton;
     public static SeekBar mSeekBar;
-    public static TextView mEarnestMoney;//定金
-    public static TextView mEarnestMoneyPercent; //运费比例
+    //    public static TextView mEarnestMoney;//定金
+//    public static TextView mEarnestMoneyPercent; //运费比例
     public static TextView mTurnoverMoney;  //成交额
     public static TextView mServiceCharge;
+    public static TextView mCurrentPosition;  //当前仓位
     private static RadioButton mFreight;
     private static RadioButton mReturnDouble;
     public static TextView mCurrentCount;
@@ -190,9 +189,9 @@ public class CustomDialog extends Dialog {
             //拖动选择
             mSeekBar = (SeekBar) layout.findViewById(R.id.trade_seekbar);
             //定金
-            mEarnestMoney = (TextView) layout.findViewById(R.id.tv_earnest_money);
+//            mEarnestMoney = (TextView) layout.findViewById(R.id.tv_earnest_money);
             //运费比例
-            mEarnestMoneyPercent = (TextView) layout.findViewById(R.id.tv_earnest_money_percent);
+//            mEarnestMoneyPercent = (TextView) layout.findViewById(R.id.tv_earnest_money_percent);
             //成交额
             mTurnoverMoney = (TextView) layout.findViewById(R.id.tv_turnover_money);
             //手续费
@@ -201,6 +200,7 @@ public class CustomDialog extends Dialog {
 //            mFreight = (RadioButton) layout.findViewById(R.id.rb_trade_freight);
 //            //双倍返还
 //            mReturnDouble = (RadioButton) layout.findViewById(R.id.rb_trade_return_double);
+            mCurrentPosition = (TextView) layout.findViewById(R.id.tv_current_position);
         }
 
 

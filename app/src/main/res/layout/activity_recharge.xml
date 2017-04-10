@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -33,10 +32,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.xinyu.mwp.view.banner.IndexBannerView
-                    android:id="@+id/bannerView"
+                <!--<com.xinyu.mwp.view.banner.IndexBannerView-->
+                <!--android:id="@+id/bannerView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+                <ImageView
+                    android:id="@+id/iv_bannerview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/dp_181"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_recharge_banner" />
 
                 <com.xinyu.mwp.view.CellView
                     android:id="@+id/account"
@@ -44,7 +49,7 @@
                     android:layout_height="wrap_content"
                     core_ptr:cell_arrow_visible="false"
                     core_ptr:cell_contentleft_color="@color/font_333"
-                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_contentleft_size="@dimen/fontSize_18sp"
                     core_ptr:cell_icon="@mipmap/icon_account"
                     core_ptr:cell_name="账户ID"
                     core_ptr:cell_name_color="@color/font_666"
@@ -56,7 +61,7 @@
                     android:layout_height="wrap_content"
                     core_ptr:cell_arrow_visible="false"
                     core_ptr:cell_contentleft_color="@color/default_red"
-                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_contentleft_size="@dimen/fontSize_18sp"
                     core_ptr:cell_icon="@mipmap/icon_recharge_money"
                     core_ptr:cell_name="余额"
                     core_ptr:cell_name_color="@color/font_666"
@@ -71,10 +76,10 @@
                     android:visibility="gone"
                     core_ptr:cell_content="请绑定银行卡"
                     core_ptr:cell_content_color="@color/font_999"
-                    core_ptr:cell_content_size="14sp"
+                    core_ptr:cell_content_size="@dimen/fontSize_14sp"
                     core_ptr:cell_contentleft="3"
                     core_ptr:cell_contentleft_color="@color/font_333"
-                    core_ptr:cell_contentleft_size="18sp"
+                    core_ptr:cell_contentleft_size="@dimen/fontSize_18sp"
                     core_ptr:cell_icon="@mipmap/icon_bankcard"
                     core_ptr:cell_name="我的银行卡"
                     core_ptr:cell_name_color="@color/font_666"
@@ -133,6 +138,7 @@
                     android:id="@+id/rechargeType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    core_ptr:cell_contentleft_size="@dimen/fontSize_18sp"
                     core_ptr:cell_icon="@mipmap/icon_rechargetype"
                     core_ptr:cell_name="充值方式"
                     core_ptr:cell_name_color="@color/font_666"

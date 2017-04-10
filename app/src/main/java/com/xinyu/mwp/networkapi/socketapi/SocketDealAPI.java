@@ -1,19 +1,22 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
 import com.xinyu.mwp.constant.SocketAPIConstant;
+import com.xinyu.mwp.entity.BankCardEntity;
+import com.xinyu.mwp.entity.BankInfoEntity;
+import com.xinyu.mwp.entity.CurrentPositionEntity;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
-import com.xinyu.mwp.entity.OpenPositionReturnEntity;
+import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.TotalDealInfoEntity;
+import com.xinyu.mwp.entity.WXPayResultEntity;
 import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.DealAPI;
-import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketDataPacket;
 import com.xinyu.mwp.util.LogUtil;
@@ -99,7 +102,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
 
 
     @Override
-    public void openPosition(long codeId, int buySell, double amount, double price, boolean isDeferred, OnAPIListener<OpenPositionReturnEntity> listener) {
+    public void openPosition(long codeId, int buySell, double amount, double price, boolean isDeferred, OnAPIListener<CurrentPositionListReturnEntity> listener) {
         LogUtil.d("请求建仓数据");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
@@ -111,7 +114,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("price", price);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Position,
                 SocketAPIConstant.ReqeutType.Deal, map);
-        requestEntity(socketDataPacket, OpenPositionReturnEntity.class, listener);
+        requestEntity(socketDataPacket, CurrentPositionListReturnEntity.class, listener);
     }
 
     @Override
@@ -177,17 +180,16 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void cash(double money, int bankId, String password, String comment, OnAPIListener<WithDrawCashReturnEntity> listener) {
+    public void cash(double money, long cardId, String password, OnAPIListener<WithDrawCashReturnEntity> listener) {
         LogUtil.d("请求提现--");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-        map.put("price", money);
-        map.put("bankId", bankId);
-        map.put("password", password);
-        map.put("comment", comment);
+        map.put("money", money);
+        map.put("cardId", cardId);
+        map.put("pwd", "");
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Cash,
-                SocketAPIConstant.ReqeutType.History, map);
+                SocketAPIConstant.ReqeutType.Bank, map);
         requestEntity(socketDataPacket, WithDrawCashReturnEntity.class, listener);
     }
 
@@ -201,7 +203,106 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("count", count);
         map.put("status", status);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CashList,
-                SocketAPIConstant.ReqeutType.Verify, map);
+                SocketAPIConstant.ReqeutType.History, map);
         requestEntitys(socketDataPacket, "withdrawList", WithDrawCashReturnEntity.class, listener);
+    }
+
+    @Override
+    public void currentPosition(double pid, OnAPIListener<CurrentPositionEntity> listener) {
+        LogUtil.d("当前的仓位详情");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("gid", pid);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CurrentPosition,
+                SocketAPIConstant.ReqeutType.Deal, map);
+        requestEntity(socketDataPacket, CurrentPositionEntity.class, listener);
+    }
+
+    @Override
+    public void profit(long tid, int handle, OnAPIListener<HistoryPositionListReturnEntity> listener) {
+        LogUtil.d("盈利方式");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("tid", tid);
+        map.put("handle", handle);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Profit,
+                SocketAPIConstant.ReqeutType.History, map);
+        requestEntity(socketDataPacket, HistoryPositionListReturnEntity.class, listener);
+    }
+
+    @Override
+    public void wxpayResult(String rid, int payResult, OnAPIListener<WXPayResultEntity> listener) {
+        LogUtil.d("支付返回结果");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("rid", rid);
+        map.put("payResult", payResult);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.PayResult,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestEntity(socketDataPacket, WXPayResultEntity.class, listener);
+    }
+
+    @Override
+    public void bankCardList(OnAPIListener<List<BankCardEntity>> listener) {
+        LogUtil.d("请求银行卡列表");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.BankCard,
+                SocketAPIConstant.ReqeutType.Bank, map);
+        requestEntitys(socketDataPacket, "cardList", BankCardEntity.class, listener);
+    }
+
+    @Override
+    public void bankName(String cardNo, OnAPIListener<BankInfoEntity> listener) {
+        LogUtil.d("获取银行账户信息");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("cardNo", cardNo);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.BankName,
+                SocketAPIConstant.ReqeutType.Bank, map);
+        requestEntity(socketDataPacket, BankInfoEntity.class, listener);
+    }
+
+    @Override
+    public void bindCard(long bankId, String bankName, String branchBank, String cardNO, String name, OnAPIListener<BankInfoEntity> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("bankId", bankId);
+        map.put("branchBank", branchBank);
+        map.put("cardNO", cardNO);
+        map.put("bankName", bankName);
+        map.put("name", name);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.BindCard,
+                SocketAPIConstant.ReqeutType.Bank, map);
+        requestEntity(socketDataPacket, BankInfoEntity.class, listener);
+    }
+
+    @Override
+    public void unBindCard(long bankCardId, String verCode, OnAPIListener<Object> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("bankCardId", bankCardId);
+        map.put("verCode", verCode);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnBindCard,
+                SocketAPIConstant.ReqeutType.Bank, map);
+        requestJsonObject(socketDataPacket, listener);
+    }
+
+    @Override
+    public void rechargeList(int startPos,int count,OnAPIListener<List<RechargeRecordItemEntity>> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        map.put("startPos", startPos);
+        map.put("count", count);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Total,
+                SocketAPIConstant.ReqeutType.History, map);
+       requestEntitys(socketDataPacket,"depositsinfo",RechargeRecordItemEntity.class,listener);
     }
 }

@@ -2,21 +2,18 @@ package com.xinyu.mwp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
-import com.xinyu.mwp.constant.Constant;
+import com.xinyu.mwp.entity.BankCardEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
-import com.xinyu.mwp.networkapi.NetworkAPIFactory;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
@@ -26,6 +23,9 @@ import com.xinyu.mwp.view.CellEditView;
 import com.xinyu.mwp.view.CheckCodeView;
 import com.xinyu.mwp.view.SimpleTextWatcher;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
@@ -58,6 +58,8 @@ public class CashActivity extends BaseControllerActivity {
     private double price;
     private String password;
     private String comment;
+    private boolean flag = true;
+    private BankCardEntity bankCardEntity;
 
     @Override
     protected int getContentView() {
@@ -73,12 +75,37 @@ public class CashActivity extends BaseControllerActivity {
         cardNo.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER);
         pwd.getEdit().setTransformationMethod(PasswordTransformationMethod.getInstance());//设置密码不可见
         money.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        bank.getEdit().setFocusable(false);
+        bank.getEdit().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next(BindBankCardActivity.class);
+            }
+        });
+        if (flag) {
+            EventBus.getDefault().register(this);
+            flag = false;
+        }
+    }
+
+    /*
+  *接收消息
+   */
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void ReciveMessage(BankCardEntity eventBusMessage) {
+        if (eventBusMessage != null) {
+            bankCardEntity = eventBusMessage;
+            bank.setEditTextString(eventBusMessage.getBank());
+            branch.setEditTextString(eventBusMessage.getBranchBank());
+            cardNo.setEditTextString(eventBusMessage.getCardNo());
+            cardName.setEditTextString(eventBusMessage.getName());
+        }
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        checkButtonState(cash, bank, branch, address, cardNo, cardName, money, pwd);
+        checkButtonState(cash, bank, branch, cardNo, cardName, money);
         money.setOnChildViewClickListener(new OnChildViewClickListener() {
             @Override
             public void onChildViewClick(View childView, int action, Object obj) {
@@ -93,8 +120,11 @@ public class CashActivity extends BaseControllerActivity {
         switch (v.getId()) {
             case R.id.cash:
                 getInPutInfo();
-                requestCash();
-
+                if (price > UserManager.getInstance().getUserEntity().getBalance()) {
+                    ToastUtils.show(context, "余额不足");
+                } else {
+                    requestCash();
+                }
                 break;
             case R.id.rightText:
                 next(CashRecordActivity.class);
@@ -109,15 +139,13 @@ public class CashActivity extends BaseControllerActivity {
         String cardNumber = cardNo.getEditTextString();
         String userName = cardName.getEditTextString();
         comment = cash_comments.getEditTextString();
-
         password = pwd.getEditTextString();
-
         price = Double.parseDouble(money.getEditTextString());
     }
 
     private void requestCash() {
-        int bankId = 49;
-        NetworkAPIFactoryImpl.getDealAPI().cash(price, bankId, password, comment, new OnAPIListener<WithDrawCashReturnEntity>() {
+        long bid = bankCardEntity.getBid();
+        NetworkAPIFactoryImpl.getDealAPI().cash(price, bid, password, new OnAPIListener<WithDrawCashReturnEntity>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
@@ -126,26 +154,14 @@ public class CashActivity extends BaseControllerActivity {
 
             @Override
             public void onSuccess(WithDrawCashReturnEntity withDrawCashReturnEntity) {
-                LogUtil.d("提现访问网络成功:" + withDrawCashReturnEntity.toString());
-//                -1:余额不足，-2：账户不存在 -3:提现密码错误
-                switch (withDrawCashReturnEntity.getStatus()) {
-                    case -1:
-                        ToastUtils.show(context, "余额不足");
-                        break;
-                    case -2:
-                        ToastUtils.show(context, "账户不存在");
-                        break;
-                    case -3:
-                        ToastUtils.show(context, "提现密码错误");
-                        break;
-                    default:
-                        Intent intent = new Intent(CashActivity.this, CashResaultActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("cash", withDrawCashReturnEntity);
-                        intent.putExtra("tag", bundle);
-                        startActivity(intent);
-                        break;
-                }
+                withDrawCashReturnEntity.setBank(bankCardEntity.getBank());
+                withDrawCashReturnEntity.setAmount(price);
+                UserManager.getInstance().getUserEntity().setBalance(withDrawCashReturnEntity.getBalance());
+                Intent intent = new Intent(CashActivity.this, CashResaultActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("cash", withDrawCashReturnEntity);
+                intent.putExtra("tag", bundle);
+                startActivity(intent);
             }
         });
     }
@@ -173,5 +189,12 @@ public class CashActivity extends BaseControllerActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().removeAllStickyEvents();
+        EventBus.getDefault().unregister(this);
     }
 }

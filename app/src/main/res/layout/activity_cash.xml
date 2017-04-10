@@ -39,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:celledit_hint="请输入地址"
-                app:celledit_name="地址" />
+                app:celledit_name="地址"
+                android:visibility="gone"/>
 
             <com.xinyu.mwp.view.CellEditView
                 android:id="@+id/cardNo"

@@ -13,6 +13,8 @@ import java.util.Random;
  */
 public class ImageUtil {
 
+   public static String FLIGHT_INFO1 = "http://upload-images.jianshu.io/upload_images/961368-77eb018b3fb23d07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240";
+   public static String FLIGHT_INFO2 = "http://upload-images.jianshu.io/upload_images/961368-e215d5256123aea3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240";
     public static String getRandomUrl() {
         Random random = new Random();
         int i = random.nextInt(imageUrls.length - 1);

@@ -1,6 +1,5 @@
 package com.xinyu.mwp.fragment;
 
-import android.app.ActivityManager;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -36,12 +35,10 @@ import com.xinyu.mwp.view.banner.IndexBannerView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -111,12 +108,12 @@ public class IndexFragment extends BaseRefreshFragment {
         titleText.setText("微盘");
         leftImage.setImageResource(R.mipmap.icon_head);
         reuqestData();  //商品列表
-
+        isShow = true;
         bannerView.centerDot();
         bannerView.setRefreshLayout(refreshFrameLayout);
-        bannerView.update(TestDataUtil.getIndexBanners(3));
+        bannerView.update(TestDataUtil.getIndexBannersInfo());
         ImageLoader.getInstance().displayImage(ImageUtil.getRandomUrl(), bottomImageView, DisplayImageOptionsUtil.getInstance().getBannerOptions());
-        bottomImageView.setVisibility(View.VISIBLE);
+        bottomImageView.setVisibility(View.GONE);
         // initMarqueeView();  //今日头滚动效果
         showLoader();
         processErrorMessage();
@@ -125,15 +122,54 @@ public class IndexFragment extends BaseRefreshFragment {
     @Override
     public void onResume() {
         super.onResume();
-        handler.postDelayed(runnable, 3000);
+        LogUtil.d("onResume执行方法,sss此时的fragment显示状态是:" + isShow);
+        //如果当前是显示状态的话,执行;如果当前是隐藏状态的话,不执行了
+        if (isShow) {
+            handler.postDelayed(runnable, 3000);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LogUtil.d("不可见");
+        LogUtil.d("onPause方法执行,关掉网络请求sss");
         handler.removeCallbacks(runnable);
     }
+
+    //初始化的时候 isTrue
+    private static boolean isShow = false;
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            LogUtil.d("界面被隐藏了sss");
+            isShow = false;
+            handler.removeCallbacks(runnable);
+        } else {
+            LogUtil.d("界面显示了sss");
+            isShow = true;
+            handler.postDelayed(runnable, 3000);
+        }
+    }
+
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        LogUtil.d("此时的界面是fou可见的dddddddddddsssssssss:"+isVisibleToUser);
+//         super.setUserVisibleHint(isVisibleToUser);
+//        LogUtil.d("此时的界面是fou可见的sssssssss:"+isVisibleToUser);
+//        if (isVisibleToUser){
+//            LogUtil.d("此时的界面是fou可见的sssssssss:"+isVisibleToUser);
+//            if (UserManager.getInstance().isLogin()){
+//                handler.postDelayed(runnable, 3000);
+//            }else{
+//                handler.removeCallbacks(runnable);
+//            }
+//        }else{
+//            LogUtil.d("此时的界面是fou可见的sssssssss:"+isVisibleToUser);
+//        }
+//
+//    }
 
     /**
      * 网络请求商品列表数据

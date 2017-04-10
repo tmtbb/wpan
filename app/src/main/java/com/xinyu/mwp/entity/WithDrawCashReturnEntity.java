@@ -4,7 +4,9 @@ package com.xinyu.mwp.entity;
  * Created by Administrator on 2017/3/13.
  */
 public class WithDrawCashReturnEntity extends BaseEntity {
-
+    /**
+     * {"balance":992360,"result":1}
+     */
     private long wid;
     private int id;
     private double charge;
@@ -19,6 +21,24 @@ public class WithDrawCashReturnEntity extends BaseEntity {
     private String name;
     private String comment;
     private int status;
+    private int result;
+    private long balance;
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public long getBalance() {
+        return balance;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
 
     public long getWid() {
         return wid;

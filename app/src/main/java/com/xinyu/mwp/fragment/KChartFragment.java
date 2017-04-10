@@ -19,6 +19,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TimeUtil;
 import com.xinyu.mwp.view.BaseFrameLayout;
 import com.xinyu.mwp.view.LineMarkerView;
@@ -85,7 +86,7 @@ public class KChartFragment extends BaseFrameLayout {
         mChart.setPinchZoom(true); //如果禁用,扩展可以在x轴和y轴分别完成
         mChart.setNoDataText("加载中...");
         mChart.setAutoScaleMinMaxEnabled(true);
-        mChart.setDragEnabled(true); //可以拖拽
+        mChart.setDragEnabled(false); //可以拖拽
         mChart.setScaleEnabled(false);  //放大缩小
         mChart.getLegend().setEnabled(false);//图例
         mChart.setTouchEnabled(true);
@@ -118,6 +119,36 @@ public class KChartFragment extends BaseFrameLayout {
     public void loadChartData(List<CurrentTimeLineReturnEntity> currentTimeLineEntities, int chartType) {
         this.chartType = chartType;
         mChart.resetTracking();
+
+        Collections.reverse(currentTimeLineEntities);
+        if (currentTimeLineEntities.size() == 0) {
+            return;
+        }
+
+        //为上海到东京的集合  特殊处理  v-symbol : "fx_sjpycnh"  上海-东京 分时图才做特殊处理
+        if (currentTimeLineEntities.get(0).getSymbol().equals("fx_sjpycnh") && chartType == 0) {
+            List<CurrentTimeLineReturnEntity> newList = new ArrayList<>();
+            List<CurrentTimeLineReturnEntity> newSuperList = new ArrayList<>();
+
+//            LogUtil.d("上海-东京处理前集合11111111111:" + currentTimeLineEntities.toString());
+
+            for (int i = 0; i < currentTimeLineEntities.size(); i++) {
+                long priceTime = currentTimeLineEntities.get(i).getPriceTime();
+                for (int j = 0; j < 5; j++) {
+                    newList.add(currentTimeLineEntities.get(i));
+                    newList.get(i * 5 + j).setPriceTime(priceTime - (240 - j * 60));
+                    LogUtil.d("----" + (i * 5 + j) + "-----" + newList.get(i * 5 + j).getPriceTime());
+                }
+            }
+
+            for (int i = 0; i < newList.size(); i++) {
+//                LogUtil.d("索引:" + i + "newSuperList----独打印出来是:" + newList.get(i).getPriceTime());
+            }
+
+            this.newCurrentTimeLineEntities = newList;
+        } else {
+            this.newCurrentTimeLineEntities = currentTimeLineEntities;
+        }
         if (preChartType != 0 && chartType == 0) {
             preChartType = 0;
             refreshMarkerView(0);
@@ -125,11 +156,7 @@ public class KChartFragment extends BaseFrameLayout {
             preChartType = 1;
             refreshMarkerView(1);
         }
-        Collections.reverse(currentTimeLineEntities);
-        this.newCurrentTimeLineEntities = currentTimeLineEntities;
-        if (newCurrentTimeLineEntities.size() == 0) {
-            return;
-        }
+
         candleEntries = getCandleEntries(newCurrentTimeLineEntities, 0);//获取处理过的集合
         itemcount = newCurrentTimeLineEntities.size();
         xVals = new ArrayList<>();  //X集合

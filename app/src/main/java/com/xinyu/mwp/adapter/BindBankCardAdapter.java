@@ -6,16 +6,18 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.BankCardEntity;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.BankInfoUtil;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.GradientDrawableUtil;
 import com.xinyu.mwp.view.SwipeLayout;
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -59,6 +61,7 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
         private TextView numberView;
         @ViewInject(R.id.deleteView)
         private TextView deleteView;
+        private BankCardEntity bankCardEntity;
 
         public BindBankCardViewHolder(Context context) {
             super(context);
@@ -72,7 +75,7 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
         @Override
         protected void initView() {
             super.initView();
-            if(ptrFrameLayout != null){
+            if (ptrFrameLayout != null) {
                 swipeLayout.setPtrFrameLayout(ptrFrameLayout);
             }
         }
@@ -83,24 +86,48 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
             deleteView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    unBindcard(); //解除绑定的银行卡
+                }
+            });
+        }
+
+        /**
+         * 解除绑定银行卡
+         */
+        private void unBindcard() {
+            NetworkAPIFactoryImpl.getDealAPI().unBindCard(bankCardEntity.getBid(), "", new OnAPIListener<Object>() {
+                @Override
+                public void onError(Throwable ex) {
+                    ex.printStackTrace();
+                }
+
+                @Override
+                public void onSuccess(Object o) {
                     remove(position);
                     notifyDataSetChanged();
                 }
             });
         }
 
+        @Event(value = R.id.rl_bank)
+        private void click(View v) {
+            onItemChildViewClick(v, 99);
+        }
+
         @Override
         protected void update(BankCardEntity data) {
-            if(data != null){
-                ImageLoader.getInstance().displayImage(data.getIcon(), iconView);
-                titleView.setText(data.getTitle());
-                typeView.setText(data.getType());
-                numberView.setText(data.getNumber());
-                Drawable drawable = GradientDrawableUtil.getGradientDrawable(Color.parseColor(data.getBackground()), DisplayUtil.dip2px(5, context));
+            if (data != null) {
+                bankCardEntity = data;
+//                ImageLoader.getInstance().displayImage(data.getIcon(), iconView);
+                iconView.setImageResource(BankInfoUtil.getIcon(data.getBank()));
+                titleView.setText(data.getBank());
+                typeView.setText("储蓄卡");
+                numberView.setText(data.getCardNo());
+                Drawable drawable = GradientDrawableUtil.getGradientDrawable(Color.parseColor(data.getBackGround()), DisplayUtil.dip2px(5, context));
                 itemLayout.setBackgroundDrawable(drawable);
                 String menuBg = "#";
-                if(data.getBackground().contains("#")){
-                    menuBg = data.getBackground().substring(1);
+                if (data.getBackGround().contains("#")) {
+                    menuBg = data.getBackGround().substring(1);
                     menuBg = "#87" + menuBg;
                 }
                 Drawable menuDrawable = GradientDrawableUtil.getGradientDrawable(Color.parseColor(menuBg), DisplayUtil.dip2px(5, context));

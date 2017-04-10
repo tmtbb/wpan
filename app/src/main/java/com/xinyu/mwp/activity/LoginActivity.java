@@ -1,7 +1,5 @@
 package com.xinyu.mwp.activity;
 
-
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -64,7 +62,6 @@ public class LoginActivity extends BaseControllerActivity {
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
         setSwipeBackEnable(false);
-
     }
 
 
@@ -79,7 +76,6 @@ public class LoginActivity extends BaseControllerActivity {
 //                break;
             case R.id.loginButton:
                 showLoader("正在登录...");
-                LogUtil.d("登录,此时的网络链接状态是:"+SocketAPINettyBootstrap.getInstance().isOpen());
                 CheckException exception = new CheckException();
                 if (checkHelper.checkMobile(userNameEditText.getEditTextString(), exception)
                         && checkHelper.checkPassword(passwordEditText.getEditTextString(), exception)) {
@@ -107,11 +103,8 @@ public class LoginActivity extends BaseControllerActivity {
                                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());
                                     en.setToken(loginReturnEntity.getToken());
-                                    en.setName(loginReturnEntity.getUserinfo().getMemberName());
-                                    en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
-                                    en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
-
-                                    en.setMobile(userNameEditText.getEditTextString());
+                                    en.setUserType(loginReturnEntity.getUserinfo().getType());
+                                    en.setMobile(loginReturnEntity.getUserinfo().getPhone());
                                     UserManager.getInstance().saveUserEntity(en);
                                     UserManager.getInstance().setLogin(true);
                                     MyApplication.getApplication().onUserUpdate(true);

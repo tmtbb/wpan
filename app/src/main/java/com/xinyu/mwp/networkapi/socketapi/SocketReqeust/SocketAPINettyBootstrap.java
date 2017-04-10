@@ -1,11 +1,10 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
 
-import com.xinyu.mwp.listener.OnSuccessListener;
+import android.os.SystemClock;
+
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
-import com.xinyu.mwp.user.UserManager;
-import com.xinyu.mwp.util.ToastUtils;
 
 import java.net.InetSocketAddress;
 
@@ -18,8 +17,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.concurrent.DefaultEventExecutorGroup;
-import io.netty.util.concurrent.EventExecutorGroup;
 
 /**
  * Created by yaowang on 2017/2/18.
@@ -44,16 +41,16 @@ public class SocketAPINettyBootstrap {
         }
     }
 
-    public void connect() {
+    public void connect(final boolean tag) {
         new Thread() {
             @Override
             public void run() {
-                SocketAPINettyBootstrap.getInstance().startConnect();
+                SocketAPINettyBootstrap.getInstance().startConnect(tag);
             }
         }.start();
     }
 
-    private Boolean startConnect() {
+    private Boolean startConnect(boolean tag) {
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.channel(NioSocketChannel.class);
@@ -88,11 +85,12 @@ public class SocketAPINettyBootstrap {
         } catch (Exception e) {
             System.out.println("无法连接----------------");
             if (onConnectListener != null) {
-                onConnectListener.onFailure();
+                onConnectListener.onFailure(tag);
             }
+            SystemClock.sleep(15 * 1000); //睡眠,重新链接
+            startConnect(tag);
             return false;
         }
-
     }
 
     /**
@@ -109,7 +107,6 @@ public class SocketAPINettyBootstrap {
      */
     public boolean isOpen() {
         if (socketChannel != null) {
-            System.out.println(" isOpen " + socketChannel.isOpen());
             return socketChannel.isOpen();
         }
         return false;
@@ -121,7 +118,7 @@ public class SocketAPINettyBootstrap {
 
         void onSuccess();
 
-        void onFailure();
+        void onFailure(boolean tag);
     }
 
     private OnConnectListener onConnectListener;

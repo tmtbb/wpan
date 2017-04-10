@@ -6,7 +6,7 @@
     android:layout_marginTop="@dimen/dp_10"
     android:background="@color/white"
     android:orientation="horizontal"
-    android:visibility="visible">
+    android:visibility="invisible">
 
 
     <TextView
@@ -32,7 +32,7 @@
             android:id="@+id/tv_change_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-0.47%"
+            android:text="-0.00%"
             android:textColor="@color/default_red"
             android:textSize="@dimen/fontSize_12sp" />
 
@@ -44,7 +44,7 @@
             android:layout_alignLeft="@id/tv_change_percent"
             android:layout_below="@id/tv_change_percent"
             android:layout_marginTop="@dimen/dp_5"
-            android:text="0.0033"
+            android:text="0.0000"
             android:textColor="@color/default_green"
             android:textSize="@dimen/fontSize_12sp" />
     </RelativeLayout>
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_toRightOf="@id/tv_high_text"
-            android:text="7.3900"
+            android:text="0.0000"
             android:textColor="@color/default_red"
             android:textSize="@dimen/fontSize_12sp" />
 
@@ -93,7 +93,7 @@
             android:layout_alignLeft="@id/tv_high_price"
             android:layout_below="@id/tv_high_price"
             android:layout_marginTop="@dimen/dp_5"
-            android:text="8.3120"
+            android:text="0.0000"
             android:textColor="@color/default_green"
             android:textSize="@dimen/fontSize_12sp" />
     </RelativeLayout>
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_toRightOf="@id/tv_today_open"
-            android:text="8.3600"
+            android:text="0.0000"
             android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_12sp" />
 
@@ -141,7 +141,7 @@
             android:layout_alignLeft="@id/tv_today_price"
             android:layout_below="@id/tv_today_price"
             android:layout_marginTop="@dimen/dp_5"
-            android:text="5.3600"
+            android:text="0.0000"
             android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_12sp" />
 

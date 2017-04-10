@@ -13,6 +13,7 @@ public interface SocketAPIConstant {
         byte Deal = 5;
         byte Verify = 1;
         byte History = 6;
+        byte Bank = 8;
     }
 
     interface OperateCode {
@@ -31,8 +32,16 @@ public interface SocketAPIConstant {
         Short Balance = 3007;
         Short Total = 6003;
         Short WXPay = 7033;
-        Short Cash = 6011;
+        Short Cash = 8001;
         Short CashList = 6005;
         Short Token = 3009;
+        Short CurrentPosition = 5007;
+        Short Profit = 6007;
+        Short PayResult = 1035;
+        Short BankCard = 8003;
+        Short BankName = 8009;
+        Short BindCard = 8005;
+        Short UnBindCard = 8007;
+        Short RechargeRecord = 1019;
     }
 }

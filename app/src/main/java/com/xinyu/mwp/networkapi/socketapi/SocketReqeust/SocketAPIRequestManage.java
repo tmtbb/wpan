@@ -41,7 +41,7 @@ public class SocketAPIRequestManage {
 
     public void start() {
         stop();
-        SocketAPINettyBootstrap.getInstance().connect();
+        SocketAPINettyBootstrap.getInstance().connect(true);
         handler.postDelayed(runnable, 1000);// 打开定时器，执行操作
     }
 

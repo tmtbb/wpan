@@ -7,14 +7,31 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
  */
 
 public class RechargeRecordItemEntity extends BaseEntity {
-    @FieldJsonKey("timeWeek")
-    private String timeWeek;
-    @FieldJsonKey("timeDate")
-    private String timeDate;
-    @FieldJsonKey("time")
-    private String time;
+    /**
+     * {
+     * "rid": 10000002,
+     * "id": 10001,
+     * "amount": 100.1,
+     * "depositTime": 1483422506,
+     * "depositType": 1,
+     * "depositName": "微信",
+     * "status": 1
+     * },
+     */
+    @FieldJsonKey("rid")
+    private long rid;
+    @FieldJsonKey("id")
+    private int id;
+    @FieldJsonKey("amount")
+    private double amount;
+    @FieldJsonKey("depositTime")
+    private String depositTime;
+    @FieldJsonKey("depositType")
+    private int depositType;
+    @FieldJsonKey("depositName")
+    private String depositName;
     @FieldJsonKey("status")
-    private String status;
+    private int status;
     @FieldJsonKey("icon")
     private String icon;
     @FieldJsonKey("money")
@@ -22,35 +39,59 @@ public class RechargeRecordItemEntity extends BaseEntity {
     @FieldJsonKey("info")
     private String info;
 
-    public String getTimeWeek() {
-        return timeWeek;
+    public long getRid() {
+        return rid;
     }
 
-    public void setTimeWeek(String timeWeek) {
-        this.timeWeek = timeWeek;
+    public void setRid(long rid) {
+        this.rid = rid;
     }
 
-    public String getTimeDate() {
-        return timeDate;
+    public int getId() {
+        return id;
     }
 
-    public void setTimeDate(String timeDate) {
-        this.timeDate = timeDate;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getTime() {
-        return time;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public String getStatus() {
+    public String getDepositTime() {
+        return depositTime;
+    }
+
+    public void setDepositTime(String depositTime) {
+        this.depositTime = depositTime;
+    }
+
+    public int getDepositType() {
+        return depositType;
+    }
+
+    public void setDepositType(int depositType) {
+        this.depositType = depositType;
+    }
+
+    public String  getDepositName() {
+        return depositName;
+    }
+
+    public void setDepositName(String depositName) {
+        this.depositName = depositName;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

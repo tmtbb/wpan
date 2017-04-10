@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
-import com.xinyu.mwp.entity.CashRecordEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 
 import org.xutils.view.annotation.Event;
@@ -89,7 +88,7 @@ public class CashRecordAdapter extends BaseListViewAdapter<WithDrawCashReturnEnt
                 case 1:
                     status.setText("处理中");
                     break;
-                case 2:
+                case 0:
                     status.setText("到账成功");
                     break;
                 case 3:
