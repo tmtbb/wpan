@@ -67,6 +67,7 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
             public void onSuccess(List<WithDrawCashReturnEntity> withDrawCashReturnEntities) {
 //                LogUtil.d("提现列表请求网络成功:" + withDrawCashReturnEntities.toString());
                 drawCashEntityList = withDrawCashReturnEntities;
+                getRefreshController().refreshComplete(drawCashEntityList);
             }
         });
     }
@@ -101,10 +102,6 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (drawCashEntityList == null) {
-                    ToastUtils.show(context, "网络链接失败-----数据为空");
-                }
-                getRefreshController().refreshComplete(drawCashEntityList);
             }
         }, 2000);
     }

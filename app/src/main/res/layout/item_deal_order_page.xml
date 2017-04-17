@@ -42,6 +42,18 @@
             android:layout_marginLeft="@dimen/dp_3"
             android:layout_marginTop="@dimen/dp_11"
             android:layout_toRightOf="@id/tv_open_position_count_des"
+            android:text="50"
+            android:textColor="@color/color_666666"
+            android:textSize="@dimen/fontSize_12sp" />
+
+        <TextView
+            android:id="@+id/tv_turnover_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_deal_name"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_11"
+            android:layout_toRightOf="@id/tv_open_position_count"
             android:textColor="@color/color_666666"
             android:textSize="@dimen/fontSize_12sp" />
 

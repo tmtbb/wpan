@@ -3,9 +3,13 @@ package com.xinyu.mwp.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
@@ -14,11 +18,17 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.util.BankInfoUtil;
 import com.xinyu.mwp.util.DisplayUtil;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.GradientDrawableUtil;
-import com.xinyu.mwp.view.SwipeLayout;
+import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.view.SwipeListLayout;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -48,9 +58,9 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
     class BindBankCardViewHolder extends BaseViewHolder<BankCardEntity> {
 
         @ViewInject(R.id.swipeLayout)
-        private SwipeLayout swipeLayout;
+        private SwipeListLayout swipeLayout;
         @ViewInject(R.id.itemLayout)
-        private View itemLayout;
+        private LinearLayout itemLayout;
         @ViewInject(R.id.iconView)
         private ImageView iconView;
         @ViewInject(R.id.titleView)
@@ -69,16 +79,19 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
 
         @Override
         protected int layoutId() {
-            return R.layout.item_bind_bank_card;
+            return R.layout.item_bind_bank_card2;
         }
 
-        @Override
-        protected void initView() {
-            super.initView();
-            if (ptrFrameLayout != null) {
-                swipeLayout.setPtrFrameLayout(ptrFrameLayout);
-            }
-        }
+//        @Override
+//        protected void initView() {
+//            super.initView();
+//            if (ptrFrameLayout != null) {
+//                swipeLayout.setPtrFrameLayout(ptrFrameLayout);
+//            }
+//        }
+
+        //存放所有已经打开的菜单
+        private List<SwipeListLayout> openList = new ArrayList<SwipeListLayout>();
 
         @Override
         protected void initListener() {
@@ -87,6 +100,33 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
                 @Override
                 public void onClick(View v) {
                     unBindcard(); //解除绑定的银行卡
+                }
+            });
+            swipeLayout.setSwipeChangeListener(new SwipeListLayout.OnSwipeChangeListener() {
+                @Override
+                public void onStartOpen(SwipeListLayout mSwipeLayout) {
+                    for (SwipeListLayout layout : openList) {
+                        layout.close();
+                    }
+                    openList.clear();
+                }
+
+                @Override
+                public void onStartClose(SwipeListLayout mSwipeLayout) {
+                }
+
+                @Override
+                public void onOpen(SwipeListLayout mSwipeLayout) {
+                    openList.add(mSwipeLayout);
+                }
+
+                @Override
+                public void onDraging(SwipeListLayout mSwipeLayout) {
+                }
+
+                @Override
+                public void onClose(SwipeListLayout mSwipeLayout) {
+                    openList.remove(mSwipeLayout);
                 }
             });
         }
@@ -99,12 +139,14 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
                 @Override
                 public void onError(Throwable ex) {
                     ex.printStackTrace();
+                    ErrorCodeUtil.showEeorMsg(context, ex);
                 }
 
                 @Override
                 public void onSuccess(Object o) {
                     remove(position);
                     notifyDataSetChanged();
+                    swipeLayout.close();
                 }
             });
         }

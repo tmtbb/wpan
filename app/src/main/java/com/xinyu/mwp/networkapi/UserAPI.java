@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public interface UserAPI {
     void login(String phone, String password,String deviceId, OnAPIListener<LoginReturnEntity> listener);
-    void register(String phone, String password,String vCode, OnAPIListener<RegisterReturnEntity> listener);
+    void register(String phone, String password,String vCode,long memberId,String agentId,String recommend, OnAPIListener<RegisterReturnEntity> listener);
     void verifyCode(String phone,int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener);
     void resetDealPwd(String phone,String pwd, String vCode,int type,OnAPIListener<Object> listener); //修改交易/用户密码
     void test(int testID,OnAPIListener<Object> listener);

@@ -13,6 +13,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -51,7 +52,10 @@ public class LeftFragment extends BaseControllerFragment {
     }
 
     public void update() {
-        balance.setText(UserManager.getInstance().getUserEntity().getBalance() + "");
+        LogUtil.d("侧边栏更新余额了");
+        if (UserManager.getInstance().getUserEntity() != null) {
+            balance.setText(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+        }
     }
 
     public void userUpdate() {
@@ -68,7 +72,6 @@ public class LeftFragment extends BaseControllerFragment {
 
             @Override
             public void onSuccess(TotalDealInfoEntity totalDealInfoEntities) {
-                LogUtil.d("交易总概览请求数据成功:" + totalDealInfoEntities.toString());
             }
         });
     }
@@ -78,7 +81,6 @@ public class LeftFragment extends BaseControllerFragment {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                LogUtil.d("余额请求失败");
             }
 
             @Override

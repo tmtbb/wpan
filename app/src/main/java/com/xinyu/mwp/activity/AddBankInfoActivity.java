@@ -11,9 +11,12 @@ import com.xinyu.mwp.activity.base.BaseActivity;
 import com.xinyu.mwp.entity.BankInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
+import com.xinyu.mwp.exception.CheckException;
+import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.StringUtil;
 import com.xinyu.mwp.util.ToastUtils;
@@ -43,6 +46,7 @@ public class AddBankInfoActivity extends BaseActivity {
     @ViewInject(R.id.next)
     private TextView next;
     private BankInfoEntity entity;
+    private CheckHelper checkHelper = new CheckHelper();
 
     @Override
     protected int getContentView() {
@@ -64,6 +68,11 @@ public class AddBankInfoActivity extends BaseActivity {
     @Event(value = {R.id.next})
     private void click(View v) {
         LogUtil.d("绑定银行卡");
+        CheckException exception = new CheckException();
+        if (!checkHelper.checkMobile(phoneNumber.getEditTextString(), exception)) {
+            ToastUtils.show(context, "请输入正确的手机号码");
+            return;
+        }
         final long bankId = entity.getBankId();
         String branchBank = branch.getEditTextString();
         String cardNO = entity.getCardNO();
@@ -73,13 +82,12 @@ public class AddBankInfoActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                ToastUtils.show(context, "绑定失败,请检查输入信息");
+                ErrorCodeUtil.showEeorMsg(context, ex);
             }
 
             @Override
             public void onSuccess(BankInfoEntity bankInfoEntity) {
-                ToastUtils.show(context,"绑定成功!");
-                LogUtil.d("绑定成功ssss,发送消息3");
+                ToastUtils.show(context, "绑定成功!");
                 EventBus.getDefault().postSticky(new EventBusMessage(-3));  //传递消息
                 finish();
             }

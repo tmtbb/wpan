@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:text="盈亏数"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="@dimen/fontSize_19sp" />
     </LinearLayout>

@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.entity.CurrentTimeLineEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.TimeUtil;
@@ -83,15 +84,16 @@ public class KChartFragment extends BaseFrameLayout {
         mChart.setBackgroundColor(colorHomeBg);
         mChart.setGridBackgroundColor(colorHomeBg);
         mChart.setScaleYEnabled(true);  //Y轴激活
-        mChart.setPinchZoom(true); //如果禁用,扩展可以在x轴和y轴分别完成
+        mChart.setPinchZoom(false); //如果禁用,扩展可以在x轴和y轴分别完成
         mChart.setNoDataText("加载中...");
-        mChart.setAutoScaleMinMaxEnabled(true);
-        mChart.setDragEnabled(false); //可以拖拽
+//        mChart.setAutoScaleMinMaxEnabled(true);
+//        mChart.setDragEnabled(false); //可以拖拽
         mChart.setScaleEnabled(false);  //放大缩小
         mChart.getLegend().setEnabled(false);//图例
         mChart.setTouchEnabled(true);
         mChart.setDrawOrder(new CombinedChart.DrawOrder[]{CombinedChart.DrawOrder.CANDLE, CombinedChart.DrawOrder.LINE});  //设置绘制顺序
 
+//        mChart.requestDisallowInterceptTouchEvent(true);
         mChart.setExtraLeftOffset(10);
         mChart.setExtraRightOffset(10);
         XAxis xAxis = mChart.getXAxis();
@@ -128,26 +130,46 @@ public class KChartFragment extends BaseFrameLayout {
         //为上海到东京的集合  特殊处理  v-symbol : "fx_sjpycnh"  上海-东京 分时图才做特殊处理
         if (currentTimeLineEntities.get(0).getSymbol().equals("fx_sjpycnh") && chartType == 0) {
             List<CurrentTimeLineReturnEntity> newList = new ArrayList<>();
-            List<CurrentTimeLineReturnEntity> newSuperList = new ArrayList<>();
+            int j = 0;
+            if (currentTimeLineEntities.size() > 6) {
+                j = currentTimeLineEntities.size() - 6;
+            }
 
-//            LogUtil.d("上海-东京处理前集合11111111111:" + currentTimeLineEntities.toString());
-
-            for (int i = 0; i < currentTimeLineEntities.size(); i++) {
-                long priceTime = currentTimeLineEntities.get(i).getPriceTime();
-                for (int j = 0; j < 5; j++) {
-                    newList.add(currentTimeLineEntities.get(i));
-                    newList.get(i * 5 + j).setPriceTime(priceTime - (240 - j * 60));
-                    LogUtil.d("----" + (i * 5 + j) + "-----" + newList.get(i * 5 + j).getPriceTime());
+            for (int i = j; i < currentTimeLineEntities.size(); i++) {  //取倒数后6条数据
+                CurrentTimeLineReturnEntity entity = currentTimeLineEntities.get(i);
+                for (int k = 0; k < 5; k++) {
+                    CurrentTimeLineReturnEntity tpEntity = new CurrentTimeLineReturnEntity();
+                    tpEntity.setPriceTime(entity.getPriceTime());
+                    tpEntity.setCurrentPrice(entity.getCurrentPrice());
+                    newList.add(tpEntity);
                 }
             }
-
             for (int i = 0; i < newList.size(); i++) {
-//                LogUtil.d("索引:" + i + "newSuperList----独打印出来是:" + newList.get(i).getPriceTime());
+                long priceTime = newList.get(i).getPriceTime();
+                if (i % 5 == 0) {
+                    newList.get(i).setPriceTime(priceTime - 240);
+                } else if (i % 5 == 1) {
+                    newList.get(i).setPriceTime(priceTime - 180);
+                } else if (i % 5 == 2) {
+                    newList.get(i).setPriceTime(priceTime - 120);
+                } else if (i % 5 == 3) {
+                    newList.get(i).setPriceTime(priceTime - 60);
+                } else if (i % 5 == 4) {
+                    newList.get(i).setPriceTime(priceTime);
+                }
+                LogUtil.d("当前索引:" + i + "得到的newList的priceTime:" + priceTime);
             }
-
             this.newCurrentTimeLineEntities = newList;
         } else {
-            this.newCurrentTimeLineEntities = currentTimeLineEntities;
+            List<CurrentTimeLineReturnEntity> newTimeLineList = new ArrayList<>();
+            int j = 0;
+            if (currentTimeLineEntities.size() > 30) {
+                j = currentTimeLineEntities.size() - 30;
+            }
+            for (int i = j; i < currentTimeLineEntities.size(); i++) {  //取倒数前30条数据
+                newTimeLineList.add(currentTimeLineEntities.get(i));
+            }
+            this.newCurrentTimeLineEntities = newTimeLineList;
         }
         if (preChartType != 0 && chartType == 0) {
             preChartType = 0;

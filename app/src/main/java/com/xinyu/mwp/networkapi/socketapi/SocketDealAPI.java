@@ -180,6 +180,18 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
+    public void unionPay(String title, double price, OnAPIListener<Object> listener) {
+        LogUtil.d("请求银联支付");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("title", title);
+        map.put("price", price);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnionPay,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestJsonObject(socketDataPacket, listener);
+    }
+
+    @Override
     public void cash(double money, long cardId, String password, OnAPIListener<WithDrawCashReturnEntity> listener) {
         LogUtil.d("请求提现--");
         HashMap<String, Object> map = new HashMap<>();
@@ -295,7 +307,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void rechargeList(int startPos,int count,OnAPIListener<List<RechargeRecordItemEntity>> listener) {
+    public void rechargeList(int startPos, int count, OnAPIListener<List<RechargeRecordItemEntity>> listener) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
@@ -303,6 +315,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("count", count);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Total,
                 SocketAPIConstant.ReqeutType.History, map);
-       requestEntitys(socketDataPacket,"depositsinfo",RechargeRecordItemEntity.class,listener);
+        requestEntitys(socketDataPacket, "depositsinfo", RechargeRecordItemEntity.class, listener);
     }
 }

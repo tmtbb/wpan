@@ -13,6 +13,7 @@ import com.xinyu.mwp.entity.DealAllGoodsItemEntity;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
 import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TimeUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellView;
@@ -120,7 +121,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-                    onItemChildViewClick(v,0,historyData);
+                    onItemChildViewClick(v, 0, historyData);
                     break;
             }
         }
@@ -157,7 +158,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             sb.append("(");
             sb.append(getTimeType(historyData.getName()));
             sb.append(")");
-            buyType.updateContent(historyData.getOpenPrice() + "");  //成交额
+            buyType.updateContent(NumberUtils.halfAdjust2(historyData.getOpenCost()));  //成交额
             buyType.updateName(sb.toString());
         }
     }
@@ -192,7 +193,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             sb.append("(");
             sb.append(getTimeType(historyData.getName()));
             sb.append(")");
-            buyType.updateContent(historyData.getOpenPrice() + "");  //成交额
+            buyType.updateContent(NumberUtils.halfAdjust2(historyData.getOpenCost()));  //成交额
             buyType.updateName(sb.toString());
         }
 
@@ -200,7 +201,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-                    onItemChildViewClick(v,0,historyData);
+                    onItemChildViewClick(v, 0, historyData);
                     break;
             }
         }

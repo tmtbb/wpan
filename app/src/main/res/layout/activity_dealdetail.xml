@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cell_arrow_visible="false"
+            android:visibility="gone"
             app:cell_content_color="@color/font_666"
             app:cell_content_size="@dimen/dp_16"
             app:cell_icon_visible="false"

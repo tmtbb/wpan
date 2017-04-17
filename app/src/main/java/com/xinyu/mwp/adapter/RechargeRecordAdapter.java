@@ -67,7 +67,6 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
             date_2.setText(data.getDepositTime().substring(11));
             LogUtil.d("date1:" + data.getDepositTime().substring(0, 10) + ",date2:" + data.getDepositTime().substring(11));
 
-
 //            ImageLoader.getInstance().displayImage(data.getIcon(), icon, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
             if (data.getDepositName().equals("微信")) {
                 icon.setImageResource(R.mipmap.icon_wx);
@@ -78,6 +77,14 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
             info.setText(data.getDepositName());
 
             if (data.getStatus() == 1) {
+                status.setText("处理中");
+                date_1.setTextColor(context.getResources().getColor(R.color.font_999));
+                date_2.setTextColor(context.getResources().getColor(R.color.font_999));
+                money.setTextColor(context.getResources().getColor(R.color.font_333));
+                info.setTextColor(context.getResources().getColor(R.color.font_666));
+                time.setTextColor(context.getResources().getColor(R.color.font_999));
+                status.setTextColor(context.getResources().getColor(R.color.font_666));
+            } else if (data.getStatus() == 2) {
                 status.setText("充值成功");
                 date_1.setTextColor(context.getResources().getColor(R.color.font_999));
                 date_2.setTextColor(context.getResources().getColor(R.color.font_999));

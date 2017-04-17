@@ -4,7 +4,7 @@ package com.xinyu.mwp.entity;
  * 当前分时数据--返回
  * Created by Administrator on 2017/2/22.
  */
-public class CurrentTimeLineReturnEntity extends BaseEntity{
+public class CurrentTimeLineEntity extends BaseEntity{
     /**
      * currentPrice : 100.01
      * change : 12.1
@@ -29,9 +29,9 @@ public class CurrentTimeLineReturnEntity extends BaseEntity{
     private String platformName;
     private String symbol;
 
-//    public CurrentTimeLineReturnEntity(CurrentTimeLineReturnEntity entity) {
-//        setPriceTime(entity.priceTime);
-//    }
+    public CurrentTimeLineEntity(CurrentTimeLineReturnEntity entity) {
+        setPriceTime(entity.getPriceTime());
+    }
 
     public double getCurrentPrice() {
         return currentPrice;

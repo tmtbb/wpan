@@ -491,7 +491,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
             mViewPager.setPageMargin(0);   //设置每页之间的左右间隔
         }
-//        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);//默认在中间
+        mViewPager.setCurrentItem(1);//默认在中间
     }
 
     /**
@@ -516,12 +516,12 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     protected void initListener() {
         super.initListener();
         getRefreshController().setAutoPullDownRefresh(false);
-        setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                doRefresh();
-            }
-        });
+//        setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                doRefresh();
+//            }
+//        });
 
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -567,12 +567,12 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         });
         //倒计时结束的回调
-        adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
-            @Override
-            public void refreshData() {
-                initCurrentPositionList(start, requestCount);//刷新仓位列表
-            }
-        });
+//        adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
+//            @Override
+//            public void refreshData() {
+//                initCurrentPositionList(start, requestCount);//刷新仓位列表
+//            }
+//        });
     }
 
     public void doRefresh() {
@@ -813,6 +813,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         //如果当前是显示状态的话,执行;如果当前是隐藏状态的话,不执行了
 //        if (isShow) {
         handler.postDelayed(runnable, 3000);
+        refreshBalance();
 //        }
     }
 

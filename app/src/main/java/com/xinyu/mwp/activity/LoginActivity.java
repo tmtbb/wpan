@@ -18,6 +18,7 @@ import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.SPUtils;
@@ -87,11 +88,12 @@ public class LoginActivity extends BaseControllerActivity {
                                 public void onError(Throwable ex) {
                                     ex.printStackTrace();
                                     closeLoader();
-                                    if (!SocketAPINettyBootstrap.getInstance().isOpen()) {
-                                        ToastUtils.show(context, "网络连接失败,请检查网络连接");
-                                    } else {
-                                        ToastUtils.show(context, "登录失败");
-                                    }
+                                    ErrorCodeUtil.showEeorMsg(context, ex);
+//                                    if (!SocketAPINettyBootstrap.getInstance().isOpen()) {
+//                                        ToastUtils.show(context, "网络连接失败,请检查网络连接");
+//                                    } else {
+//                                        ToastUtils.show(context, "登录失败");
+//                                    }
                                 }
 
                                 @Override
@@ -116,7 +118,7 @@ public class LoginActivity extends BaseControllerActivity {
                     closeLoader();
                     showToast(exception.getErrorMsg());
                 }
-            break;
+                break;
         }
     }
 

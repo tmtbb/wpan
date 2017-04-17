@@ -15,6 +15,7 @@ import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.util.ActivityUtil;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.StringUtil;
 import com.xinyu.mwp.util.ToastUtils;
@@ -62,7 +63,8 @@ public class AddBankInfoActivity_1 extends BaseActivity {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                LogUtil.d("获取银行卡信息失败");
+//                ToastUtils.show(context,"请输入正确的银行卡号");
+                ErrorCodeUtil.showEeorMsg(context,ex);
             }
 
             @Override
@@ -98,7 +100,6 @@ public class AddBankInfoActivity_1 extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void ReciveMessage(EventBusMessage eventBusMessage) {
         if (eventBusMessage.Message == -3) {
-            LogUtil.d("sssss2接受信息成功eventBus");
             finish();
         }
     }

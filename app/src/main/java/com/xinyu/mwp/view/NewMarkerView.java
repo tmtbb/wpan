@@ -3,6 +3,7 @@ package com.xinyu.mwp.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -24,7 +25,7 @@ public class NewMarkerView extends MarkerView {
     private TextView highestPrice;
     private TextView lowestPrice;
     private TextView closePrice;
-    private final FrameLayout markerView;
+    private final LinearLayout markerView;
 
     public NewMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
@@ -33,7 +34,7 @@ public class NewMarkerView extends MarkerView {
         highestPrice = (TextView) findViewById(R.id.highestPrice);
         lowestPrice = (TextView) findViewById(R.id.lowestPrice);
         closePrice = (TextView) findViewById(R.id.closePrice);
-        markerView = (FrameLayout) findViewById(R.id.fl_marker_view);
+        markerView = (LinearLayout) findViewById(R.id.ll_marker_view);
         this.context = context;
     }
 
@@ -54,23 +55,24 @@ public class NewMarkerView extends MarkerView {
 
     @Override
     public int getXOffset(float xpos) {
-        return -(getWidth() / 2);
+//        return -(getWidth() / 2);
+        return -(getWidth() / 5);
     }
 
     @Override
     public int getYOffset(float ypos) {
-        return -(getHeight() / 2);
+        return -getHeight();
     }
 
-    @Override
-    public void draw(Canvas canvas, float posx, float posy) {
-//        posx += getXOffset(posx);
-//        posy += getYOffset(posy);
-        if (posx > DisplayUtil.getScreenWidth(context) / 2) {
-            canvas.translate(0, 0);
-        } else {
-            canvas.translate(DisplayUtil.getScreenWidth(context) - getWidth(), 0);
-        }
-        draw(canvas);
-    }
+//    @Override
+//    public void draw(Canvas canvas, float posx, float posy) {
+////        posx += getXOffset(posx);
+////        posy += getYOffset(posy);
+//        if (posx > DisplayUtil.getScreenWidth(context) / 2) {
+//            canvas.translate(0, 0);
+//        } else {
+//            canvas.translate(DisplayUtil.getScreenWidth(context) - getWidth(), 0);
+//        }
+//        draw(canvas);
+//    }
 }

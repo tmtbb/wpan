@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.github.mikephil.charting.utils.EntryXIndexComparator;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -31,6 +32,7 @@ import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyHandler;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIResponse;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketDataPacket;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TestDataUtil;
@@ -86,6 +88,7 @@ public class RechargeActivity extends BaseRefreshActivity {
         rightText.setText("充值记录");
         rightText.setVisibility(View.VISIBLE);
         Utils.closeSoftKeyboard(rechargeMoney);
+        NumberUtils.setEditTextPoint(rechargeMoney, 2);  //设置充值金额的小数位数
         api = WXAPIFactory.createWXAPI(context, null);
         api.registerApp(Constant.APP_ID);
 
@@ -119,18 +122,19 @@ public class RechargeActivity extends BaseRefreshActivity {
     }
 
     private void commitPay() {
+        String title = "微盘-余额充值";
+        if (TextUtils.isEmpty(rechargeMoney.getEditableText().toString().trim())) {
+            ToastUtils.show(context, "输入不能为空");
+            return;
+        }
+        double price = Double.parseDouble(rechargeMoney.getEditableText().toString().trim());
+        if (price <= 0) {
+            ToastUtils.show(context, "输入的金额有误,请重新输入");
+            return;
+        }
+
         if (choice == 0) {
             ToastUtils.show(context, "微信支付");
-            String title = "微盘-余额充值";
-            if (TextUtils.isEmpty(rechargeMoney.getEditableText().toString().trim())) {
-                ToastUtils.show(context, "输入不能为空");
-                return;
-            }
-            double price = Double.parseDouble(rechargeMoney.getEditableText().toString().trim());
-            if (price <= 0) {
-                ToastUtils.show(context, "输入的金额有误,请重新输入");
-                return;
-            }
             NetworkAPIFactoryImpl.getDealAPI().weixinPay(title, price, new OnAPIListener<WXPayReturnEntity>() {
                 @Override
                 public void onError(Throwable ex) {
@@ -151,15 +155,25 @@ public class RechargeActivity extends BaseRefreshActivity {
                     request.timeStamp = wxPayReturnEntity.getTimestamp();
                     request.sign = wxPayReturnEntity.getSign();
                     api.sendReq(request);
-
                     //模拟请求回调
 //                    requestResult();
-                    next(RechargeRecordActivity.class);
                 }
             });
-
         } else {
             showToast("银联支付");
+            NetworkAPIFactoryImpl.getDealAPI().unionPay(title, price, new OnAPIListener<Object>() {
+                @Override
+                public void onError(Throwable ex) {
+                    ex.printStackTrace();
+                    LogUtil.d("银联支付请求失败");
+                    ErrorCodeUtil.showEeorMsg(context, ex);
+                }
+
+                @Override
+                public void onSuccess(Object o) {
+                    LogUtil.d("银联支付请求成功" + o.toString());
+                }
+            });
             if (UPPayAssistEx.checkInstalled(this)) {
                 //当判断用户手机上已安装银联Apk，商户客户端可以做相应个性化处理
                 next(APKActivity.class);//APK接入
@@ -217,8 +231,6 @@ public class RechargeActivity extends BaseRefreshActivity {
                     public void run() {
                         account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
                         money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
-//                        myBankCard.updateContentLeft("3");
-//                        rechargeMoney.setEditTextString("999元");
                         rechargeType.updateContentLeft(Constant.rechargeType[choice]);
                         getRefreshController().getContentView().setVisibility(View.VISIBLE);
                         getRefreshController().refreshComplete();
@@ -252,6 +264,14 @@ public class RechargeActivity extends BaseRefreshActivity {
             case 0:  //成功
                 ToastUtils.show(context, "支付成功");  //1-成功 2-取消支付
                 LogUtil.d("接收到成功是0");
+                TestDataUtil.requestBalance();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
+                    }
+                }, 500);
+                next(RechargeRecordActivity.class);
                 break;
             case -2:  //取消支付
                 ToastUtils.show(context, "用户取消支付");

@@ -59,6 +59,7 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
             @Override
             public void onSuccess(List<RechargeRecordItemEntity> rechargeRecordItemEntities) {
                 rechargeRecordList = rechargeRecordItemEntities;
+                getRefreshController().refreshComplete(rechargeRecordList);
             }
         });
     }
@@ -105,18 +106,6 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
 
     private void doRefresh(int number) {
         requestRechargeRecord(number, count);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                entities = TestDataUtil.getRechargeRecordEntities();
-//                header.update(entities);
-//                header.setVisibility(View.VISIBLE);
-                if (rechargeRecordList == null){
-                    ToastUtils.show(context,"网络连接失败");
-                }
-                getRefreshController().refreshComplete(rechargeRecordList);
-            }
-        }, 2000);
     }
 
 }

@@ -113,7 +113,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="请输入充值金额"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:paddingBottom="@dimen/dp_5"
                         android:paddingLeft="@dimen/dp_20"
                         android:paddingTop="@dimen/dp_5"

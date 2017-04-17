@@ -1,7 +1,6 @@
 package com.xinyu.mwp.activity;
 
 import android.content.DialogInterface;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
@@ -11,8 +10,6 @@ import com.xinyu.mwp.adapter.HistoryPositionAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
-import com.xinyu.mwp.entity.OpenPositionReturnEntity;
-import com.xinyu.mwp.entity.UnitEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
@@ -21,7 +18,6 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
-import com.xinyu.mwp.view.LoaderLayout;
 import com.xinyu.mwp.view.SpaceView;
 
 import org.xutils.view.annotation.ViewInject;
@@ -75,6 +71,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
             public void onSuccess(List<HistoryPositionListReturnEntity> historyPositionListReturnEntities) {
 //                LogUtil.d("历史记录请求网络成功" + historyPositionListReturnEntities.toString());
                 historyPositionList = historyPositionListReturnEntities;
+                getRefreshController().refreshComplete(historyPositionList);
             }
         });
     }
@@ -92,9 +89,9 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
                 if (item.getHandle() == Constant.ACTION_NONE) {  //未操作
                     //弹窗
                     if (item.getBuySell() == 1 && item.isResult()) {   //买入,上涨   双倍返还和货运
-                        createDialog(Constant.handleText[1], Constant.handleText[2], Constant.ACTION_DOUBLE ,Constant.ACTION_FREIGHT);
+                        createDialog(Constant.handleText[1], Constant.handleText[2], Constant.ACTION_DOUBLE, Constant.ACTION_FREIGHT);
                     } else if (item.getBuySell() == 1 && !item.isResult()) { //买入,下跌  只能选择货运
-                        createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT,0);
+                        createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
                     }
 
                     if (UserManager.getInstance().getUserEntity().getUserType() == 0) {   //普通会员
@@ -103,12 +100,12 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
 
                             } else {
                                 //买跌,上涨  -->
-                                createDialog(Constant.handleText[1], null,Constant.ACTION_DOUBLE,0);
+                                createDialog(Constant.handleText[1], null, Constant.ACTION_DOUBLE, 0);
                             }
                         }
                     } else {   //直营会员
                         if (item.getBuySell() != 1 && item.isResult()) {  //卖出,卖出去了-->盈利   货运
-                            createDialog(Constant.handleText[2], null,Constant.ACTION_FREIGHT,0);
+                            createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
                         }
                     }
                 }
@@ -169,15 +166,6 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
 
     private void doRefresh(int number) {
         requestNetData(number, count);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (historyPositionList == null) {
-                    ToastUtils.show(context, "网络连接失败");
-                }
-                getRefreshController().refreshComplete(historyPositionList);
-            }
-        }, 500);
     }
 
 }

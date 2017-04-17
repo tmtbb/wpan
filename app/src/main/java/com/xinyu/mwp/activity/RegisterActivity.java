@@ -1,5 +1,7 @@
 package com.xinyu.mwp.activity;
 
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.ToastUtils;
@@ -43,6 +46,12 @@ public class RegisterActivity extends BaseControllerActivity {
     //    private WPEditText soundEditText;
     @ViewInject(R.id.pwdEditText)
     private WPEditText pwdEditText;
+    @ViewInject(R.id.wpe_member_unit)
+    private WPEditText memberUnit;
+    @ViewInject(R.id.wpe_agent_id)
+    private WPEditText agentId;
+    @ViewInject(R.id.wpe_referee_id)
+    private WPEditText refereeId;
     @ViewInject(R.id.nextButton)
     private Button nextButton;
     private CheckHelper checkHelper = new CheckHelper();
@@ -63,7 +72,7 @@ public class RegisterActivity extends BaseControllerActivity {
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
-
+        memberUnit.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
     }
 
     @Override
@@ -105,14 +114,19 @@ public class RegisterActivity extends BaseControllerActivity {
 
     private void register() {
         final String newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(pwd + "t1@s#df!") + phone);
-
-        NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode,
+        long memberUnitText = 0;
+        if (!TextUtils.isEmpty(memberUnit.getEditTextString())) {
+            memberUnitText = Long.parseLong(memberUnit.getEditTextString());
+        }
+        String agentIdText = agentId.getEditTextString();
+        String refereeIdText = refereeId.getEditTextString();
+        NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode, memberUnitText, agentIdText, refereeIdText,
                 new OnAPIListener<RegisterReturnEntity>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         closeLoader();
-                        ToastUtils.show(context, "用户名或验证码错误");
+                        ErrorCodeUtil.showEeorMsg(context, ex);
                     }
 
                     @Override
@@ -126,7 +140,7 @@ public class RegisterActivity extends BaseControllerActivity {
                             finish();
                         } else if (registerEntity.result == 1) {
                             ToastUtils.show(context, "注册成功");
-                            loginGetUserInfo(newPwd);  //登录请求数据
+//                            loginGetUserInfo(newPwd);  //登录请求数据
                             finish();
                         }
 

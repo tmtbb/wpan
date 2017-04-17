@@ -21,6 +21,7 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
+
 import org.xutils.view.annotation.ViewInject;
 
 
@@ -147,6 +148,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
             @Override
             public void onDrawerOpened(View drawerView) {
                 drawerView.setClickable(true);
+                leftFragment.update();
             }
 
             @Override
@@ -237,7 +239,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     }
 
     private void judgeIsLogin() {
-        if (!UserManager.getInstance().isLogin() ) {  //退出登录或者断网的状态下,直接跳转到登录界面
+        if (!UserManager.getInstance().isLogin()) {  //退出登录或者断网的状态下,直接跳转到登录界面
             next(LoginActivity.class);
         }
     }

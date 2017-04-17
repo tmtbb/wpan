@@ -55,6 +55,7 @@ public interface DealAPI {
 
     //微信支付
     void weixinPay(String title, double price, OnAPIListener<WXPayReturnEntity> listener);
+    void unionPay(String title, double price, OnAPIListener<Object> listener);  //银联支付
 
     //提现
     void cash(double money, long cardId, String pwd, OnAPIListener<WithDrawCashReturnEntity> listener);

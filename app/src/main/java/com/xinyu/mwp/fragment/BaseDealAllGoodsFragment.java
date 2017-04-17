@@ -18,6 +18,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
 import org.xutils.view.annotation.ViewInject;
@@ -76,12 +77,14 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                ErrorCodeUtil.showEeorMsg(context,ex);
             }
 
             @Override
             public void onSuccess(List<HistoryPositionListReturnEntity> historyPositionListReturnEntities) {
                 historyPositionList = historyPositionListReturnEntities;
                 refreshAdapter();
+                getRefreshController().refreshComplete(historyPositionList);
             }
         });
     }
@@ -134,14 +137,5 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
 
     public void doRefresh(int num) {
         requestNetData(num, count);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (historyPositionList == null) {
-                    ToastUtils.show(context, "数据为空,上拉加载更多");
-                }
-                getRefreshController().refreshComplete(historyPositionList);
-            }
-        }, 1000);
     }
 }
