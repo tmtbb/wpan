@@ -1,10 +1,8 @@
 package com.xinyu.mwp.activity;
 
-import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
@@ -18,10 +16,8 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
-import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
-import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -163,14 +159,11 @@ public class RegisterActivity extends BaseControllerActivity {
                         en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                         en.setId(loginReturnEntity.getUserinfo().getId());
                         en.setToken(loginReturnEntity.getToken());
-                        en.setName(loginReturnEntity.getUserinfo().getMemberName());
-                        en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
-                        en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
-                        en.setMobile(phone);
+                        en.setUserType(loginReturnEntity.getUserinfo().getType());
+                        en.setMobile(loginReturnEntity.getUserinfo().getPhone());
                         UserManager.getInstance().saveUserEntity(en);
                         UserManager.getInstance().setLogin(true);
                         MyApplication.getApplication().onUserUpdate(true);
-                        SPUtils.putString("phone",phone);
                         finish();
                     }
                 });

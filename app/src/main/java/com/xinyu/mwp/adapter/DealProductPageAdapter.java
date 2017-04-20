@@ -10,6 +10,7 @@ import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
+import com.xinyu.mwp.util.LogUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -58,9 +59,10 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
             if (data != null) {
                 productName.setText(data.getName());
                 openPositionCount.setText(data.getAmount() + "");
-
+//                tradeCountDown.setProgress(process);
                 mLayout.setVisibility(View.VISIBLE);
                 final long newInterval = data.getEndTime() - System.currentTimeMillis();
+                final long totalTime = (data.getCloseTime() - data.getPositionTime()) * 1000;
                 tradeCountDownTime.start(newInterval);
                 tradeCountDownTime.setOnCountdownEndListener(new CountdownView.OnCountdownEndListener() {
                     @Override
@@ -72,16 +74,19 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
                     }
                 });
 
-                tradeCountDownTime.setOnCountdownIntervalListener(200, new CountdownView.OnCountdownIntervalListener() {
+                tradeCountDownTime.setOnCountdownIntervalListener(500, new CountdownView.OnCountdownIntervalListener() {
                     @Override
-                    public void onInterval(CountdownView cv, long remainTime) {
-                        int process = (int) ((newInterval - remainTime) * 100 / newInterval);
+                    public void onInterval(CountdownView cv, final long remainTime) {
+                        process = (int) ((totalTime - remainTime) * 100 / totalTime);
+                        LogUtil.d("变化的process" + process);
                         tradeCountDown.setProgress(process);
                     }
                 });
             }
         }
     }
+
+    private static int process = 0;
 
     public TimeFinishLitener litener;
 

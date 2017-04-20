@@ -28,7 +28,7 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
      */
 
     private boolean result;
-    private String positionId;
+    private long positionId;
     private int id;
     private String code;
     private String typeCode;
@@ -47,6 +47,15 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
     private int closeType;
     private boolean isDeferred;
     private double deferred;
+    private int handle;
+
+    public int getHandle() {
+        return handle;
+    }
+
+    public void setHandle(int handle) {
+        this.handle = handle;
+    }
 
     public boolean isResult() {
         return result;
@@ -56,11 +65,11 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
         this.result = result;
     }
 
-    public String getPositionId() {
+    public long getPositionId() {
         return positionId;
     }
 
-    public void setPositionId(String positionId) {
+    public void setPositionId(long positionId) {
         this.positionId = positionId;
     }
 

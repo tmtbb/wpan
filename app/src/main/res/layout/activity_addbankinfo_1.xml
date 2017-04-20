@@ -16,17 +16,27 @@
         android:textColor="@color/font_999"
         android:textSize="@dimen/fontSize_11sp" />
 
-    <com.xinyu.mwp.view.CellView
+    <!--<com.xinyu.mwp.view.CellView-->
+    <!--android:id="@+id/person"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:cell_arrow_visible="false"-->
+    <!--app:cell_contentleft="柿子"-->
+    <!--app:cell_contentleft_color="@color/font_333"-->
+    <!--app:cell_contentleft_size="18sp"-->
+    <!--app:cell_icon_visible="false"-->
+    <!--app:cell_name="持卡人"-->
+    <!--app:cell_name_color="@color/font_666" />-->
+    <com.xinyu.mwp.view.CellEditView
         android:id="@+id/person"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cell_arrow_visible="false"
-        app:cell_contentleft="柿子"
-        app:cell_contentleft_color="@color/font_333"
-        app:cell_contentleft_size="18sp"
-        app:cell_icon_visible="false"
-        app:cell_name="持卡人"
-        app:cell_name_color="@color/font_666" />
+        app:celledit_hint="请输入您的姓名"
+        app:celledit_name="持卡人"
+        app:celledit_name_color="@color/font_666"
+        app:celledit_name_size="@dimen/fontSize_16sp"
+        app:celledit_right_visible="false"
+        android:visibility="gone"/>
 
     <com.xinyu.mwp.view.CellEditView
         android:id="@+id/cardNumber"
@@ -36,7 +46,7 @@
         app:celledit_name="卡号"
         app:celledit_name_color="@color/font_666"
         app:celledit_name_size="@dimen/fontSize_16sp"
-        app:celledit_right_visible="true" />
+        app:celledit_right_visible="false" />
 
     <TextView
         android:id="@+id/next"

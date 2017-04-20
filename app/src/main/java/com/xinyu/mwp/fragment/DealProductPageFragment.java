@@ -3,7 +3,6 @@ package com.xinyu.mwp.fragment;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,10 +25,10 @@ import com.xinyu.mwp.adapter.GalleryAdapter;
 import com.xinyu.mwp.adapter.LoopPagerAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.constant.Constant;
+import com.xinyu.mwp.entity.CurrentPositionEntity;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
-import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
@@ -40,6 +39,7 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
+import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.MyTransformation;
@@ -48,7 +48,10 @@ import org.xutils.view.annotation.ViewInject;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -64,7 +67,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private RelativeLayout mViewPagerContainer;
     private int halfScreenWidth;
     private LoopPagerAdapter loopPagerAdapter;
-    private List<ProductEntity> mUnitViewList = new ArrayList<>();
+    private List<ProductEntity> mUnitViewList = new ArrayList<>();  //单价信息
+    private List<ProductEntity> mNewUnitList;  //单价信息
     private TextView currentPrice;
     private TextView changePercent;
     private TextView changePrice;
@@ -87,6 +91,14 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private static long count = 0;
     private static int start = 1;
     private int requestCount = 30;  //请求仓位列表的个数
+    private int currentIndex = 0;
+    private double turnoverPrice;
+    private double earnestMoney;
+    private int length = 0;
+    private int newItemIndex = 0;
+    private CurrentPositionEntity currentPositionEntity;
+    private TextView tvExchangeAssets;
+
     private Handler handler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
@@ -95,10 +107,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             handler.postDelayed(this, 3000);
         }
     };
-    private double turnoverPrice;
-    private double earnestMoney;
+    private LinearLayout priceInfo;
 
     public DealProductPageFragment() {
+        isShow = true;
     }
 
     @Override
@@ -171,12 +183,14 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             mRecyclerView.setAdapter(mAdapter);
         }
         initProductPrice();//请求报价
+        initCurrentPosition();//请求当前仓位信息
         mAdapter.setOnItemClick(new GalleryAdapter.OnClickListener() {
             @Override
             public void OnClick(View view, int position) {
                 mUnitViewList = products.get(position); //通多点击的位置,获取不同unit的集合
                 count = 0;
                 initProductPrice();  //点击后请求报价
+                initCurrentPosition();//请求当前仓位信息
                 mAdapter.setPosition(position);
                 mAdapter.notifyDataSetChanged();
             }
@@ -188,12 +202,35 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         });
     }
 
+    /**
+     * 请求当前仓位信息
+     */
+    private void initCurrentPosition() {
+        if (mUnitViewList.size() == 0) {
+            mUnitViewList = products.get(0);
+        }
+        double id = mUnitViewList.get(0).getId();
+        NetworkAPIFactoryImpl.getDealAPI().currentPosition(id, new OnAPIListener<CurrentPositionEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(CurrentPositionEntity currentPosition) {
+                currentPositionEntity = currentPosition;
+                currentPositionEntity.setCurrentPositionName(mUnitViewList.get(0).getShowSymbol());
+            }
+        });
+    }
+
     @Override
     protected void initView() {
         super.initView();
         reuqestData();  //商品列表
         handler.postDelayed(runnable, 3000);//每两秒执行一次runnable.
         initCurrentPositionList(start, requestCount);  //请求仓位列表数据
+        getRefreshController().setPullDownRefreshEnabled(false);
         initHeadView();  //初始化头布局
     }
 
@@ -217,16 +254,36 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     currentPositionList.clear();
                 }
                 currentPositionList = currentPositionListReturnEntities;
-                proofCountdown();// 校对倒计时
+                getOrderList(); //仓位列表按照时间排序
+
                 processPositionList();
             }
         });
     }
 
+    /**
+     * 按照建仓时间进行排序
+     */
+    private void getOrderList() {
+        Collections.sort(currentPositionList, new Comparator<CurrentPositionListReturnEntity>() {
+            @Override
+            public int compare(CurrentPositionListReturnEntity c1, CurrentPositionListReturnEntity c2) {
+                long i = c2.getPositionTime() - c1.getPositionTime();
+                return (int) i;
+            }
+        });
+        LogUtil.d("排序之后的currentPositionList集合:" + currentPositionList.toString());
+    }
+
     private void proofCountdown() {
         long curTime = System.currentTimeMillis();
-        for (CurrentPositionListReturnEntity currentPositionListReturnEntity : currentPositionList) {
-            currentPositionListReturnEntity.setEndTime((long) (currentPositionListReturnEntity.getInterval()*1000 +curTime));
+        Iterator<CurrentPositionListReturnEntity> iterator = currentPositionList.iterator();
+        while (iterator.hasNext()) {
+            CurrentPositionListReturnEntity entity = iterator.next();
+            if (entity.getInterval() == 0) {   //删除已经平仓但是仍然在持仓列表中的条目
+                iterator.remove();
+            }
+            entity.setEndTime((long) (entity.getInterval() * 1000 + curTime));
         }
     }
 
@@ -234,6 +291,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * 仓位列表数据显示
      */
     private void processPositionList() {
+        proofCountdown();// 校对倒计时
         adapter.setList(currentPositionList);
         adapter.notifyDataSetChanged();
     }
@@ -251,7 +309,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mChartContainer = (FrameLayout) headView.findViewById(R.id.chart_container);
         kChartFragment = new KChartFragment(context);
         mChartContainer.addView(kChartFragment);
-
+        priceInfo = (LinearLayout) headView.findViewById(R.id.ll_deal_info_modify);
         currentPrice = (TextView) headView.findViewById(R.id.tv_current_price);
         changePercent = (TextView) headView.findViewById(R.id.tv_change_percent);
         changePrice = (TextView) headView.findViewById(R.id.tv_change_price);
@@ -260,7 +318,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         openingTodayPrice = (TextView) headView.findViewById(R.id.tv_today_price);
         closedYesterdayPrice = (TextView) headView.findViewById(R.id.tv_yesterday_price);
 
-        TextView tvExchangeAssets = (TextView) headView.findViewById(R.id.tv_exchange_assets); //总资产数目
+        //总资产数目
+        tvExchangeAssets = (TextView) headView.findViewById(R.id.tv_exchange_assets);
         ImageView ivAssetsAdd = (ImageView) headView.findViewById(R.id.iv_exchange_assets_add);//加号按钮
 
         RadioButton rbMinHour = (RadioButton) headView.findViewById(R.id.rb_min_hour); //分时线
@@ -269,7 +328,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         RadioButton rbMinHour60 = (RadioButton) headView.findViewById(R.id.rb_min_60); //60分时线
         RadioButton rbMinHourDay = (RadioButton) headView.findViewById(R.id.rb_day_hour); //日时线
 
-        tvExchangeAssets.setText(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+        refreshBalance();
         tvExchangeAssets.setOnClickListener(this);
         ivAssetsAdd.setOnClickListener(this);
         buyMinus.setOnClickListener(this);
@@ -283,6 +342,12 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
         mViewPager = (ViewPager) headView.findViewById(R.id.vp_trade_time_mins);
         mViewPagerContainer = (RelativeLayout) headView.findViewById(R.id.rl_viewPagerContainer);
+    }
+
+    private void refreshBalance() {
+        if (UserManager.getInstance().getUserEntity() != null) {
+            tvExchangeAssets.setText(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+        }
     }
 
     //请求商品报价数据
@@ -363,7 +428,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             ToastUtils.show(context, "请求数据失败,请检查网络连接");
             return;
         }
-        SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
+        SymbolInfosEntity symbolInfosentity = symbolInfos.get(newItemIndex);
         int aType = symbolInfosentity.getAType();
         String exchangeName = symbolInfosentity.getExchangeName();
         String platformName = symbolInfosentity.getPlatformName();
@@ -388,53 +453,63 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * 加载价格详情
      */
     private void processPriceInfo() {
-        String resultPrice = NumberUtils.halfAdjust4(entitys.get(mViewPager.getCurrentItem()).getCurrentPrice());
-        if (entitys.get(mViewPager.getCurrentItem()).getChange() < 0) {
+        if (priceInfo.getVisibility() == View.INVISIBLE) {
+            priceInfo.setVisibility(View.VISIBLE);
+        }
+        String resultPrice = NumberUtils.halfAdjust4(entitys.get(newItemIndex).getCurrentPrice());
+        if (entitys.get(newItemIndex).getChange() < 0) {
             currentPrice.setTextColor(getResources().getColor(R.color.default_green));
         } else {
             currentPrice.setTextColor(getResources().getColor(R.color.default_red));
         }
         currentPrice.setText(resultPrice);
-        String resultChange = NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getChange());
+        String resultChange = NumberUtils.halfAdjust5(entitys.get(newItemIndex).getChange());
         changePrice.setText(resultChange);
         NumberFormat numberFormat = NumberFormat.getPercentInstance();
         numberFormat.setMinimumFractionDigits(2);
-        String resultPercent = numberFormat.format(entitys.get(mViewPager.getCurrentItem()).getChange() / entitys.get(mViewPager.getCurrentItem()).getCurrentPrice() * 100);
+        String resultPercent = numberFormat.format(entitys.get(newItemIndex).getChange() / entitys.get(newItemIndex).getCurrentPrice() * 100);
         changePercent.setText(resultPercent);
-        highPrice.setText(NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getHighPrice()));
-        lowPrice.setText(NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getLowPrice()));
-        openingTodayPrice.setText(NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getOpeningTodayPrice()));
-        closedYesterdayPrice.setText(NumberUtils.halfAdjust5(entitys.get(mViewPager.getCurrentItem()).getClosedYesterdayPrice()));
+        highPrice.setText(NumberUtils.halfAdjust5(entitys.get(newItemIndex).getHighPrice()));
+        lowPrice.setText(NumberUtils.halfAdjust5(entitys.get(newItemIndex).getLowPrice()));
+        openingTodayPrice.setText(NumberUtils.halfAdjust5(entitys.get(newItemIndex).getOpeningTodayPrice()));
+        closedYesterdayPrice.setText(NumberUtils.halfAdjust5(entitys.get(newItemIndex).getClosedYesterdayPrice()));
     }
 
     private void initViewPager() {
+        setNewUnitList();  //设置新的价格 集合   size+2 实现循环滑动
+
         if (loopPagerAdapter != null) {
-            loopPagerAdapter.updateItemsData(mUnitViewList, entitys);
+            loopPagerAdapter.updateItemsData(mNewUnitList);
             LogUtil.d("viewpager不为空,刷新mUnitViewList长度是:" + mUnitViewList.size());
         } else {
             halfScreenWidth = DisplayUtil.getScreenWidth(context) / 2;
-            loopPagerAdapter = new LoopPagerAdapter(context, mUnitViewList, entitys);
-            mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
+            mViewPager.setOffscreenPageLimit(3);
+
+//            mViewPager.setNestedpParent((ViewGroup)mViewPager.getParent());
+            loopPagerAdapter = new LoopPagerAdapter(context, mNewUnitList);
             mViewPager.setAdapter(loopPagerAdapter);
+            mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
             mViewPager.setPageMargin(0);   //设置每页之间的左右间隔
         }
-        //将容器的触摸事件反馈给ViewPager
-        mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int ex = (int) event.getX();
-                LogUtil.d("点击的X轴坐标" + ex + "当前条目的位置:" + mViewPager.getCurrentItem());
-                if (ex < halfScreenWidth) {
-                    //左侧点击
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-                }
-                if (ex > halfScreenWidth) {
-                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-                }
-                return mViewPager.dispatchTouchEvent(event);
-            }
-        });
 //        mViewPager.setCurrentItem(Integer.MAX_VALUE / 2);//默认在中间
+    }
+
+    /**
+     * 设置新的价格集合
+     */
+    private void setNewUnitList() {
+        for (ProductEntity productEntity : mUnitViewList) {
+            for (CurrentPriceReturnEntity entity : entitys) {
+                if (entity.getSymbol().equals(productEntity.getSymbol())) {
+                    productEntity.setCurrentPrice(entity.getCurrentPrice());
+                }
+            }
+        }
+        length = mUnitViewList.size() + 2;
+        mNewUnitList = new ArrayList<>();
+        mNewUnitList.add(0, mUnitViewList.get(mUnitViewList.size() - 1));  //第0个设成 最后一个
+        mNewUnitList.addAll(1, mUnitViewList);
+        mNewUnitList.add(length - 1, mUnitViewList.get(0));
     }
 
     @Override
@@ -451,10 +526,32 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (positionOffset == 0.0) {
+                    if (position == 0) {
+                        mViewPager.setCurrentItem(length - 2, false);
+                    } else if (position == length - 1) {
+                        mViewPager.setCurrentItem(1, false);
+                    }
+                }
             }
 
             @Override
             public void onPageSelected(int position) {
+                currentIndex = position;
+                if (currentIndex == mNewUnitList.size() - 1) {
+                    newItemIndex = 0;
+                } else if (currentIndex == 0) {
+                    newItemIndex = mUnitViewList.size() - 1;
+                } else {
+                    newItemIndex = currentIndex - 1;
+                }
+
+//                newItemIndex = currentIndex - 2;
+//                if (newItemIndex < 0) {
+//                    newItemIndex = mUnitViewList.size() - 1;
+//                } else if (newItemIndex == mNewUnitList.size() - 1) {
+//                    newItemIndex = 0;
+//                }
             }
 
             @Override
@@ -462,11 +559,18 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         });
 
+        //将容器的触摸事件反馈给ViewPager
+        mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mViewPager.dispatchTouchEvent(event);
+            }
+        });
+        //倒计时结束的回调
         adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
             @Override
             public void refreshData() {
                 initCurrentPositionList(start, requestCount);//刷新仓位列表
-                LogUtil.d("刷新仓位列表了---------");
             }
         });
     }
@@ -499,11 +603,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 next(PositionHistoryActivity.class);
                 break;
             case R.id.tv_exchange_buy_plus:
-                ToastUtils.show(context, "买涨");
                 showDialog(Constant.TYPE_BUY_PLUS);
                 break;
             case R.id.tv_exchange_buy_minus:
-                ToastUtils.show(context, "买跌");
                 showDialog(Constant.TYPE_BUY_MINUS);
                 break;
             case R.id.rb_min_hour:
@@ -534,7 +636,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             ToastUtils.show(context, "请求网络数据失败");
             return;
         }
-        SymbolInfosEntity symbolInfosentity = symbolInfos.get(mViewPager.getCurrentItem());
+        SymbolInfosEntity symbolInfosentity = symbolInfos.get(newItemIndex);
         int aType = symbolInfosentity.getAType();
         String exchangeName = symbolInfosentity.getExchangeName();
         String platformName = symbolInfosentity.getPlatformName();
@@ -554,7 +656,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     }
 
     private void showDialog(int type) {
-        if (mUnitViewList.size() == 0) {
+        if (mUnitViewList.size() == 0 || mViewPager == null || entitys == null) {
             ToastUtils.show(context, "请求数据失败");
             return;
         }
@@ -580,9 +682,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onClick(DialogInterface dialog, int which) {
                 int progress = CustomDialog.mSeekBar.getProgress();
                 final double amount = progress + 1;
-                final int codeId = mUnitViewList.get(mViewPager.getCurrentItem()).getId();
+                final int codeId = mUnitViewList.get(newItemIndex).getId();
                 final boolean deferred;
-                if (mUnitViewList.get(mViewPager.getCurrentItem()).getDeferred() == 1) {
+                if (mUnitViewList.get(newItemIndex).getDeferred() == 1) {
                     deferred = true;                        //是否过滤
                 } else {
                     deferred = false;
@@ -639,22 +741,23 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount 当前手数
      */
     private void initDialogData(int amount) {
-        if (mUnitViewList.size() == 0 || mViewPager == null) {
-            ToastUtils.show(context, "集合为空或者viewpager为空");
-            return;
-        }
+//        if (mUnitViewList.size() == 0 || mViewPager == null) {
+//            ToastUtils.show(context, "请求网络失败,数据为空");
+//            return;
+//        }
         double unit = getCurrentUnit();  //获取当前商品 的单价
         CustomDialog.mCurrentCount.setText(amount + "");
         earnestMoney = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount)); //定金-实际付的钱
-        CustomDialog.mEarnestMoney.setText("¥ " + earnestMoney); //定金
-        double chargeFree = mUnitViewList.get(mViewPager.getCurrentItem()).getOpenChargeFee() * unit * amount;//手续费
+//        CustomDialog.mEarnestMoney.setText("¥ " + earnestMoney); //定金
+        double chargeFree = mUnitViewList.get(newItemIndex).getOpenChargeFee() * unit * amount;//手续费
         CustomDialog.mServiceCharge.setText(NumberUtils.halfAdjust2(chargeFree));
         turnoverPrice = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount - chargeFree));
         CustomDialog.mTurnoverMoney.setText("¥ " + turnoverPrice);//成交额
+        CustomDialog.mCurrentPosition.setText(String.format(currentPositionEntity.getCurrentPositionName() + "%s", currentPositionEntity.getName()));//当前仓位
     }
 
     private double getCurrentUnit() {
-        int currentItem = mViewPager.getCurrentItem();
+        int currentItem = newItemIndex;
         double unitPrice = entitys.get(currentItem).getCurrentPrice() * mUnitViewList.get(currentItem).getDepositFee(); //单价
         return unitPrice;
     }
@@ -668,7 +771,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param deferred     是否过滤
      */
     private void requestOpenPosition(int codeId, int finalBuySell, double amount, boolean deferred) {
-        NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<OpenPositionReturnEntity>() {
+        NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<CurrentPositionListReturnEntity>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
@@ -677,13 +780,22 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
 
             @Override
-            public void onSuccess(OpenPositionReturnEntity openPositionReturnEntity) {
+            public void onSuccess(CurrentPositionListReturnEntity openPositionReturnEntity) {
                 LogUtil.d("建仓请求网络成功" + openPositionReturnEntity.toString());
                 closeLoader();
                 ToastUtils.show(context, "交易成功");
-                //刷新当前建仓列表数据
-                initCurrentPositionList(start, requestCount);
-                listView.setSelection(0);  //跳到顶部
+
+
+                initCurrentPositionList(start, requestCount);  //刷新当前建仓列表数据
+                TestDataUtil.requestBalance();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshBalance();  //更新余额
+                    }
+                }, 500);
+
+//                listView.setSelection(0);  //跳到顶部
             }
         });
     }
@@ -692,8 +804,57 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.d("onResume执行方法,sss此时的fragment显示状态是:" + isShow);
+        //如果当前是显示状态的话,执行;如果当前是隐藏状态的话,不执行了
+//        if (isShow) {
+        handler.postDelayed(runnable, 3000);
+//        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtil.d("onPause方法执行,关掉网络请求sss");
         handler.removeCallbacks(runnable);
         count = 0;
+    }
+
+    //初始化的时候
+    private static boolean isShow = false;
+
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (hidden) {
+//            LogUtil.d("界面被隐藏了sss");
+//            isShow = false;
+//            handler.removeCallbacks(runnable);
+//        } else {
+//            LogUtil.d("界面显示了sss");
+//            isShow = true;
+//            handler.postDelayed(runnable, 3000);
+//        }
+//    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        LogUtil.d("这个设置隐藏显示的方法执行了" + isVisibleToUser);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }
 

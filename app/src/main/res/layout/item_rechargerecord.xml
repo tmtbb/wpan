@@ -26,7 +26,6 @@
                 android:id="@+id/date_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="今天"
                 android:textColor="@color/font_999"
                 android:textSize="@dimen/fontSize_14sp" />
 
@@ -35,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_3"
-                android:text="11-11"
+                android:layout_gravity="center"
                 android:textColor="@color/font_999"
                 android:textSize="@dimen/fontSize_11sp" />
         </LinearLayout>
@@ -55,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:text="11:11:11"
                 android:textColor="@color/font_999"
-                android:textSize="@dimen/fontSize_11sp" />
+                android:textSize="@dimen/fontSize_11sp"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/status"
@@ -81,8 +81,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@color/default_red" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/money"

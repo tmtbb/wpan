@@ -3,6 +3,9 @@ package com.xinyu.mwp.constant;
 public interface Constant {
 
     String[] rechargeType = new String[]{"微信支付", "银联支付"};
+    String[] handleText = new String[]{" 未操作 ", " 双倍返还 ", " 货运 ", " 退舱 "};
+    String APP_ID = "wx9dc39aec13ee3158";
+
     String USER_ENTITY = "user_entity";
 
     interface IntentKey {
@@ -23,4 +26,10 @@ public interface Constant {
     int MIN_LINE15 = 900;
     int MIN_LINE30 = 1800;
     int MIN_LINE60 = 3600;
+
+    int ACTION_NONE = 0;
+    int ACTION_DOUBLE = 1;
+    int ACTION_FREIGHT = 2;  //货运
+    int ACTION_RETURN = 3;
+
 }

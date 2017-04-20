@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/default_bg"
+        android:background="@drawable/bg_btn_exchange_normal1"
         android:orientation="vertical">
 
         <LinearLayout
@@ -108,7 +108,8 @@
                 android:layout_marginTop="@dimen/dp_14"
                 android:background="@color/white"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_desc_earnest_money"
@@ -189,6 +190,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:text="--"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_70"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前仓位:"
+                android:textColor="@color/font_333"
+                android:textSize="@dimen/fontSize_16sp" />
+
+            <TextView
+                android:id="@+id/tv_current_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
                 android:textColor="@color/font_333"
                 android:textSize="@dimen/fontSize_16sp" />
         </LinearLayout>

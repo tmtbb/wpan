@@ -1,6 +1,8 @@
 package com.xinyu.mwp.constant;
 
 public interface ActionConstant {
+    String fileName1 = "file:///android_asset/role.html";   //access下的html
+    String fileName2 = "file:///android_asset/fly.html";
     interface Action {
         int EMPTY_BUTTON = 10000;
     }
@@ -17,4 +19,13 @@ public interface ActionConstant {
         int IMAGE_CROP = BIG_IMAGE + 1;
         int COMMENT_UPDATE = IMAGE_CROP + 1;
     }
+    /**
+     *   轮播图的种类
+     */
+    interface JumpCategory{
+        String INDEX_POSITION_INFO = "index";  //首页仓位信息
+        String RECHARGE_BANNER = "recharge";  //充值
+    }
+
+
 }

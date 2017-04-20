@@ -163,8 +163,8 @@ public class DealDetailFragmentActivity extends BaseMultiFragmentActivity {
             @Override
             public void run() {
                 money.setText(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
-                allHandsCount.setText("---");
-                allOrdersCount.setText("---");
+//                allHandsCount.setText("---");
+//                allOrdersCount.setText("---");
                 closeLoader();
             }
         }, 1000);

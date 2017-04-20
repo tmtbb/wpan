@@ -5,17 +5,12 @@ import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.xinyu.mwp.activity.LoginActivity;
-import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -25,12 +20,9 @@ import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
-import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.FileCacheUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
-import com.xinyu.mwp.util.SPUtils;
-import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 
 import org.xutils.x;
@@ -43,8 +35,6 @@ public class MyApplication extends Application implements OnUserUpdateListener {
 
     private static MyApplication application;
     public static List<Activity> activityList = new ArrayList<Activity>();
-    public IWXAPI api;
-    private static final String APP_ID = "wx9dc39aec13ee3158";//需要换成正式的id
     public static Handler mainHandler;
 
     @Override
@@ -54,7 +44,6 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initNetworkAPIConfig();
         initImageLoader();
         initUser();
-        regToWx();
         checkToken();
         mainHandler = new Handler();
     }
@@ -152,11 +141,6 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    private void regToWx() {
-        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
-        api.registerApp(APP_ID);
-    }
-
     private void checkToken() {
         SocketAPINettyBootstrap.getInstance().setOnConnectListener(new SocketAPINettyBootstrap.OnConnectListener() {
             @Override
@@ -165,18 +149,23 @@ public class MyApplication extends Application implements OnUserUpdateListener {
 
             @Override
             public void onSuccess() {
+                LogUtil.d("检测到连接成功-------------------");
                 judgeIsLogin();
             }
 
             @Override
-            public void onFailure() {
-                connectionError();
+            public void onFailure(boolean tag) {
+                LogUtil.d("检测到连接失败--------------");
+                if (tag){
+                    connectionError();
+                }
+
             }
         });
     }
 
     private void connectionError() {
-        UserManager.getInstance().setLogin(false);
+        UserManager.getInstance().logout();
         onUserUpdate(false);
     }
 
@@ -198,12 +187,8 @@ public class MyApplication extends Application implements OnUserUpdateListener {
                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                     en.setId(loginReturnEntity.getUserinfo().getId());
                     en.setToken(loginReturnEntity.getToken());
-                    en.setName(loginReturnEntity.getUserinfo().getMemberName());
-                    en.setNickname(loginReturnEntity.getUserinfo().getScreenName());
-                    en.setLevelsName(loginReturnEntity.getUserinfo().getMemberName());
-
-                    String phone = SPUtils.getString("phone", "");
-                    en.setMobile(phone);
+                    en.setMobile(loginReturnEntity.getUserinfo().getPhone());
+                    en.setUserType(loginReturnEntity.getUserinfo().getType());
                     UserManager.getInstance().saveUserEntity(en);
 
                     onUserUpdate(true);

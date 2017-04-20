@@ -8,9 +8,7 @@ import android.widget.TextView;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
-import com.xinyu.mwp.util.LogUtil;
-import com.xinyu.mwp.util.TimeUtil;
-import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.util.BankInfoUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -41,6 +39,7 @@ public class CashResaultActivity extends BaseControllerActivity {
         super.initView();
         leftImage.setVisibility(View.GONE);
         rightText.setVisibility(View.VISIBLE);
+        setTitle("结果详情");
         rightText.setText("完成");
 
         Bundle bundle = getIntent().getBundleExtra("tag");
@@ -55,8 +54,7 @@ public class CashResaultActivity extends BaseControllerActivity {
     @Override
     protected void initData() {
         super.initData();
-
-        switch (entity.getStatus()) {
+        switch (entity.getResult()) {
             case 1: //处理中
                 status.setText("提现申请已经提交");
                 break;
@@ -67,7 +65,7 @@ public class CashResaultActivity extends BaseControllerActivity {
                 status.setText("提现失败");
                 return;
         }
-        bankIcon.setImageResource(R.mipmap.icon_bank_ccb);
+        bankIcon.setImageResource(BankInfoUtil.getIcon(entity.getBank()));
         bankName.setText(entity.getBank());
         money.setText(entity.getAmount() + "");
     }

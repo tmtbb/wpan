@@ -20,6 +20,8 @@
     <string name="payBYJAR">JAR接入</string>
     <string name="insufficient_balance">余额不足</string>
     <string name="recharge_prompt">您的余额不足,是否立即充值?</string>
+    <string name="congratulations_profit">恭喜盈利</string>
+    <string name="choose_profit_type">请选择盈利方式</string>
 
 
 

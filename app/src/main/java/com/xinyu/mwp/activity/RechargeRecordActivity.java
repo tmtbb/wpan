@@ -1,18 +1,17 @@
 package com.xinyu.mwp.activity;
 
 import android.os.Handler;
-import android.view.View;
-
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
 import com.xinyu.mwp.adapter.RechargeRecordAdapter;
 import com.xinyu.mwp.adapter.base.IListAdapter;
 import com.xinyu.mwp.entity.RechargeRecordEntity;
 import com.xinyu.mwp.entity.RechargeRecordItemEntity;
-import com.xinyu.mwp.listener.OnChildViewClickListener;
-import com.xinyu.mwp.listener.OnItemChildViewClickListener;
-import com.xinyu.mwp.listener.OnRefreshListener;
-import com.xinyu.mwp.util.TestDataUtil;
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.listener.OnRefreshPageListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.RechargeRecordHeader;
 
 import org.xutils.view.annotation.ViewInject;
@@ -29,6 +28,9 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
     private RechargeRecordAdapter adapter;
     private List<RechargeRecordEntity> entities;
     private int position;
+    private int start = 1;
+    private int count = 10;
+    private List<RechargeRecordItemEntity> rechargeRecordList;
 
     @Override
     protected IListAdapter<RechargeRecordItemEntity> createAdapter() {
@@ -44,43 +46,75 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
     protected void initView() {
         super.initView();
         setTitle("充值记录");
+        requestRechargeRecord(start, count);
+    }
+
+    private void requestRechargeRecord(int startPos, int count) {
+        NetworkAPIFactoryImpl.getDealAPI().rechargeList(startPos, count, new OnAPIListener<List<RechargeRecordItemEntity>>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(List<RechargeRecordItemEntity> rechargeRecordItemEntities) {
+                rechargeRecordList = rechargeRecordItemEntities;
+            }
+        });
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        header.setOnChildViewClickListener(new OnChildViewClickListener() {
+        setOnRefreshPageListener(new OnRefreshPageListener() {
             @Override
-            public void onChildViewClick(View childView, int action, Object obj) {
-                position = (int) obj;
-                header.updateTitle(entities.get(position).getTime());
-                adapter.setList(entities.get(position).getInfo());
-                adapter.notifyDataSetChanged();
+            public void onRefresh(int pageIndex) {
+                if (pageIndex == 1) {
+                    start = 1;
+                    doRefresh(start);
+                } else {
+                    start = start + 10;
+                    doRefresh(start);
+                }
             }
         });
 
-        adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
-            @Override
-            public void onItemChildViewClick(View childView, int position, int action, Object obj) {
-                showToast(adapter.getItem(position).getMoney());
-            }
-        });
-        setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                doRefresh();
-            }
-        });
+//        header.setOnChildViewClickListener(new OnChildViewClickListener() {
+//            @Override
+//            public void onChildViewClick(View childView, int action, Object obj) {
+//                position = (int) obj;
+//                header.updateTitle(entities.get(position).getTime());
+//                adapter.setList(entities.get(position).getInfo());
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
+
+//        adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
+//            @Override
+//            public void onItemChildViewClick(View childView, int position, int action, Object obj) {
+//                showToast(adapter.getItem(position).getMoney());
+//            }
+//        });
+//        setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                doRefresh();
+//            }
+//        });
     }
 
-    private void doRefresh() {
+    private void doRefresh(int number) {
+        requestRechargeRecord(number, count);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                entities = TestDataUtil.getRechargeRecordEntities();
-                header.update(entities);
-                header.setVisibility(View.VISIBLE);
-                getRefreshController().refreshComplete(entities.get(0).getInfo());
+//                entities = TestDataUtil.getRechargeRecordEntities();
+//                header.update(entities);
+//                header.setVisibility(View.VISIBLE);
+                if (rechargeRecordList == null){
+                    ToastUtils.show(context,"网络连接失败");
+                }
+                getRefreshController().refreshComplete(rechargeRecordList);
             }
         }, 2000);
     }

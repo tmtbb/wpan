@@ -1,9 +1,12 @@
 package com.xinyu.mwp.view.banner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xinyu.mwp.activity.IndexBannerActivity;
+import com.xinyu.mwp.constant.ActionConstant;
 import com.xinyu.mwp.entity.IndexBannerEntity;
 import com.xinyu.mwp.util.DisplayImageOptionsUtil;
 import com.xinyu.mwp.util.LogUtil;
@@ -25,9 +28,18 @@ public class IndexBannerController extends BaseBannerController<IndexBannerEntit
             return;
         try {
             int jumpType = Integer.parseInt(entity.getJumpType());
-            switch (jumpType) {
-//                case ActionConstant.Fix.CONSTANT_0://不跳转
-//                    break;
+            String jumpCategory = entity.getJumpCategory();   //轮播图片的种类
+
+            switch (jumpCategory) {
+                case ActionConstant.JumpCategory.INDEX_POSITION_INFO:  //首页
+                    Intent intent = new Intent(context, IndexBannerActivity.class);
+                    intent.putExtra("entity", entity);
+
+                    context.startActivity(intent);
+                    break;
+                case ActionConstant.JumpCategory.RECHARGE_BANNER:  //充值界面
+
+                    break;
 //                case ActionConstant.Fix.CONSTANT_1://跳转内容
 //                    try {
 //                        SkipHelper skipHelper = new SkipHelper(context);

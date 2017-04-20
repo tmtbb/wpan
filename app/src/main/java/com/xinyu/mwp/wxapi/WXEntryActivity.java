@@ -1,15 +1,12 @@
-package com.xinyu.mwp.activity.wxapi;
+package com.xinyu.mwp.wxapi;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.xinyu.mwp.R;
 import com.xinyu.mwp.util.LogUtil;
 
 /**

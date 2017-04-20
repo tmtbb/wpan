@@ -21,8 +21,6 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
-
-import org.apache.http.impl.conn.LoggingSessionInputBuffer;
 import org.xutils.view.annotation.ViewInject;
 
 
@@ -110,9 +108,9 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
 //                        next(MyShareOrderActivity.class);
 //                        break;
                     case R.id.dealDetail:
-                        if (UserManager.getInstance().isLogin()){
+                        if (UserManager.getInstance().isLogin()) {
                             next(DealDetailFragmentActivity.class);
-                        }else{
+                        } else {
                             next(LoginActivity.class);
                         }
 
@@ -182,9 +180,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     @Override
     public void onUserUpdate(boolean isLogin) {
         if (isLogin) {
-            leftFragment.update();
-        }else{
-            next(LoginActivity.class);
+            leftFragment.userUpdate();
         }
     }
 
@@ -228,7 +224,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     protected void onDestroy() {
         super.onDestroy();
         UserManager.getInstance().unregisterUserUpdateListener(this);
-        LogUtil.e("test");
     }
 
     @Override
@@ -242,7 +237,7 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
     }
 
     private void judgeIsLogin() {
-        if (!UserManager.getInstance().isLogin()) {
+        if (!UserManager.getInstance().isLogin() ) {  //退出登录或者断网的状态下,直接跳转到登录界面
             next(LoginActivity.class);
         }
     }

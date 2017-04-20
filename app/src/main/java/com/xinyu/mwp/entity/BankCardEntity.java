@@ -10,16 +10,42 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
  */
 public class BankCardEntity extends BaseEntity {
 
+    @FieldJsonKey("bid")
+    private long bid;
+    @FieldJsonKey("id")
+    private int id;
+    @FieldJsonKey("bank")
+    private String bank;
+    @FieldJsonKey("branchBank")
+    private String branchBank;
+    @FieldJsonKey("cardNo")
+    private String cardNo;
+    @FieldJsonKey("name")
+    private String name;
+    @FieldJsonKey("backGround")
+    private String backGround;
     @FieldJsonKey("icon")
     private String icon;
-    @FieldJsonKey("title")
-    private String title;
-    @FieldJsonKey("type")
-    private String type;
-    @FieldJsonKey("number")
-    private String number;
-    @FieldJsonKey("background")
-    private String background;
+    @FieldJsonKey("cardName")
+    private String cardName;
+    @FieldJsonKey("isDefault")
+    private int isDefault;
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
+    }
 
     public String getIcon() {
         return icon;
@@ -29,35 +55,59 @@ public class BankCardEntity extends BaseEntity {
         this.icon = icon;
     }
 
-    public String getTitle() {
-        return title;
+    public long getBid() {
+        return bid;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBid(long bid) {
+        this.bid = bid;
     }
 
-    public String getType() {
-        return type;
+    public int getId() {
+        return id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getNumber() {
-        return number;
+    public String getBank() {
+        return bank;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 
-    public String getBackground() {
-        return background;
+    public String getBranchBank() {
+        return branchBank;
     }
 
-    public void setBackground(String background) {
-        this.background = background;
+    public void setBranchBank(String branchBank) {
+        this.branchBank = branchBank;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBackGround() {
+        return backGround;
+    }
+
+    public void setBackGround(String backGround) {
+        this.backGround = backGround;
     }
 }

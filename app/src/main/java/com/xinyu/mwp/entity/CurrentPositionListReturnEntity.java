@@ -30,15 +30,16 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
     private long positionId;
     private int id;
     private String code;
+    private int codeId;
     private String typeCode;
     private String name;
     private int buySell;
     private double amount;
     private double openPrice;
-    private int positionTime;
+    private long positionTime;
     private double openCost;
     private double openCharge;
-    private int closeTime;
+    private long closeTime;
     private double closePrice;
     private double grossProfit;
     private double limit;
@@ -48,22 +49,7 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
     private double deferred;
     private double interval;
     private long endTime;
-
-    public double getInterval() {
-        return interval;
-    }
-
-    public void setInterval(double interval) {
-        this.interval = interval;
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(long endTime) {
-        this.endTime = endTime;
-    }
+    private String symbol;
 
     public long getPositionId() {
         return positionId;
@@ -87,6 +73,14 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public int getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(int codeId) {
+        this.codeId = codeId;
     }
 
     public String getTypeCode() {
@@ -129,11 +123,11 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
         this.openPrice = openPrice;
     }
 
-    public int getPositionTime() {
+    public long getPositionTime() {
         return positionTime;
     }
 
-    public void setPositionTime(int positionTime) {
+    public void setPositionTime(long positionTime) {
         this.positionTime = positionTime;
     }
 
@@ -153,11 +147,11 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
         this.openCharge = openCharge;
     }
 
-    public int getCloseTime() {
+    public long getCloseTime() {
         return closeTime;
     }
 
-    public void setCloseTime(int closeTime) {
+    public void setCloseTime(long closeTime) {
         this.closeTime = closeTime;
     }
 
@@ -215,5 +209,29 @@ public class CurrentPositionListReturnEntity extends BaseEntity {
 
     public void setDeferred(double deferred) {
         this.deferred = deferred;
+    }
+
+    public double getInterval() {
+        return interval;
+    }
+
+    public void setInterval(double interval) {
+        this.interval = interval;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

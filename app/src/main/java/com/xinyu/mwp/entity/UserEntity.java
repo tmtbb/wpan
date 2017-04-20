@@ -100,7 +100,7 @@ public class UserEntity extends BaseEntity implements Serializable {
 
     //用户类型
     @FieldJsonKey("userType")
-    private String userType = "0";//0：普通用户，1：充值用户
+    private int userType  = 0;//0：普通会员，其他：直营会员
     @FieldJsonKey("balance")
     private double balance = 0;
     @FieldJsonKey("spreadUser")
@@ -445,11 +445,15 @@ public class UserEntity extends BaseEntity implements Serializable {
         this.beanNumber = beanNumber;
     }
 
-    public String getUserType() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getUserType() {
         return userType;
     }
 
-    public void setUserType(String userType) {
+    public void setUserType(int userType) {
         this.userType = userType;
     }
 
