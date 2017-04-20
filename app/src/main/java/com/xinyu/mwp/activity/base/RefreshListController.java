@@ -212,7 +212,8 @@ public abstract class RefreshListController<TView extends View, TModel> extends 
         if (pageIndex == 0) {
             refreshComplete();
         } else { //加载更多时出错
-            setMoreStatus(MoreStatus_Error);
+//            setMoreStatus(MoreStatus_Error);
+            setMoreStatus(MoreStatus_NoMoreData);
         }
     }
 

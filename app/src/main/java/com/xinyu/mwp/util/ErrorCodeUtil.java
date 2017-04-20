@@ -87,6 +87,9 @@ public class ErrorCodeUtil {
             case -505:
                 msg = "没有商品数据";
                 break;
+            case -506:
+                msg = "持仓记录大于5";
+                break;
             case -601:
                 msg = "没有相关交易的历史数据";
                 break;

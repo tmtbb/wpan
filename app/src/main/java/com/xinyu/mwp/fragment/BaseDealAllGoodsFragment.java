@@ -3,7 +3,6 @@ package com.xinyu.mwp.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
 
@@ -18,13 +17,9 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.util.ErrorCodeUtil;
-import com.xinyu.mwp.util.ToastUtils;
-
+import com.xinyu.mwp.util.LogUtil;
 import org.xutils.view.annotation.ViewInject;
-
 import java.util.List;
-
 
 /**
  * Created by Benjamin on 17/1/12.
@@ -67,6 +62,7 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
         super.initView();
 //        header = new DealAllGoodsHeader(context);
 //        contentView.addHeaderView(header);
+        requestNetData(1, 10);
     }
 
 
@@ -77,13 +73,16 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                ErrorCodeUtil.showEeorMsg(context,ex);
+//                ErrorCodeUtil.showEeorMsg(context, ex);
+                getRefreshController().refreshComplete();
+                getRefreshController().refreshError(ex);
             }
 
             @Override
             public void onSuccess(List<HistoryPositionListReturnEntity> historyPositionListReturnEntities) {
                 historyPositionList = historyPositionListReturnEntities;
-                refreshAdapter();
+                LogUtil.d("start:" + start + ",1ssssssssssssssssss获取的历史信息是:" + historyPositionListReturnEntities);
+//                refreshAdapter();
                 getRefreshController().refreshComplete(historyPositionList);
             }
         });
@@ -93,19 +92,18 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
 
     public void updateFragment(int i) {
         index = i;
-        requestNetData(1, 10);
     }
 
-    private void refreshAdapter() {
-        if (adapter == null) {
-            adapter = new DealAllGoodsAdapter(context);
-            adapter.setProductDealList(historyPositionList);
-            adapter.notifyDataSetChanged();
-        } else {
-            adapter.setProductDealList(historyPositionList);
-            adapter.notifyDataSetChanged();
-        }
-    }
+//    private void refreshAdapter() {
+//        if (adapter == null) {
+//            adapter = new DealAllGoodsAdapter(context);
+//            adapter.setProductDealList(historyPositionList);
+//            adapter.notifyDataSetChanged();
+//        } else {
+//            adapter.setProductDealList(historyPositionList);
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     protected void initListener() {
@@ -137,5 +135,11 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
 
     public void doRefresh(int num) {
         requestNetData(num, count);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                getRefreshController().refreshComplete(historyPositionList);
+//            }
+//        },500);
     }
 }

@@ -9,18 +9,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.github.mikephil.charting.utils.EntryXIndexComparator;
 import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.unionpay.UPPayAssistEx;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshActivity;
 import com.xinyu.mwp.activity.unionpay.APKActivity;
 import com.xinyu.mwp.activity.unionpay.JARActivity;
-
+import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.Constant;
-import com.xinyu.mwp.entity.BalanceInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.WXPayResultEntity;
 import com.xinyu.mwp.entity.WXPayReturnEntity;
@@ -69,7 +65,7 @@ public class RechargeActivity extends BaseRefreshActivity {
     @ViewInject(R.id.iv_bannerview)
     private ImageView bannerView;
     private int choice = 0;
-    private IWXAPI api;
+    //    private IWXAPI api;
     private WXPayReturnEntity wxPayEntity;
 
     @Override
@@ -89,8 +85,8 @@ public class RechargeActivity extends BaseRefreshActivity {
         rightText.setVisibility(View.VISIBLE);
         Utils.closeSoftKeyboard(rechargeMoney);
         NumberUtils.setEditTextPoint(rechargeMoney, 2);  //设置充值金额的小数位数
-        api = WXAPIFactory.createWXAPI(context, null);
-        api.registerApp(Constant.APP_ID);
+//        api = WXAPIFactory.createWXAPI(context, null);
+//        api.registerApp(Constant.APP_ID);
 
         if (flag) {
             EventBus.getDefault().register(this); // EventBus注册广播()
@@ -154,7 +150,7 @@ public class RechargeActivity extends BaseRefreshActivity {
                     request.nonceStr = wxPayReturnEntity.getNoncestr();
                     request.timeStamp = wxPayReturnEntity.getTimestamp();
                     request.sign = wxPayReturnEntity.getSign();
-                    api.sendReq(request);
+                    MyApplication.api.sendReq(request);
                     //模拟请求回调
 //                    requestResult();
                 }

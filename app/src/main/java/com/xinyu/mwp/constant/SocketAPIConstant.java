@@ -18,6 +18,7 @@ public interface SocketAPIConstant {
 
     interface OperateCode {
         Short Login = 3003;
+        Short WXLogin = 3013;
         Short Products = 5001;
         Short VerifyCode = 3011;
         Short Register = 3001;
@@ -44,5 +45,6 @@ public interface SocketAPIConstant {
         Short UnBindCard = 8007;
         Short RechargeRecord = 1019;
         Short UnionPay = 1039;
+        Short WXBind = 3015;
     }
 }

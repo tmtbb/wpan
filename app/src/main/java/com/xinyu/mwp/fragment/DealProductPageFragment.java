@@ -33,10 +33,10 @@ import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.DisplayUtil;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TestDataUtil;
@@ -245,6 +245,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 LogUtil.d("仓位列表,请求网络失败" + ex.getMessage());
                 currentPositionList = new ArrayList<CurrentPositionListReturnEntity>();
                 processPositionList();
+                getRefreshController().refreshComplete();
             }
 
             @Override
@@ -254,6 +255,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     currentPositionList.clear();
                 }
                 currentPositionList = currentPositionListReturnEntities;
+                getRefreshController().refreshComplete(currentPositionList);
                 getOrderList(); //仓位列表按照时间排序
 
                 processPositionList();
@@ -577,15 +579,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
     public void doRefresh() {
         initCurrentPositionList(start, requestCount);  //请求仓位列表数据
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (currentPositionList == null) {
-                    ToastUtils.show(context, "没有更多数据");
-                }
-                getRefreshController().refreshComplete(currentPositionList);
-            }
-        }, 500);
     }
 
     @Override
@@ -669,16 +662,21 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             buyType = "买涨";
             buySell = 1;
         }
+        int maxLot = mUnitViewList.get(newItemIndex).getMaxLot();
+        int minLot = mUnitViewList.get(newItemIndex).getMinLot();
 
         final CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
         final int finalBuySell = buySell;
         final String finalBuyType = buyType;
-        builder.setProgressChangeListener(new CustomDialog.Builder.ProgressChangeListener() {
-            @Override
-            public void processData(int amount) {
-                initDialogData(amount);
-            }
-        }).setPositiveButton(buyType, new DialogInterface.OnClickListener() {
+
+        builder.setMaxLot(maxLot)
+                .setMinLot(minLot)
+                .setProgressChangeListener(new CustomDialog.Builder.ProgressChangeListener() {
+                    @Override
+                    public void processData(int amount) {
+                        initDialogData(amount);    //手数是progress + 1
+                    }
+                }).setPositiveButton(buyType, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 int progress = CustomDialog.mSeekBar.getProgress();
                 final double amount = progress + 1;
@@ -714,7 +712,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                         ToastUtils.show(context, "取消");
                     }
                 }).create().show();
-        initDialogData(1);
+        initDialogData(50);  //默认是50
+        CustomDialog.mSeekBar.setProgress(maxLot / 2 - 1);
     }
 
     private void showRechargeDialog() {
@@ -741,16 +740,22 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount 当前手数
      */
     private void initDialogData(int amount) {
-//        if (mUnitViewList.size() == 0 || mViewPager == null) {
-//            ToastUtils.show(context, "请求网络失败,数据为空");
-//            return;
-//        }
+        int maxLot = mUnitViewList.get(newItemIndex).getMaxLot();
+        int minLot = mUnitViewList.get(newItemIndex).getMinLot();
+        CustomDialog.maxLot.setText("" + maxLot);
+        CustomDialog.minLot.setText("" + minLot);
+        if (amount > maxLot) {
+            amount = maxLot;
+        }
+
         double unit = getCurrentUnit();  //获取当前商品 的单价
         CustomDialog.mCurrentCount.setText(amount + "");
         earnestMoney = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount)); //定金-实际付的钱
 //        CustomDialog.mEarnestMoney.setText("¥ " + earnestMoney); //定金
         double chargeFree = mUnitViewList.get(newItemIndex).getOpenChargeFee() * unit * amount;//手续费
-        CustomDialog.mServiceCharge.setText(NumberUtils.halfAdjust2(chargeFree));
+        NumberFormat numberFormat = NumberFormat.getPercentInstance();
+        numberFormat.setMinimumFractionDigits(2);
+        CustomDialog.mServiceCharge.setText(numberFormat.format(mUnitViewList.get(newItemIndex).getOpenChargeFee()));//手续费率
         turnoverPrice = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount - chargeFree));
         CustomDialog.mTurnoverMoney.setText("¥ " + turnoverPrice);//成交额
         CustomDialog.mCurrentPosition.setText(String.format(currentPositionEntity.getCurrentPositionName() + "%s", currentPositionEntity.getName()));//当前仓位
@@ -776,7 +781,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 closeLoader();
-                ToastUtils.show(context, "建仓失败");
+//                ToastUtils.show(context, "建仓失败");
+                ErrorCodeUtil.showEeorMsg(context, ex);
             }
 
             @Override

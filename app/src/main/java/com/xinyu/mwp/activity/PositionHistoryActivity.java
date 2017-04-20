@@ -65,11 +65,14 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+//                ErrorCodeUtil.showEeorMsg(context, ex);
+                getRefreshController().refreshComplete();
+                getRefreshController().refreshError(ex);
             }
 
             @Override
             public void onSuccess(List<HistoryPositionListReturnEntity> historyPositionListReturnEntities) {
-//                LogUtil.d("历史记录请求网络成功" + historyPositionListReturnEntities.toString());
+                LogUtil.d("历史记录请求网络成功" + historyPositionListReturnEntities.toString());
                 historyPositionList = historyPositionListReturnEntities;
                 getRefreshController().refreshComplete(historyPositionList);
             }

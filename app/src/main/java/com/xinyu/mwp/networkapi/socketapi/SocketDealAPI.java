@@ -139,7 +139,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("start", start);
         map.put("count", count);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
-                SocketAPIConstant.ReqeutType.Time, map);
+                SocketAPIConstant.ReqeutType.History, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
     }
 
@@ -152,7 +152,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("count", count);
         map.put("symbol", symbol);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
-                SocketAPIConstant.ReqeutType.Time, map);
+                SocketAPIConstant.ReqeutType.History, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
     }
 

@@ -6,16 +6,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
+import com.xinyu.mwp.constant.Constant;
+import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.ErrorCodeUtil;
@@ -26,6 +30,9 @@ import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.view.WPEditText;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
@@ -47,8 +54,11 @@ public class LoginActivity extends BaseControllerActivity {
     private WPEditText passwordEditText;
     @ViewInject(R.id.loginButton)
     private Button loginButton;
+    @ViewInject(R.id.wxLoginButton)
+    private Button wxLoginButton;
     private CheckHelper checkHelper = new CheckHelper();
     private long exitNow;
+    private boolean flag = true;
 
     @Override
     protected int getContentView() {
@@ -63,14 +73,37 @@ public class LoginActivity extends BaseControllerActivity {
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
         setSwipeBackEnable(false);
+
+        api = WXAPIFactory.createWXAPI(context, null);
+        api.registerApp(Constant.APP_ID);
+
+        if (flag) {
+            EventBus.getDefault().register(this); // EventBus注册广播()
+            flag = false;//更改标记,使其不会再进行多次注册
+        }
     }
 
+    private IWXAPI api;
 
-    @Event(value = {R.id.registerText, R.id.loginButton, R.id.findPwd})
+    @Event(value = {R.id.registerText, R.id.loginButton, R.id.findPwd, R.id.wxLoginButton})
     private void onClick(View view) {
         switch (view.getId()) {
             case R.id.registerText:
                 ActivityUtil.nextRegister(context);
+                break;
+
+            case R.id.wxLoginButton:
+                if (!MyApplication.api.isWXAppInstalled()) {
+                    ToastUtils.show(context, "您还未安装微信客户端");
+                    return;
+                }
+                ToastUtils.show(context, "微信登录");
+                final SendAuth.Req req = new SendAuth.Req();
+                req.scope = "snsapi_userinfo";
+                req.state = "wechat_sdk_demo_test";
+
+                api.sendReq(req);   //发送授权登陆请求
+
                 break;
 //            case R.id.findPwd:    //去掉修改登录密码功能
 //                ActivityUtil.nextResetUserPwd(context);
@@ -100,7 +133,7 @@ public class LoginActivity extends BaseControllerActivity {
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
                                     closeLoader();
                                     ToastUtils.show(context, "登陆成功");
-                                    LogUtil.d("登陆成功:" + loginReturnEntity.toString());
+                                    //    LogUtil.d("登陆成功:" + loginReturnEntity.toString());
                                     UserEntity en = new UserEntity();
                                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());
@@ -136,5 +169,27 @@ public class LoginActivity extends BaseControllerActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void ReciveMessage(EventBusMessage eventBusMessage) {
+        switch (eventBusMessage.Message) {
+            case -6:  //成功
+                LogUtil.d("当前是接收到微信登录成功的消息,finish");
+                finish();
+                break;
+            case -7:  //成功
+                LogUtil.d("当前是接收到绑定成功的消息,finish");
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().removeAllStickyEvents();
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 }

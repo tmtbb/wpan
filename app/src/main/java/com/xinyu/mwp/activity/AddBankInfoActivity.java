@@ -60,9 +60,10 @@ public class AddBankInfoActivity extends BaseActivity {
         agreement.setText(Html.fromHtml("同意<font color=\"#E9573E\">《用户协议》</font>"));
 
         Bundle bundle = getIntent().getBundleExtra("tag");
-        entity = (BankInfoEntity) bundle.getSerializable("bankInfo");
-        cardType.updateContentLeft(entity.getBankName());
-
+        if (bundle != null){
+            entity = (BankInfoEntity) bundle.getSerializable("bankInfo");
+            cardType.updateContentLeft(entity.getBankName());
+        }
     }
 
     @Event(value = {R.id.next})

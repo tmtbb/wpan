@@ -11,11 +11,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.constant.Constant;
+
 
 /**
  * 自定义dialog
@@ -25,7 +25,7 @@ public class CustomDialog extends Dialog {
 
     private static Button mPositiveButton;
     private static Button mNegativeButton;
-    public static SeekBar mSeekBar;
+    public static UiSeeKBar mSeekBar;
     //    public static TextView mEarnestMoney;//定金
 //    public static TextView mEarnestMoneyPercent; //运费比例
     public static TextView mTurnoverMoney;  //成交额
@@ -37,6 +37,8 @@ public class CustomDialog extends Dialog {
     private static TextView mCurrentCountShow;
     private static TextView mTitle;
     private static TextView mMessage;
+    public static TextView maxLot;
+    public static TextView minLot;
 
 
     public CustomDialog(Context context) {
@@ -57,6 +59,9 @@ public class CustomDialog extends Dialog {
         private View layout;
         private String title;
         private String message;
+        private int process;
+        private int maxCount;
+        private int minCount = 1;
 
         public Builder(Context context, int type) {
             this.context = context;
@@ -91,6 +96,21 @@ public class CustomDialog extends Dialog {
 
         public Builder setMessage(String message) {
             this.message = message;
+            return this;
+        }
+
+        public Builder setProcess(int process) {
+            this.process = process;
+            return this;
+        }
+
+        public Builder setMaxLot(int max) {
+            this.maxCount = max;
+            return this;
+        }
+
+        public Builder setMinLot(int min) {
+            this.minCount = min;
             return this;
         }
 
@@ -181,13 +201,15 @@ public class CustomDialog extends Dialog {
             mNegativeButton = (Button) layout.findViewById(R.id.btn_buy_negative);
             mTitle = (TextView) layout.findViewById(R.id.dialog_title);
             mMessage = (TextView) layout.findViewById(R.id.dialog_message);
+            maxLot = (TextView) layout.findViewById(R.id.tv_maxLot);
+            minLot = (TextView) layout.findViewById(R.id.tv_minLot);
 
             //当前选择手数
             mCurrentCount = (TextView) layout.findViewById(R.id.tv_current_choose_count);
             //当前选择手数显示图标
             mCurrentCountShow = (TextView) layout.findViewById(R.id.tv_current_choose_count_show);
             //拖动选择
-            mSeekBar = (SeekBar) layout.findViewById(R.id.trade_seekbar);
+            mSeekBar = (UiSeeKBar) layout.findViewById(R.id.trade_seekbar);
             //定金
 //            mEarnestMoney = (TextView) layout.findViewById(R.id.tv_earnest_money);
             //运费比例
@@ -205,31 +227,27 @@ public class CustomDialog extends Dialog {
 
 
         private void initSeekBar() {
-            float seekbarWidthOld = mSeekBar.getX();
-            mCurrentCountShow.setX(seekbarWidthOld);//初始化
-            mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            //初始化
+            int preProcess = mSeekBar.getProgress();
+            mCurrentCount.setText(preProcess + "");  //当前手数
+            mSeekBar.setMax(maxCount - 1);
+            mSeekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
                     if (progressChangeListener != null) {
                         progressChangeListener.processData(progress + 1);
                     }
+                    mSeekBar.setNumText(progress + 1 + "");
                     mCurrentCount.setText(progress + 1 + "");
-                    mCurrentCountShow.setText(progress + 1 + "");
-                    float x = seekBar.getWidth();//控件宽度
-                    float seekbarWidth = mSeekBar.getX(); //距边框的距离
-                    float width = ((progress) * x) / 10 + seekbarWidth; //进度的位置 坐标
-
-                    int intrinsicWidth = seekBar.getThumb().getIntrinsicWidth();
-                    float newWith = width - mCurrentCountShow.getWidth() / 2 + intrinsicWidth / 2;  //纠正滑块位置
-                    mCurrentCountShow.setX(newWith);
                 }
 
                 @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
+                public void onStartTrackingTouch(android.widget.SeekBar seekBar) {
+
                 }
 
                 @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
+                public void onStopTrackingTouch(android.widget.SeekBar seekBar) {
 
                 }
             });

@@ -64,7 +64,7 @@ public class DealDetailActivity extends BaseControllerActivity {
                 }
                 dealType.updateContent(type);
                 dealKinds.updateContent(entity.getName());
-                dealTime.updateContent(TimeUtil.getDateAndTime(entity.getPositionTime() * 1000));
+                dealTime.updateContent(TimeUtil.getDateAndTime(entity.getCloseTime() * 1000));
                 dealMoney.updateContent(NumberUtils.halfAdjust2(entity.getOpenCost()));
                 NumberFormat numberFormat = NumberFormat.getPercentInstance();
                 numberFormat.setMinimumFractionDigits(2);

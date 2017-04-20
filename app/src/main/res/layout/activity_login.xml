@@ -43,6 +43,15 @@
         android:layout_marginTop="@dimen/dp_30"
         android:text="登录" />
 
+    <Button
+        android:id="@+id/wxLoginButton"
+        style="@style/ButtonStyle"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/login_shape_selected"
+        android:text="微信登录" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

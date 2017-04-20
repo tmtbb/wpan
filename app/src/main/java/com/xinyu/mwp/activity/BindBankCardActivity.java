@@ -1,6 +1,5 @@
 package com.xinyu.mwp.activity;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -98,6 +97,8 @@ public class BindBankCardActivity extends BaseRefreshAbsListControllerActivity<B
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 ErrorCodeUtil.showEeorMsg(context,ex);
+                listView.setVisibility(View.VISIBLE);
+                getRefreshController().refreshComplete();
             }
 
             @Override

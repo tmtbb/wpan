@@ -1,5 +1,6 @@
 package com.xinyu.mwp.activity;
 
+import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.Button;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
+import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
+import com.xinyu.mwp.entity.WXUserInfoEntity;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -26,6 +29,7 @@ import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -59,6 +63,12 @@ public class RegisterActivity extends BaseControllerActivity {
     private String phone;
     private String pwd;
     private String vCode;
+    private boolean isBind = false;
+    private String newPwd;
+    private long memberUnitText;
+    private String agentIdText;
+    private String refereeIdText;
+    private WXUserInfoEntity entity;
 
     @Override
     protected int getContentView() {
@@ -68,7 +78,15 @@ public class RegisterActivity extends BaseControllerActivity {
     @Override
     protected void initView() {
         super.initView();
-        setTitle("注册");
+        String title = "注册";
+        Bundle bundle = getIntent().getBundleExtra("wx");
+        if (bundle != null) {
+            entity = (WXUserInfoEntity) bundle.getSerializable("wxBind");
+            title = "请绑定手机号码";
+            isBind = true;
+        }
+
+        setTitle(title);
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
@@ -94,7 +112,11 @@ public class RegisterActivity extends BaseControllerActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoader("正在注册...");
+                String loader = "正在注册...";
+                if (isBind) {
+                    loader = "正在绑定...";
+                }
+                showLoader(loader);
                 CheckException exception = new CheckException();
                 phone = phoneEditText.getEditTextString();
                 pwd = pwdEditText.getEditTextString();
@@ -103,7 +125,19 @@ public class RegisterActivity extends BaseControllerActivity {
                 if (checkHelper.checkMobile(phone, exception) && checkHelper.checkPassword(pwd, exception)
                         && checkHelper.checkVerifyCode(vCode, exception)) {
                     Utils.closeSoftKeyboard(v);
-                    register();
+
+                    newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(pwd + "t1@s#df!") + phone);
+                    memberUnitText = 0;
+                    if (!TextUtils.isEmpty(memberUnit.getEditTextString())) {
+                        memberUnitText = Long.parseLong(memberUnit.getEditTextString());
+                    }
+                    agentIdText = agentId.getEditTextString();
+                    refereeIdText = refereeId.getEditTextString();
+                    if (isBind) {
+                        bindUserInfo();
+                    } else {
+                        register();
+                    }
                 } else {
                     closeLoader();
                     showToast(exception.getErrorMsg());
@@ -112,14 +146,30 @@ public class RegisterActivity extends BaseControllerActivity {
         });
     }
 
+    /**
+     * 微信登录--绑定用户信息
+     */
+    private void bindUserInfo() {
+        NetworkAPIFactoryImpl.getUserAPI().bindNumber(phone, entity.getOpenid(), newPwd, vCode, memberUnitText,
+                agentIdText, refereeIdText, entity.getNickname(), entity.getHeadimgurl(), new OnAPIListener<RegisterReturnEntity>() {
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        LogUtil.d("绑定失败!");
+                        closeLoader();
+                        ErrorCodeUtil.showEeorMsg(context, ex);
+                    }
+
+                    @Override
+                    public void onSuccess(RegisterReturnEntity registerReturnEntity) {
+                        LogUtil.d("绑定账号成功!" + registerReturnEntity.toString());
+                        loginGetUserInfo(newPwd);  //调用登录
+                    }
+                });
+    }
+
     private void register() {
-        final String newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(pwd + "t1@s#df!") + phone);
-        long memberUnitText = 0;
-        if (!TextUtils.isEmpty(memberUnit.getEditTextString())) {
-            memberUnitText = Long.parseLong(memberUnit.getEditTextString());
-        }
-        String agentIdText = agentId.getEditTextString();
-        String refereeIdText = refereeId.getEditTextString();
+
         NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode, memberUnitText, agentIdText, refereeIdText,
                 new OnAPIListener<RegisterReturnEntity>() {
                     @Override
@@ -143,13 +193,6 @@ public class RegisterActivity extends BaseControllerActivity {
 //                            loginGetUserInfo(newPwd);  //登录请求数据
                             finish();
                         }
-
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                ActivityUtil.nextResetDealPwd(context);
-//                            }
-//                        }, 100);
                     }
                 });
     }
@@ -179,6 +222,9 @@ public class RegisterActivity extends BaseControllerActivity {
                         UserManager.getInstance().setLogin(true);
                         MyApplication.getApplication().onUserUpdate(true);
                         finish();
+
+                        //绑定成功,登录成功--发送消息,进入首页
+                        EventBus.getDefault().postSticky(new EventBusMessage(-7));  //传递消息
                     }
                 });
     }
