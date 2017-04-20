@@ -23,6 +23,10 @@
     <string name="congratulations_profit">恭喜盈利</string>
     <string name="choose_profit_type">请选择盈利方式</string>
 
+    <string name="referee_id">请输入推荐人ID(选填)</string>
+    <string name="agent_id">请输入经纪人ID(选填)</string>
+    <string name="member_unit">请输入会员单位(选填)</string>
+
 
 
 </resources>

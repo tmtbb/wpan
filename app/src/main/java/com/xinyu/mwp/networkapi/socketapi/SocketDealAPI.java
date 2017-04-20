@@ -139,7 +139,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("start", start);
         map.put("count", count);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
-                SocketAPIConstant.ReqeutType.Time, map);
+                SocketAPIConstant.ReqeutType.History, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
     }
 
@@ -152,7 +152,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("count", count);
         map.put("symbol", symbol);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
-                SocketAPIConstant.ReqeutType.Time, map);
+                SocketAPIConstant.ReqeutType.History, map);
         requestEntitys(socketDataPacket, "positioninfo", HistoryPositionListReturnEntity.class, listener);
     }
 
@@ -177,6 +177,18 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXPay,
                 SocketAPIConstant.ReqeutType.Verify, map);
         requestEntity(socketDataPacket, WXPayReturnEntity.class, listener);
+    }
+
+    @Override
+    public void unionPay(String title, double price, OnAPIListener<Object> listener) {
+        LogUtil.d("请求银联支付");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("title", title);
+        map.put("price", price);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnionPay,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestJsonObject(socketDataPacket, listener);
     }
 
     @Override
@@ -295,7 +307,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void rechargeList(int startPos,int count,OnAPIListener<List<RechargeRecordItemEntity>> listener) {
+    public void rechargeList(int startPos, int count, OnAPIListener<List<RechargeRecordItemEntity>> listener) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
@@ -303,6 +315,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("count", count);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Total,
                 SocketAPIConstant.ReqeutType.History, map);
-       requestEntitys(socketDataPacket,"depositsinfo",RechargeRecordItemEntity.class,listener);
+        requestEntitys(socketDataPacket, "depositsinfo", RechargeRecordItemEntity.class, listener);
     }
 }

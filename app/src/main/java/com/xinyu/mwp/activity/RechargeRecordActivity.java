@@ -1,6 +1,5 @@
 package com.xinyu.mwp.activity;
 
-import android.os.Handler;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseRefreshAbsListControllerActivity;
 import com.xinyu.mwp.adapter.RechargeRecordAdapter;
@@ -10,8 +9,7 @@ import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.util.LogUtil;
-import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.view.RechargeRecordHeader;
 
 import org.xutils.view.annotation.ViewInject;
@@ -54,11 +52,14 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                getRefreshController().refreshComplete();
+                ErrorCodeUtil.showEeorMsg(context, ex);
             }
 
             @Override
             public void onSuccess(List<RechargeRecordItemEntity> rechargeRecordItemEntities) {
                 rechargeRecordList = rechargeRecordItemEntities;
+                getRefreshController().refreshComplete(rechargeRecordList);
             }
         });
     }
@@ -105,18 +106,6 @@ public class RechargeRecordActivity extends BaseRefreshAbsListControllerActivity
 
     private void doRefresh(int number) {
         requestRechargeRecord(number, count);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                entities = TestDataUtil.getRechargeRecordEntities();
-//                header.update(entities);
-//                header.setVisibility(View.VISIBLE);
-                if (rechargeRecordList == null){
-                    ToastUtils.show(context,"网络连接失败");
-                }
-                getRefreshController().refreshComplete(rechargeRecordList);
-            }
-        }, 2000);
     }
 
 }

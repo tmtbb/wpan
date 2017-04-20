@@ -17,6 +17,7 @@ import com.xinyu.mwp.listener.OnTextChangeListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.StringUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellEditView;
@@ -75,6 +76,7 @@ public class CashActivity extends BaseControllerActivity {
         cardNo.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER);
         pwd.getEdit().setTransformationMethod(PasswordTransformationMethod.getInstance());//设置密码不可见
         money.getEdit().setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        NumberUtils.setEditTextPoint(money.getEdit(), 2);  //设置输入 提现金额的小数位数
         bank.getEdit().setFocusable(false);
         bank.getEdit().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +124,9 @@ public class CashActivity extends BaseControllerActivity {
                 getInPutInfo();
                 if (price > UserManager.getInstance().getUserEntity().getBalance()) {
                     ToastUtils.show(context, "余额不足");
+                } else if (price == 0) {
+                    ToastUtils.show(context, "输入金额有误");
+                    return;
                 } else {
                     requestCash();
                 }

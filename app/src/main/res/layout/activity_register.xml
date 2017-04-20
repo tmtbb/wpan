@@ -57,6 +57,37 @@
             app:edit_show_icon="false"
             app:edit_show_right_text="false" />
 
+        <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/wpe_member_unit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            app:edit_hint="@string/member_unit"
+            app:edit_show_eye="false"
+            app:edit_show_icon="false"
+            app:edit_show_right_text="false" />
+
+        <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/wpe_agent_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            app:edit_hint="@string/agent_id"
+            app:edit_show_eye="false"
+            app:edit_show_icon="false"
+            app:edit_show_right_text="false" />
+
+        <com.xinyu.mwp.view.WPEditText
+            android:id="@+id/wpe_referee_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_19"
+            app:edit_hint="@string/referee_id"
+            app:edit_show_eye="false"
+            app:edit_show_icon="false"
+            app:edit_show_right_text="false" />
+
+
         <Button
             android:id="@+id/nextButton"
             style="@style/ButtonStyle"

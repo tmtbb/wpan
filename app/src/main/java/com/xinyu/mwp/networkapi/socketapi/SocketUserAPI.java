@@ -1,12 +1,12 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
+import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BalanceInfoEntity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.LoginVerifyCodeEntry;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
 import com.xinyu.mwp.entity.RegisterVerifyCodeEntry;
-import com.xinyu.mwp.entity.UserinfoEntity;
 import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
@@ -14,10 +14,6 @@ import com.xinyu.mwp.networkapi.UserAPI;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketDataPacket;
 import com.xinyu.mwp.util.LogUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -32,20 +28,36 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         map.put("phone", phone);
         map.put("pwd", password);
         map.put("source", 2);
-//        map.put("deviceId", deviceId);
+        map.put("deviceId", MyApplication.getApplication().getAndroidId());
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Login,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, LoginReturnEntity.class, listener);
     }
 
     @Override
-    public void register(String phone, String password, String vCode, OnAPIListener<RegisterReturnEntity> listener) {
+    public void wxLogin(String openId, OnAPIListener<LoginReturnEntity> listener) {
+        LogUtil.d("微信登录");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("openId", openId);
+        map.put("deviceId", MyApplication.getApplication().getAndroidId());
+        map.put("source", 2);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXLogin,
+                SocketAPIConstant.ReqeutType.User, map);
+        requestEntity(socketDataPacket, LoginReturnEntity.class, listener);
+    }
+
+    @Override
+    public void register(String phone, String password, String vCode, long memberId, String agentId, String recommend, OnAPIListener<RegisterReturnEntity> listener) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("phone", phone);
         map.put("pwd", password);
         map.put("vCode", vCode);
-        map.put("timeStamp", RegisterVerifyCodeEntry.timestamp);
+        map.put("timeStamp", RegisterVerifyCodeEntry.timeStamp);
         map.put("vToken", RegisterVerifyCodeEntry.vToken);
+        map.put("memberId", memberId);
+        map.put("agentId", agentId);
+        map.put("recommend", recommend);
+        map.put("deviceId", MyApplication.getApplication().getAndroidId());
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Register,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, RegisterReturnEntity.class, listener);
@@ -60,12 +72,12 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         map.put("verifyType", verifyType);  //0-注册 1-登录 2-更新服务（暂用 1）
         map.put("phone", phone);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.VerifyCode,
-                SocketAPIConstant.ReqeutType.Verify, map);
+                SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, VerifyCodeReturnEntry.class, listener);
     }
 
     @Override
-    public void resetDealPwd(String phone, String pwd, String vCode,int type, OnAPIListener<Object> listener) {
+    public void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<Object> listener) {
         LogUtil.d("修改用户密码-----------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
@@ -90,7 +102,7 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     }
 
     @Override
-    public void loginWithToken( OnAPIListener<LoginReturnEntity> listener) {
+    public void loginWithToken(OnAPIListener<LoginReturnEntity> listener) {
         LogUtil.d("用token登录");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
@@ -109,5 +121,25 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Balance,
                 SocketAPIConstant.ReqeutType.Verify, map);
         requestEntity(socketDataPacket, BalanceInfoEntity.class, listener);
+    }
+
+    @Override
+    public void bindNumber(String phone, String openid, String password, String vCode, long memberId, String agentId, String recommend, String nickname, String headerUrl, OnAPIListener<RegisterReturnEntity> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("phone", phone);
+        map.put("openid", openid);
+        map.put("pwd", password);
+        map.put("vCode", vCode);
+        map.put("nickname", nickname);
+        map.put("headerUrl", nickname);
+        map.put("timeStamp", RegisterVerifyCodeEntry.timeStamp);
+        map.put("vToken", RegisterVerifyCodeEntry.vToken);
+        map.put("memberId", memberId);
+        map.put("agentId", agentId);
+        map.put("recommend", recommend);
+        map.put("deviceId", MyApplication.getApplication().getAndroidId());
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXBind,
+                SocketAPIConstant.ReqeutType.User, map);
+        requestEntity(socketDataPacket, RegisterReturnEntity.class, listener);
     }
 }

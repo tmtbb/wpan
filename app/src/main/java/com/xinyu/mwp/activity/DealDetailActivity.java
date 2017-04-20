@@ -64,12 +64,12 @@ public class DealDetailActivity extends BaseControllerActivity {
                 }
                 dealType.updateContent(type);
                 dealKinds.updateContent(entity.getName());
-                dealTime.updateContent(TimeUtil.getDateAndTime(entity.getPositionTime() * 1000));
+                dealTime.updateContent(TimeUtil.getDateAndTime(entity.getCloseTime() * 1000));
                 dealMoney.updateContent(NumberUtils.halfAdjust2(entity.getOpenCost()));
                 NumberFormat numberFormat = NumberFormat.getPercentInstance();
                 numberFormat.setMinimumFractionDigits(2);
-                dealCounter.updateContent(numberFormat.format(entity.getOpenCharge() * 100));
-                earnestPercent.updateContent(numberFormat.format(entity.getOpenCharge() * 100));//定金比例
+                dealCounter.updateContent(numberFormat.format(entity.getOpenCharge()));
+                earnestPercent.updateContent(numberFormat.format(entity.getOpenCharge()));//定金比例
                 rootLayout.setVisibility(View.VISIBLE);
                 closeLoader();
             }

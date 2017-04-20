@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <com.github.mikephil.charting.charts.CombinedChart
-    android:id="@+id/chart"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_181"
-    android:layout_marginTop="@dimen/dp_4" />
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <!--<com.github.mikephil.charting.charts.LineChart-->
     <!--android:id="@+id/chart"-->
     <!--android:layout_width="match_parent"-->
@@ -15,8 +15,8 @@
     <!--android:layout_marginTop="@dimen/dp_4" />-->
 
     <!--<com.xinyu.mwp.view.chart.ChartContainer-->
-        <!--android:id="@+id/chart"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/dp_181"-->
-        <!--android:layout_marginTop="@dimen/dp_4" />-->
+    <!--android:id="@+id/chart"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dp_181"-->
+    <!--android:layout_marginTop="@dimen/dp_4" />-->
 </LinearLayout>

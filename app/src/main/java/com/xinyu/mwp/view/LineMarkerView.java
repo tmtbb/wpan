@@ -3,6 +3,7 @@ package com.xinyu.mwp.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.MarkerView;
@@ -20,13 +21,13 @@ public class LineMarkerView extends MarkerView {
     private Context context;
     private TextView currentPrice;
     private TextView time;
-    private FrameLayout markerView;
+    private LinearLayout markerView;
 
     public LineMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
         currentPrice = (TextView) findViewById(R.id.tv_currentPrice);
         time = (TextView) findViewById(R.id.time);
-        markerView = (FrameLayout) findViewById(R.id.fl_marker_line);
+        markerView = (LinearLayout) findViewById(R.id.ll_marker_line);
         this.context = context;
     }
 
@@ -43,21 +44,21 @@ public class LineMarkerView extends MarkerView {
 
     @Override
     public int getXOffset(float xpos) {
-        return -(getWidth() / 2);
+        return -(getWidth() / 5);
     }
 
     @Override
     public int getYOffset(float ypos) {
-        return -(getHeight() / 2);
+        return -getHeight();
     }
 
-    @Override
-    public void draw(Canvas canvas, float posx, float posy) {
-        if (posx > DisplayUtil.getScreenWidth(context) / 2) {
-            canvas.translate(0, 0);
-        } else {
-            canvas.translate(DisplayUtil.getScreenWidth(context) - getWidth(), 0);
-        }
-        draw(canvas);
-    }
+//    @Override
+//    public void draw(Canvas canvas, float posx, float posy) {
+//        if (posx > DisplayUtil.getScreenWidth(context) / 2) {
+//            canvas.translate(0, 0);
+//        } else {
+//            canvas.translate(DisplayUtil.getScreenWidth(context) - getWidth(), 0);
+//        }
+//        draw(canvas);
+//    }
 }

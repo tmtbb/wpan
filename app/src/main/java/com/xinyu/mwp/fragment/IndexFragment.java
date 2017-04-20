@@ -237,6 +237,7 @@ public class IndexFragment extends BaseRefreshFragment {
             public void onSuccess(List<CurrentPriceReturnEntity> currentPriceReturnEntities) {
                 entitys = currentPriceReturnEntities;
                 doRefresh();
+
             }
         });
     }
@@ -271,13 +272,7 @@ public class IndexFragment extends BaseRefreshFragment {
         setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doRefresh();
-                        getRefreshController().refreshComplete();
-                    }
-                }, 500);
+                doRefresh();
             }
         });
 
@@ -306,17 +301,17 @@ public class IndexFragment extends BaseRefreshFragment {
         if (requestState == REQUEST_ERROR) {
             LogUtil.d("数据为空,展示错误界面");
             errorMessage.setVisibility(View.VISIBLE);
+            bannerView.setVisibility(View.INVISIBLE);
         } else {
             LogUtil.d("数据不为空,展示正常的界面");
             errorMessage.setVisibility(View.GONE);
+            bannerView.setVisibility(View.VISIBLE);
         }
     }
 
     private void doRefresh() {
         itemLayout.removeAllViews();
         if (entitys == null) {
-            ToastUtils.show(context, "数据为空,请检查网络");
-            LogUtil.d("entity为空");
             return;
         }
         for (CurrentPriceReturnEntity entity : entitys) {
@@ -329,6 +324,7 @@ public class IndexFragment extends BaseRefreshFragment {
             params.topMargin = DisplayUtil.dip2px(1, context);
             itemLayout.addView(indexItemView, params);
         }
+        getRefreshController().refreshComplete();
     }
 
     @Event(value = {R.id.followView, R.id.leftImage})

@@ -1,27 +1,25 @@
 package com.xinyu.mwp.adapter;
 
 import android.content.Context;
-import android.provider.ContactsContract;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
-import com.xinyu.mwp.entity.DealAllGoodsItemEntity;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
 import com.xinyu.mwp.listener.OnChildViewClickListener;
-import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.TimeUtil;
-import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellView;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,34 +33,12 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
     private static final int DEAL_DETAIL = 1; //交易详情
 
     private List<HistoryPositionListReturnEntity> historyPositionListReturnEntities;
-    private HashSet<String> dateSet = new HashSet<>();
-    private HashSet<Integer> positionLists = new HashSet<>();
-    private int prePosition = 0;
+    private static HashSet<Integer> positionLists = new HashSet<>();
 
 
     public DealAllGoodsAdapter(Context context) {
         super(context);
-        dateSet.clear();
         positionLists.clear();
-        prePosition = 0;
-    }
-
-    public void setProductDealList(List<HistoryPositionListReturnEntity> dealDetailList) {
-        historyPositionListReturnEntities = dealDetailList;
-        initData();
-    }
-
-    private void initData() {
-        if (historyPositionListReturnEntities == null) {
-            return;
-        }
-        for (int i = 0; i < historyPositionListReturnEntities.size(); i++) {
-            String formatTime = TimeUtil.getWeekAndYearDate(historyPositionListReturnEntities.get(i).getCloseTime() * 1000);
-            if (dateSet.add(formatTime)) {
-                positionLists.add(i + prePosition);
-            }
-        }
-        prePosition = prePosition + historyPositionListReturnEntities.size();
     }
 
     /**
@@ -79,10 +55,39 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         } else {
             viewType = DEAL_DETAIL;
         }
-        if (position == 0) {
-            viewType = DEAL_DATE;
-        }
         return viewType;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        setList(getProcessData());
+        super.notifyDataSetChanged();
+    }
+
+    private List<HistoryPositionListReturnEntity> getProcessData() {
+        String preTime = "";
+        if (list.size() == 0) {
+            return null;
+        }
+        List<HistoryPositionListReturnEntity> newList = new ArrayList();   //list去除重复
+        Set<Long> set = new HashSet<Long>();     //去除相同closeTime的数据 ---有风险
+        for (int i = 0; i < list.size(); i++) {
+            if (set.add(list.get(i).getCloseTime())) {
+                newList.add(list.get(i));
+            }
+        }
+
+        for (int i = 0; i < newList.size(); i++) {
+            String formatTime = TimeUtil.getWeekAndYearDate(newList.get(i).getCloseTime() * 1000);
+            if (formatTime.equals(preTime)) {
+                                                //这是一个第二种类型的数据
+            } else {
+                preTime = formatTime;
+                positionLists.add(i);   //第一种类型,日期  吧position存入集合里面
+            }
+        }
+
+        return newList;
     }
 
     @Override
@@ -120,7 +125,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-                    onItemChildViewClick(v,0,historyData);
+                    onItemChildViewClick(v, 0, historyData);
                     break;
             }
         }
@@ -157,7 +162,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             sb.append("(");
             sb.append(getTimeType(historyData.getName()));
             sb.append(")");
-            buyType.updateContent(historyData.getOpenPrice() + "");  //成交额
+            buyType.updateContent(NumberUtils.halfAdjust2(historyData.getOpenCost()));  //成交额
             buyType.updateName(sb.toString());
         }
     }
@@ -192,7 +197,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             sb.append("(");
             sb.append(getTimeType(historyData.getName()));
             sb.append(")");
-            buyType.updateContent(historyData.getOpenPrice() + "");  //成交额
+            buyType.updateContent(NumberUtils.halfAdjust2(historyData.getOpenCost()));  //成交额
             buyType.updateName(sb.toString());
         }
 
@@ -200,7 +205,7 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
         private void click(View v) {
             switch (v.getId()) {
                 case R.id.buy_type:
-                    onItemChildViewClick(v,0,historyData);
+                    onItemChildViewClick(v, 0, historyData);
                     break;
             }
         }

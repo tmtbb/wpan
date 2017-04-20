@@ -48,6 +48,15 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
     private boolean isDeferred;
     private double deferred;
     private int handle;
+    private int codeId;
+
+    public int getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(int codeId) {
+        this.codeId = codeId;
+    }
 
     public int getHandle() {
         return handle;

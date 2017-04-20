@@ -1,87 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_marker_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:padding="@dimen/dp_10"
-    android:id="@+id/fl_marker_view">
+    android:background="@drawable/bg_bind_bank_card_footer"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_3">
+
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/font_333"
+        android:textSize="@dimen/fontSize_10sp" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/color_666666"
-        android:orientation="vertical"
-        android:padding="@dimen/dp_10">
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fontSize_10sp" />
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
             android:text="开盘"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_666666"
             android:textSize="@dimen/fontSize_10sp" />
 
         <TextView
             android:id="@+id/openPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
-            android:textColor="@color/default_red"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:text=""
+            android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_10sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
+
             android:text="最高"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_666666"
             android:textSize="@dimen/fontSize_10sp" />
 
         <TextView
             android:id="@+id/highestPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
-            android:textColor="@color/default_red"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:text=""
+            android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_10sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
             android:text="最低"
-            android:textColor="@color/white"
+            android:textColor="@color/color_666666"
             android:textSize="@dimen/fontSize_10sp" />
 
         <TextView
             android:id="@+id/lowestPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
-            android:textColor="@color/default_red"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:text=""
+            android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_10sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
             android:text="收盘"
-            android:textColor="@android:color/white"
+            android:textColor="@color/color_666666"
             android:textSize="@dimen/fontSize_10sp" />
 
         <TextView
             android:id="@+id/closePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_3"
-            android:textColor="@color/default_red"
+            android:layout_marginLeft="@dimen/dp_3"
+            android:text=""
+            android:textColor="@color/font_333"
             android:textSize="@dimen/fontSize_10sp" />
+
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>

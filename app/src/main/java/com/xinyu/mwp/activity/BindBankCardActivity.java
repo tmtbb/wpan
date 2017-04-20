@@ -1,6 +1,5 @@
 package com.xinyu.mwp.activity;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -16,8 +15,7 @@ import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.util.DisplayUtil;
-import com.xinyu.mwp.util.ImageUtil;
-import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,7 +79,7 @@ public class BindBankCardActivity extends BaseRefreshAbsListControllerActivity<B
     }
 
     /*
-   *接收消息
+    *接收消息
     */
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void ReciveMessage(EventBusMessage eventBusMessage) {
@@ -98,11 +96,22 @@ public class BindBankCardActivity extends BaseRefreshAbsListControllerActivity<B
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                ErrorCodeUtil.showEeorMsg(context,ex);
+                listView.setVisibility(View.VISIBLE);
+                getRefreshController().refreshComplete();
             }
 
             @Override
             public void onSuccess(List<BankCardEntity> bankCardEntities) {
                 bankCardList = bankCardEntities;
+
+                listView.setVisibility(View.VISIBLE);
+                if (bankCardList.size() > 0) {
+                    for (int i = 0; i < bankCardList.size(); i++) {
+                        bankCardList.get(i).setBackGround(i % 2 == 0 ? "#f98d8d" : "#408dc5");
+                    }
+                }
+                getRefreshController().refreshComplete(bankCardList);
             }
         });
     }
@@ -120,26 +129,16 @@ public class BindBankCardActivity extends BaseRefreshAbsListControllerActivity<B
         adapter.setOnItemChildViewClickListener(new OnItemChildViewClickListener() {
             @Override
             public void onItemChildViewClick(View childView, int position, int action, Object obj) {
-                EventBus.getDefault().postSticky(bankCardList.get(position));
-                finish();
+                if (action == 99) {
+                    EventBus.getDefault().postSticky(bankCardList.get(position));
+                    finish();
+                }
             }
         });
     }
 
     private void refresh() {
         getBankCardList();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listView.setVisibility(View.VISIBLE);
-                if (bankCardList.size() > 0) {
-                    for (int i = 0; i < bankCardList.size(); i++) {
-                        bankCardList.get(i).setBackGround(i % 2 == 0 ? "#f98d8d" : "#408dc5");
-                    }
-                }
-                getRefreshController().refreshComplete(bankCardList);
-            }
-        }, 500);
     }
 
     @Override

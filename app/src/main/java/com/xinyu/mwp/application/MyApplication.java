@@ -1,16 +1,19 @@
 package com.xinyu.mwp.application;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Handler;
+import android.support.multidex.MultiDexApplication;
 
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -31,7 +34,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyApplication extends Application implements OnUserUpdateListener {
+public class MyApplication extends MultiDexApplication implements OnUserUpdateListener {
 
     private static MyApplication application;
     public static List<Activity> activityList = new ArrayList<Activity>();
@@ -46,6 +49,12 @@ public class MyApplication extends Application implements OnUserUpdateListener {
         initUser();
         checkToken();
         mainHandler = new Handler();
+        registerToWx();   //注册微信
+    }
+    public static IWXAPI api;
+    private void registerToWx() {
+        api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
+        api.registerApp(Constant.APP_ID);
     }
 
 

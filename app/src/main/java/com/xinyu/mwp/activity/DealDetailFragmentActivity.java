@@ -9,29 +9,20 @@ import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
-import com.xinyu.mwp.activity.base.RefreshAbsListController;
-import com.xinyu.mwp.activity.base.RefreshRecyclerController;
 import com.xinyu.mwp.adapter.GalleryAdapter;
-import com.xinyu.mwp.entity.DealAllGoodsTopEntity;
-import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.fragment.BaseDealAllGoodsFragment;
-import com.xinyu.mwp.fragment.DealFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
-import com.xinyu.mwp.util.ToastUtils;
 
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Benjamin on 17/1/12.

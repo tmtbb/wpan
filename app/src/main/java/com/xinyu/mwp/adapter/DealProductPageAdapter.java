@@ -11,6 +11,7 @@ import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -42,6 +43,8 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
         private CountdownView tradeCountDownTime; //倒计时
         @ViewInject(R.id.layout)
         private LinearLayout mLayout;
+        @ViewInject(R.id.tv_turnover_price)
+        private TextView turnoverPrice;  //成交价
         private double timer;
 
         public DealProductPageViewHolder(Context context) {
@@ -59,6 +62,7 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
             if (data != null) {
                 productName.setText(data.getName());
                 openPositionCount.setText(data.getAmount() + "");
+                turnoverPrice.setText(String.format("成交价 %1$7s", NumberUtils.halfAdjust2(data.getOpenCost())));
 //                tradeCountDown.setProgress(process);
                 mLayout.setVisibility(View.VISIBLE);
                 final long newInterval = data.getEndTime() - System.currentTimeMillis();
@@ -68,9 +72,11 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
                     @Override
                     public void onEnd(CountdownView cv) {
                         mLayout.setVisibility(View.GONE);
-                        if (litener != null) {
-                            litener.refreshData();
-                        }
+//                        if (litener != null) {
+//                            litener.refreshData();
+//                        }
+                        remove(position);
+                        notifyDataSetChanged();
                     }
                 });
 

@@ -51,7 +51,7 @@ public class CheckHelper {
             exception = new CheckException();
         }
 
-        if (password.length() < 1) {  //临时修改
+        if (password.length() < 6) {  //临时修改
             exception.setErrorMsg(LENGTH_MIN_PASSWORD);
             return false;
         } else if (password.length() > 16) {
