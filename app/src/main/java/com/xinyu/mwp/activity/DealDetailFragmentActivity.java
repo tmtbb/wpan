@@ -130,6 +130,7 @@ public class DealDetailFragmentActivity extends BaseMultiFragmentActivity {
             mAdapter = new GalleryAdapter(context, mTitleList);
             mRecyclerView.setAdapter(mAdapter);
         }
+        mAdapter.setPosition(0);
         mAdapter.setOnItemClick(new GalleryAdapter.OnClickListener() {
             @Override
             public void OnClick(View view, int position) {

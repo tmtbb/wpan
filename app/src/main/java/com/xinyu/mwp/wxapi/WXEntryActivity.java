@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.LoginActivity;
 import com.xinyu.mwp.activity.RegisterActivity;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.Constant;
@@ -52,6 +58,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         MyApplication.api.handleIntent(getIntent(), this);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        MyApplication.api.handleIntent(getIntent(), this);
+    }
+
     //微信直接发送给app的消息处理回调
     @Override
     public void onReq(BaseReq baseReq) {
@@ -60,8 +73,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     //app发送消息给微信，处理返回消息的回调
     @Override
     public void onResp(BaseResp resp) {
+        finish();
         switch (resp.errCode) {
-
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 if (RETURN_MSG_TYPE_SHARE == resp.getType()) {
@@ -74,16 +87,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 switch (resp.getType()) {
                     case RETURN_MSG_TYPE_LOGIN:
                         code = ((SendAuth.Resp) resp).code;
-//                        new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
                         try {
                             sendRequest();     //拿到了微信返回的code,立马再去请求access_token
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-//                            }
-//                        }).start();
                         break;
                     case RETURN_MSG_TYPE_SHARE:
                         LogUtil.d("微信分享成功-----");
@@ -100,11 +108,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-//                    tvError.setText( "请求错误"+msg.obj + "" );
                     break;
 
                 case 1:   //请求AccessToken成功
-//                    tvOK.setText( "请求成功"+msg.obj + "" );
                     String str = (String) msg.obj;
                     final WXAccessTokenEntity entity = JSONEntityUtil.JSONToEntity(WXAccessTokenEntity.class, str);
                     new Thread(new Runnable() {
@@ -201,9 +207,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+
                 LogUtil.d("微信登录失败,进入绑定手机号界面");  //进入绑定手机号码页面
                 ToastUtils.show(WXEntryActivity.this, "请绑定手机号码");
                 Intent intent = new Intent(WXEntryActivity.this, RegisterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("wxBind", entity2);
                 intent.putExtra("wx", bundle);
@@ -229,6 +237,5 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 finish();
             }
         });
-
     }
 }

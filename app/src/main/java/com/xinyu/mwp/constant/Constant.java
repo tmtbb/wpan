@@ -33,4 +33,17 @@ public interface Constant {
     int ACTION_FREIGHT = 2;  //货运
     int ACTION_RETURN = 3;
 
+    interface payType {
+        String WECHAT_QRCODE_PAY = "WECHAT_QRCODE_PAY";  //微信扫码支付
+        String ALIPAY_QRCODE_PAY = "ALIPAY_QRCODE_PAY";//支付宝扫码
+        String QQ_QRCODE_PAY = "QQ_QRCODE_PAY"; //QQ钱包扫码
+        String JD_QRCODE_PAY = "JD_QRCODE_PAY";  //京东钱包
+        String UNION_PAY_QRCODE_PAY = "UNION_PAY_QRCODE_PAY"; //银联
+        String H5 = "H5"; //网关
+        String WECHAT_JSAPI_PAY = "WECHAT_JSAPI_PAY"; //微信公众号
+        String ALIPAY_JSAPI_PAY = "ALIPAY_JSAPI_PAY"; //支付宝服务窗
+        String DEBIT_BANK_CARD_PAY = "DEBIT_BANK_CARD_PAY"; //储蓄卡(借记卡)支付
+        String CREDIT_BANK_CARD_PAY = "CREDIT_BANK_CARD_PAY"; //信用卡支付
+    }
+
 }

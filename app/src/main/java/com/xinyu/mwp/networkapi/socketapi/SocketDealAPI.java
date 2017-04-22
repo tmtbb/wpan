@@ -1,8 +1,10 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BankCardEntity;
 import com.xinyu.mwp.entity.BankInfoEntity;
+import com.xinyu.mwp.entity.CashOutReturnEntity;
 import com.xinyu.mwp.entity.CurrentPositionEntity;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
@@ -12,6 +14,7 @@ import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.TotalDealInfoEntity;
+import com.xinyu.mwp.entity.UnionPayReturnEntity;
 import com.xinyu.mwp.entity.WXPayResultEntity;
 import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
@@ -192,6 +195,20 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
+    public void payment(String outTradeNo, long amount, String content, String payType, OnAPIListener<UnionPayReturnEntity> listener) {
+        LogUtil.d("调用第三方支付");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("merchantNo", "merchantNo");  //商户号
+        map.put("outTradeNo", outTradeNo);  //订单号
+        map.put("amount", amount);
+        map.put("content", content);  //描述
+        map.put("payType", Constant.payType.H5);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnionPay,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestEntity(socketDataPacket, UnionPayReturnEntity.class, listener);
+    }
+
+    @Override
     public void cash(double money, long cardId, String password, OnAPIListener<WithDrawCashReturnEntity> listener) {
         LogUtil.d("请求提现--");
         HashMap<String, Object> map = new HashMap<>();
@@ -203,6 +220,24 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Cash,
                 SocketAPIConstant.ReqeutType.Bank, map);
         requestEntity(socketDataPacket, WithDrawCashReturnEntity.class, listener);
+    }
+
+    @Override
+    public void cashOut(String outPayNo, String payPassword, long amount, String receiverBankName, String receiverBranchBankName,
+                        String receiverCardNo, String receiverAccountName, OnAPIListener<CashOutReturnEntity> listener) {
+        LogUtil.d("第三方提现");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("merchantNo", "merchantNo");  //商户号
+        map.put("outPayNo", outPayNo);
+        map.put("payPassword", payPassword);
+        map.put("amount", amount);
+        map.put("receiverBankName", receiverBankName);
+        map.put("receiverBranchBankName", receiverBranchBankName);
+        map.put("receiverCardNo", receiverCardNo);
+        map.put("receiverAccountName", receiverAccountName);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CashOut,
+                SocketAPIConstant.ReqeutType.Verify, map);
+        requestEntity(socketDataPacket, CashOutReturnEntity.class, listener);
     }
 
     @Override

@@ -43,11 +43,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     @Override
     public void onResp(BaseResp resp) {
-//        LogUtil.d("回调---------,错误code:" + resp.errCode + ",获取的信息是:" + resp.errStr);
-
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-
-
             //3.使用EventBus发送事件，使用Post方法，参数也必须是EventBus消息对象，且要和接受的保持一致
             EventBus.getDefault().postSticky(new EventBusMessage(resp.errCode));
             finish();
