@@ -73,17 +73,11 @@ public class LoginActivity extends BaseControllerActivity {
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
         setSwipeBackEnable(false);
-
-        api = WXAPIFactory.createWXAPI(context, null);
-        api.registerApp(Constant.APP_ID);
-
         if (flag) {
             EventBus.getDefault().register(this); // EventBus注册广播()
             flag = false;//更改标记,使其不会再进行多次注册
         }
     }
-
-    private IWXAPI api;
 
     @Event(value = {R.id.registerText, R.id.loginButton, R.id.findPwd, R.id.wxLoginButton})
     private void onClick(View view) {
@@ -101,9 +95,7 @@ public class LoginActivity extends BaseControllerActivity {
                 final SendAuth.Req req = new SendAuth.Req();
                 req.scope = "snsapi_userinfo";
                 req.state = "wechat_sdk_demo_test";
-
-                api.sendReq(req);   //发送授权登陆请求
-
+                MyApplication.api.sendReq(req);
                 break;
 //            case R.id.findPwd:    //去掉修改登录密码功能
 //                ActivityUtil.nextResetUserPwd(context);

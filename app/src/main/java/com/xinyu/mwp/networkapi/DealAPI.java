@@ -2,6 +2,7 @@ package com.xinyu.mwp.networkapi;
 
 import com.xinyu.mwp.entity.BankCardEntity;
 import com.xinyu.mwp.entity.BankInfoEntity;
+import com.xinyu.mwp.entity.CashOutReturnEntity;
 import com.xinyu.mwp.entity.CurrentPositionEntity;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
@@ -13,6 +14,7 @@ import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
 import com.xinyu.mwp.entity.ProductEntity;
 import com.xinyu.mwp.entity.TotalDealInfoEntity;
+import com.xinyu.mwp.entity.UnionPayReturnEntity;
 import com.xinyu.mwp.entity.WXPayResultEntity;
 import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
@@ -55,10 +57,18 @@ public interface DealAPI {
 
     //微信支付
     void weixinPay(String title, double price, OnAPIListener<WXPayReturnEntity> listener);
+
     void unionPay(String title, double price, OnAPIListener<Object> listener);  //银联支付
+
+    void payment(String outTradeNo, long amount, String content, String payType, OnAPIListener<UnionPayReturnEntity> listener);  //第三方支付
 
     //提现
     void cash(double money, long cardId, String pwd, OnAPIListener<WithDrawCashReturnEntity> listener);
+
+    //第三方  提现
+    void cashOut(String outPayNo, String payPassword, long amount, String receiverBankName,
+                 String receiverBranchBankName, String receiverCardNo, String receiverAccountName,
+                 OnAPIListener<CashOutReturnEntity> listener);
 
     //提现列表
     void cashList(String status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener);

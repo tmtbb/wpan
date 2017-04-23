@@ -1,5 +1,6 @@
 package com.xinyu.mwp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -10,7 +11,6 @@ import android.widget.Button;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
-import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
@@ -29,7 +29,6 @@ import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
 import com.xinyu.mwp.view.WPEditText;
 
-import org.greenrobot.eventbus.EventBus;
 import org.xutils.view.annotation.ViewInject;
 
 /**
@@ -169,7 +168,6 @@ public class RegisterActivity extends BaseControllerActivity {
     }
 
     private void register() {
-
         NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode, memberUnitText, agentIdText, refereeIdText,
                 new OnAPIListener<RegisterReturnEntity>() {
                     @Override
@@ -221,10 +219,12 @@ public class RegisterActivity extends BaseControllerActivity {
                         UserManager.getInstance().saveUserEntity(en);
                         UserManager.getInstance().setLogin(true);
                         MyApplication.getApplication().onUserUpdate(true);
-                        finish();
-
+//                        finish();
+                        LogUtil.d("调用登录成功了");
                         //绑定成功,登录成功--发送消息,进入首页
-                        EventBus.getDefault().postSticky(new EventBusMessage(-7));  //传递消息
+                        // EventBus.getDefault().postSticky(new EventBusMessage(-7));  //传递消息
+                        Intent intent = new Intent(RegisterActivity.this, MainFragmentActivity.class);
+                        startActivity(intent);
                     }
                 });
     }

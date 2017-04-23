@@ -18,6 +18,7 @@ import com.xinyu.mwp.activity.unionpay.JARActivity;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.EventBusMessage;
+import com.xinyu.mwp.entity.UnionPayReturnEntity;
 import com.xinyu.mwp.entity.WXPayResultEntity;
 import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -131,59 +132,103 @@ public class RechargeActivity extends BaseRefreshActivity {
 
         if (choice == 0) {
             ToastUtils.show(context, "微信支付");
-            NetworkAPIFactoryImpl.getDealAPI().weixinPay(title, price, new OnAPIListener<WXPayReturnEntity>() {
-                @Override
-                public void onError(Throwable ex) {
-                    ex.printStackTrace();
-                }
-
-                @Override
-                public void onSuccess(WXPayReturnEntity wxPayReturnEntity) {
-//                    LogUtil.d("微信支付成功" + wxPayReturnEntity.toString());
-                    wxPayEntity = wxPayReturnEntity;
-                    PayReq request = new PayReq();
-                    request.appId = wxPayReturnEntity.getAppid();
-                    request.partnerId = wxPayReturnEntity.getPartnerid();
-                    request.prepayId = wxPayReturnEntity.getPrepayid();
-//                    request.packageValue = wxPayReturnEntity.getPackage();
-                    request.packageValue = "Sign=WXPay";
-                    request.nonceStr = wxPayReturnEntity.getNoncestr();
-                    request.timeStamp = wxPayReturnEntity.getTimestamp();
-                    request.sign = wxPayReturnEntity.getSign();
-                    MyApplication.api.sendReq(request);
-                    //模拟请求回调
-//                    requestResult();
-                }
-            });
+            requestWXPay(title, price);
         } else {
-            showToast("银联支付");
-            NetworkAPIFactoryImpl.getDealAPI().unionPay(title, price, new OnAPIListener<Object>() {
-                @Override
-                public void onError(Throwable ex) {
-                    ex.printStackTrace();
-                    LogUtil.d("银联支付请求失败");
-                    ErrorCodeUtil.showEeorMsg(context, ex);
-                }
+            // showToast("银联支付");
+            //requestUnionPay(title, price);
+            requestPayMent((long) price);  //第三方
 
-                @Override
-                public void onSuccess(Object o) {
-                    LogUtil.d("银联支付请求成功" + o.toString());
-                }
-            });
-            if (UPPayAssistEx.checkInstalled(this)) {
-                //当判断用户手机上已安装银联Apk，商户客户端可以做相应个性化处理
-                next(APKActivity.class);//APK接入
-                LogUtil.d("已经安装了apk客户端");
-            } else {
-                next(JARActivity.class);//JAR接入
-                LogUtil.d("没有安装apk客户端,jar接入");
+        }
+    }
+
+    /**
+     * 请求微信支付
+     *
+     * @param title title
+     * @param price 金额
+     */
+    private void requestWXPay(String title, double price) {
+        NetworkAPIFactoryImpl.getDealAPI().weixinPay(title, price, new OnAPIListener<WXPayReturnEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
             }
-            //tn是交易流水号
+
+            @Override
+            public void onSuccess(WXPayReturnEntity wxPayReturnEntity) {
+                wxPayEntity = wxPayReturnEntity;
+                PayReq request = new PayReq();
+                request.appId = wxPayReturnEntity.getAppid();
+                request.partnerId = wxPayReturnEntity.getPartnerid();
+                request.prepayId = wxPayReturnEntity.getPrepayid();
+//                    request.packageValue = wxPayReturnEntity.getPackage();
+                request.packageValue = "Sign=WXPay";
+                request.nonceStr = wxPayReturnEntity.getNoncestr();
+                request.timeStamp = wxPayReturnEntity.getTimestamp();
+                request.sign = wxPayReturnEntity.getSign();
+                MyApplication.api.sendReq(request);
+                //模拟请求回调
+//                    requestResult();
+            }
+        });
+    }
+
+    /**
+     * 请求第三方支付
+     *
+     * @param price 金额
+     */
+    private void requestPayMent(long price) {
+        String outTradeNo = ""; //订单号
+        String content = "";  //描述
+        NetworkAPIFactoryImpl.getDealAPI().payment(outTradeNo, price, content, Constant.payType.H5, new OnAPIListener<UnionPayReturnEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+                LogUtil.d("调用第三方失败");
+            }
+
+            @Override
+            public void onSuccess(UnionPayReturnEntity unionPayReturnEntity) {
+                LogUtil.d("调用第三方成功:" + unionPayReturnEntity.toString());
+
+            }
+        });
+    }
+
+    /**
+     * 请求银联支付
+     *
+     * @param title title
+     * @param price 金额
+     */
+    private void requestUnionPay(String title, double price) {
+        NetworkAPIFactoryImpl.getDealAPI().unionPay(title, price, new OnAPIListener<Object>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+                LogUtil.d("银联支付请求失败");
+                ErrorCodeUtil.showEeorMsg(context, ex);
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+                LogUtil.d("银联支付请求成功" + o.toString());
+            }
+        });
+        if (UPPayAssistEx.checkInstalled(this)) {
+            //当判断用户手机上已安装银联Apk，商户客户端可以做相应个性化处理
+            next(APKActivity.class);//APK接入
+            LogUtil.d("已经安装了apk客户端");
+        } else {
+            next(JARActivity.class);//JAR接入
+            LogUtil.d("没有安装apk客户端,jar接入");
+        }
+        //tn是交易流水号
 //               UPPayAssistEx.startPay(activity, null, null, tn, mode);
 
-            //处理支付结果
-            //onActivityResult方法
-        }
+        //处理支付结果
+        //onActivityResult方法
     }
 
     private void requestResult() {

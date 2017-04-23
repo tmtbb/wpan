@@ -2,6 +2,7 @@ package com.xinyu.mwp.fragment;
 
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private int halfScreenWidth;
     private LoopPagerAdapter loopPagerAdapter;
     private List<ProductEntity> mUnitViewList = new ArrayList<>();  //单价信息
-    private List<ProductEntity> mNewUnitList;  //单价信息
+    private List<ProductEntity> mNewUnitList = new ArrayList<>();//单价信息
     private TextView currentPrice;
     private TextView changePercent;
     private TextView changePrice;
@@ -344,6 +345,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
         mViewPager = (ViewPager) headView.findViewById(R.id.vp_trade_time_mins);
         mViewPagerContainer = (RelativeLayout) headView.findViewById(R.id.rl_viewPagerContainer);
+//        mViewPager.setOffscreenPageLimit(3);
     }
 
     private void refreshBalance() {
@@ -481,19 +483,22 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         setNewUnitList();  //设置新的价格 集合   size+2 实现循环滑动
 
         if (loopPagerAdapter != null) {
-            loopPagerAdapter.updateItemsData(mNewUnitList);
-            LogUtil.d("viewpager不为空,刷新mUnitViewList长度是:" + mUnitViewList.size());
+//            loopPagerAdapter.updateItemsData(mNewUnitList);
+            loopPagerAdapter.notifyDataSetChanged();
         } else {
             halfScreenWidth = DisplayUtil.getScreenWidth(context) / 2;
-            mViewPager.setOffscreenPageLimit(3);
 
-//            mViewPager.setNestedpParent((ViewGroup)mViewPager.getParent());
+            mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
+            mViewPager.setOffscreenPageLimit(3);
             loopPagerAdapter = new LoopPagerAdapter(context, mNewUnitList);
             mViewPager.setAdapter(loopPagerAdapter);
-            mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
+            mViewPager.setCurrentItem(1);
             mViewPager.setPageMargin(0);   //设置每页之间的左右间隔
+
+            if (mNewUnitList.size() > 2) {
+                mViewPager.setCurrentItem(1);
+            }
         }
-        mViewPager.setCurrentItem(1);//默认在中间
     }
 
     /**
@@ -508,7 +513,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         }
         length = mUnitViewList.size() + 2;
-        mNewUnitList = new ArrayList<>();
+        if (mNewUnitList.size() > 0) {
+            mNewUnitList.clear();
+        }
         mNewUnitList.add(0, mUnitViewList.get(mUnitViewList.size() - 1));  //第0个设成 最后一个
         mNewUnitList.addAll(1, mUnitViewList);
         mNewUnitList.add(length - 1, mUnitViewList.get(0));
@@ -568,13 +575,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 return mViewPager.dispatchTouchEvent(event);
             }
         });
-        //倒计时结束的回调
-//        adapter.setTimeFinishLitener(new DealProductPageAdapter.TimeFinishLitener() {
-//            @Override
-//            public void refreshData() {
-//                initCurrentPositionList(start, requestCount);//刷新仓位列表
-//            }
-//        });
     }
 
     public void doRefresh() {
@@ -689,6 +689,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 }
                 if (earnestMoney > UserManager.getInstance().getUserEntity().getBalance()) {
                     showRechargeDialog();//余额不足,提示弹窗
+                } else if (currentPositionList != null && currentPositionList.size() == 5) {
+                    ToastUtils.show(context, "最大持仓数为5,请平仓后再建仓");
                 } else {
                     showLoader("正在提交订单...");
                     new Thread(new Runnable() {
@@ -696,7 +698,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                         public void run() {
                             try {
                                 Thread.sleep(1000);
-                                requestOpenPosition(codeId, finalBuySell, amount, deferred);    //买涨点击后操作
+                                requestOpenPosition(codeId, finalBuySell, amount, deferred);    //买涨点击后操作 建仓
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
