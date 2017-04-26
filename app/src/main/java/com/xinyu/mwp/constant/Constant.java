@@ -39,11 +39,15 @@ public interface Constant {
         String QQ_QRCODE_PAY = "QQ_QRCODE_PAY"; //QQ钱包扫码
         String JD_QRCODE_PAY = "JD_QRCODE_PAY";  //京东钱包
         String UNION_PAY_QRCODE_PAY = "UNION_PAY_QRCODE_PAY"; //银联
-        String H5 = "H5"; //网关
+        String H5_ONLINE_BANK_PAY = "H5_ONLINE_BANK_PAY"; //网关  H5_ONLINE_BANK_PAY
         String WECHAT_JSAPI_PAY = "WECHAT_JSAPI_PAY"; //微信公众号
         String ALIPAY_JSAPI_PAY = "ALIPAY_JSAPI_PAY"; //支付宝服务窗
         String DEBIT_BANK_CARD_PAY = "DEBIT_BANK_CARD_PAY"; //储蓄卡(借记卡)支付
         String CREDIT_BANK_CARD_PAY = "CREDIT_BANK_CARD_PAY"; //信用卡支付
     }
 
+    String STATUS_PYAED = "PYAED";  //代付成功
+    String STATUS_PAYING = "PAYING"; //代付中
+    String STATUS_PAY_FAILED = "PAY_FAILED"; //代付失败
+    String STATUS_REFUND = "REFUND";//已退款
 }

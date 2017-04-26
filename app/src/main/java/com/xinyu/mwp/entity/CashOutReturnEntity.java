@@ -6,13 +6,14 @@ package com.xinyu.mwp.entity;
 public class CashOutReturnEntity extends BaseEntity {
     private String merchantNo;
     private String outPayNo;
-    private long amount;
-    private long transferAmount;
-    private long fee;
+    private double amount;
+    private double transferAmount;
+    private double fee;
     private String payNo;
     private String status;
     private String errorCode;
     private String errorMsg;
+    private String bank;
 
     public String getMerchantNo() {
         return merchantNo;
@@ -30,27 +31,27 @@ public class CashOutReturnEntity extends BaseEntity {
         this.outPayNo = outPayNo;
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    public long getTransferAmount() {
+    public double getTransferAmount() {
         return transferAmount;
     }
 
-    public void setTransferAmount(long transferAmount) {
+    public void setTransferAmount(double transferAmount) {
         this.transferAmount = transferAmount;
     }
 
-    public long getFee() {
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(long fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 
@@ -84,5 +85,13 @@ public class CashOutReturnEntity extends BaseEntity {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 }

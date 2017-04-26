@@ -66,12 +66,12 @@ public interface DealAPI {
     void cash(double money, long cardId, String pwd, OnAPIListener<WithDrawCashReturnEntity> listener);
 
     //第三方  提现
-    void cashOut(String outPayNo, String payPassword, long amount, String receiverBankName,
+    void cashOut(long bid,long amount, String receiverBankName,
                  String receiverBranchBankName, String receiverCardNo, String receiverAccountName,
                  OnAPIListener<CashOutReturnEntity> listener);
 
     //提现列表
-    void cashList(String status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener);
+    void cashList(int status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener);
 
     //提现列表
     void currentPosition(double pid, OnAPIListener<CurrentPositionEntity> listener);

@@ -10,6 +10,7 @@ import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.view.SpaceView;
 
 import org.xutils.view.annotation.ViewInject;
@@ -44,10 +45,10 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
         super.initView();
         setTitle("提现记录");
         contentView.addHeaderView(new SpaceView(context));
-        requestNetData(null, start, count);
+        requestNetData(0, start, count);
     }
 
-    private void requestNetData(String status, int start, int count) {
+    private void requestNetData(int status, int start, int count) {
         NetworkAPIFactoryImpl.getDealAPI().cashList(status, start, count, new OnAPIListener<List<WithDrawCashReturnEntity>>() {
             @Override
             public void onError(Throwable ex) {
@@ -90,7 +91,7 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
     }
 
     private void doRefresh(int number) {
-        requestNetData(null, number, count);
+        requestNetData(0, number, count);
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {

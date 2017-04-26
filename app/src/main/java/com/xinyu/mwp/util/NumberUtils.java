@@ -18,6 +18,7 @@ public class NumberUtils {
     public static String halfAdjust2(double number) {
         return String.format("%.2f", number);
     }
+
     /**
      * 四舍五入,保留4位小数
      */
@@ -41,17 +42,18 @@ public class NumberUtils {
 
     /**
      * 设置EditText 输入的小数的位数
-     * @param editText    editText对象
-     * @param DECIMAL_DIGITS  小数位数(1,2,....)
+     *
+     * @param editText       editText对象
+     * @param DECIMAL_DIGITS 小数位数(1,2,....)
      */
-    public static void setEditTextPoint(final EditText editText, final int DECIMAL_DIGITS ){
+    public static void setEditTextPoint(final EditText editText, final int DECIMAL_DIGITS) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before,int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().contains(".")) {
                     if (s.length() - 1 - s.toString().indexOf(".") > DECIMAL_DIGITS) {
                         s = s.toString().subSequence(0,
-                                s.toString().indexOf(".") + DECIMAL_DIGITS+1);
+                                s.toString().indexOf(".") + DECIMAL_DIGITS + 1);
                         editText.setText(s);
                         editText.setSelection(s.length());
                     }
@@ -70,13 +72,28 @@ public class NumberUtils {
                     }
                 }
             }
+
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    /**
+     * 格式化银行卡 加*
+     * 3749 **** **** 330
+     *
+     * @param cardNo 银行卡
+     * @return 3749 **** **** 330
+     */
+    public static String formatCard(String cardNo) {
+        String card = "**** **** **** ";
+        card += cardNo.substring(cardNo.length() - 4);
+        return card;
     }
 
 }

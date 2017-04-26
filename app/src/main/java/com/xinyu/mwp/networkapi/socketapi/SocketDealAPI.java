@@ -151,7 +151,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-        map.put("start", start);
+        map.put("start", start);  //!!!!
         map.put("count", count);
         map.put("symbol", symbol);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.History,
@@ -198,13 +198,15 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     public void payment(String outTradeNo, long amount, String content, String payType, OnAPIListener<UnionPayReturnEntity> listener) {
         LogUtil.d("调用第三方支付");
         HashMap<String, Object> map = new HashMap<>();
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("merchantNo", "merchantNo");  //商户号
         map.put("outTradeNo", outTradeNo);  //订单号
         map.put("amount", amount);
         map.put("content", content);  //描述
-        map.put("payType", Constant.payType.H5);
+        map.put("payType", Constant.payType.H5_ONLINE_BANK_PAY);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnionPay,
-                SocketAPIConstant.ReqeutType.Verify, map);
+                SocketAPIConstant.ReqeutType.Pay, map);
         requestEntity(socketDataPacket, UnionPayReturnEntity.class, listener);
     }
 
@@ -223,30 +225,33 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void cashOut(String outPayNo, String payPassword, long amount, String receiverBankName, String receiverBranchBankName,
+    public void cashOut(long bid,long amount, String receiverBankName, String receiverBranchBankName,
                         String receiverCardNo, String receiverAccountName, OnAPIListener<CashOutReturnEntity> listener) {
         LogUtil.d("第三方提现");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("merchantNo", "merchantNo");  //商户号
-        map.put("outPayNo", outPayNo);
-        map.put("payPassword", payPassword);
+        map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+//        map.put("merchantNo", "");  //商户号
+//        map.put("outPayNo", "");  //外部支付号
+//        map.put("payPassword", "");
         map.put("amount", amount);
+        map.put("bid", bid);
         map.put("receiverBankName", receiverBankName);
         map.put("receiverBranchBankName", receiverBranchBankName);
         map.put("receiverCardNo", receiverCardNo);
         map.put("receiverAccountName", receiverAccountName);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CashOut,
-                SocketAPIConstant.ReqeutType.Verify, map);
+                SocketAPIConstant.ReqeutType.Pay, map);
         requestEntity(socketDataPacket, CashOutReturnEntity.class, listener);
     }
 
     @Override
-    public void cashList(String status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener) {
+    public void cashList(int status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener) {
         LogUtil.d("提现列表请求网络");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-        map.put("start", startPos);
+        map.put("startPos", startPos);
         map.put("count", count);
         map.put("status", status);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.CashList,

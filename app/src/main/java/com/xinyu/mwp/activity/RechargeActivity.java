@@ -3,6 +3,8 @@ package com.xinyu.mwp.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.view.CellView;
+import com.xinyu.mwp.view.CustomDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -180,18 +183,25 @@ public class RechargeActivity extends BaseRefreshActivity {
      */
     private void requestPayMent(long price) {
         String outTradeNo = ""; //订单号
-        String content = "";  //描述
-        NetworkAPIFactoryImpl.getDealAPI().payment(outTradeNo, price, content, Constant.payType.H5, new OnAPIListener<UnionPayReturnEntity>() {
+        final String content = "";  //描述
+        NetworkAPIFactoryImpl.getDealAPI().payment(outTradeNo, price, content, Constant.payType.H5_ONLINE_BANK_PAY,
+                new OnAPIListener<UnionPayReturnEntity>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 LogUtil.d("调用第三方失败");
+                //模拟进入百度页面
+                Intent intent = new Intent(context, PayMentActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onSuccess(UnionPayReturnEntity unionPayReturnEntity) {
-                LogUtil.d("调用第三方成功:" + unionPayReturnEntity.toString());
-
+                Intent intent = new Intent(context, PayMentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("payment", unionPayReturnEntity);
+                intent.putExtra("pay", bundle);
+                startActivity(intent);
             }
         });
     }
@@ -270,8 +280,10 @@ public class RechargeActivity extends BaseRefreshActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
-                        money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
+                        if (UserManager.getInstance().getUserEntity() != null) {
+                            account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
+                            money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
+                        }
                         rechargeType.updateContentLeft(Constant.rechargeType[choice]);
                         getRefreshController().getContentView().setVisibility(View.VISIBLE);
                         getRefreshController().refreshComplete();
@@ -298,7 +310,9 @@ public class RechargeActivity extends BaseRefreshActivity {
 
     private boolean flag = true;
 
-    //接收消息
+    /**
+     * EventBus接收消息
+     */
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void ReciveMessage(EventBusMessage eventBusMessage) {
         switch (eventBusMessage.Message) {
@@ -318,7 +332,36 @@ public class RechargeActivity extends BaseRefreshActivity {
                 ToastUtils.show(context, "用户取消支付");
                 LogUtil.d("接收到取消支付是-2");
                 break;
+
+            case -10:  //取消支付
+                createCancelPayDialog();
+                LogUtil.d("接收到取消支付是-10");
+                break;
         }
+    }
+
+    /**
+     * 取消支付的弹窗
+     */
+    private void createCancelPayDialog() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(context, Constant.TYPE_INSUFFICIENT_BALANCE);
+        builder.setTitle(getResources().getString(R.string.pay_state))
+                .setMessage(getResources().getString(R.string.cancel_pay_msg))
+                .setPositiveButton(getResources().getString(R.string.pay_complete), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        next(RechargeRecordActivity.class);
+                    }
+                }).setNegativeButton(getResources().getString(R.string.pay_problem), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+//                Intent intent = new Intent(RechargeActivity.this, MainFragmentActivity.class);
+//                startActivity(intent);
+                finish();
+            }
+        }).create().show();
     }
 
     private SocketAPINettyHandler handler = new SocketAPINettyHandler() {
@@ -348,6 +391,7 @@ public class RechargeActivity extends BaseRefreshActivity {
     protected void onDestroy() {
         EventBus.getDefault().removeAllStickyEvents();
         EventBus.getDefault().unregister(this);
+        LogUtil.d("onDestroy--------------------执行");
         super.onDestroy();
     }
 }

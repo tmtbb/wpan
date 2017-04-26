@@ -26,6 +26,11 @@
     <string name="referee_id">请输入推荐人ID(选填)</string>
     <string name="agent_id">请输入经纪人ID(选填)</string>
     <string name="member_unit">请输入会员单位(选填)</string>
+    <string name="pay_state">提示</string>
+    <string name="cancel_pay_msg">是否已完成支付?</string>
+    <string name="pay_problem">遇到问题</string>
+    <string name="pay_complete">完成支付</string>
+    <string name="cash_service_charge">手续费：每单第三方支付平台将收取2元手续费，限额5万元</string>
 
 
 

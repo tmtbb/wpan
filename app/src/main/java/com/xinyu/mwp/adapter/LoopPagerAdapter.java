@@ -62,17 +62,13 @@ public class LoopPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+        ((ViewPager) container).removeView((View) object);
     }
 
     public void updateItemsData(List<ProductEntity> mNewUnitList) {
         this.mNewUnitList = mNewUnitList;
+        notifyDataSetChanged();
     }
-
-//    @Override
-//    public int getItemPosition(Object object) {
-//        return POSITION_NONE;
-//    }
 
     private int mChildCount = 0;
 
@@ -81,13 +77,19 @@ public class LoopPagerAdapter extends PagerAdapter {
         super.notifyDataSetChanged();
     }
 
+//    @Override
+//    public int getItemPosition(Object object) {
+//        // 重写getItemPosition,保证每次获取时都强制重绘UI
+//        if (mChildCount > 0) {
+//            mChildCount--;
+//            return POSITION_NONE;
+//        }
+//        return super.getItemPosition(object);
+//    }
+
+
     @Override
     public int getItemPosition(Object object) {
-        // 重写getItemPosition,保证每次获取时都强制重绘UI
-        if (mChildCount > 0) {
-            mChildCount--;
-            return POSITION_NONE;
-        }
-        return super.getItemPosition(object);
+        return POSITION_NONE;
     }
 }

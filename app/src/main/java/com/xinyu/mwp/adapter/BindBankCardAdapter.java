@@ -21,6 +21,7 @@ import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.GradientDrawableUtil;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.SwipeListLayout;
 
@@ -164,7 +165,8 @@ public class BindBankCardAdapter extends BaseListViewAdapter<BankCardEntity> {
                 iconView.setImageResource(BankInfoUtil.getIcon(data.getBank()));
                 titleView.setText(data.getBank());
                 typeView.setText("储蓄卡");
-                numberView.setText(data.getCardNo());
+                String cardEnd4 = NumberUtils.formatCard(data.getCardNo());
+                numberView.setText(cardEnd4);
                 Drawable drawable = GradientDrawableUtil.getGradientDrawable(Color.parseColor(data.getBackGround()), DisplayUtil.dip2px(5, context));
                 itemLayout.setBackgroundDrawable(drawable);
                 String menuBg = "#";

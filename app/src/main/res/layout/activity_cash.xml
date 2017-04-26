@@ -38,9 +38,9 @@
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:celledit_hint="请输入地址"
-                app:celledit_name="地址"
-                android:visibility="gone"/>
+                app:celledit_name="地址" />
 
             <com.xinyu.mwp.view.CellEditView
                 android:id="@+id/cardNo"
@@ -70,14 +70,24 @@
                 android:id="@+id/cash_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:celledit_hint="输入密码"
                 app:celledit_name="提现密码" />
+
             <com.xinyu.mwp.view.CellEditView
                 android:id="@+id/cash_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:celledit_hint="备注"
                 app:celledit_name="添加备注" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="@string/cash_service_charge"
+                android:textColor="@color/color_666666" />
 
             <include layout="@layout/ly_space" />
 
