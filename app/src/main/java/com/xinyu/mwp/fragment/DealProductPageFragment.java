@@ -66,7 +66,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private ListView listView;
     private ViewPager mViewPager;
     private RelativeLayout mViewPagerContainer;
-    private int halfScreenWidth;
     private LoopPagerAdapter loopPagerAdapter;
     private List<ProductEntity> mUnitViewList = new ArrayList<>();  //单价信息
     private List<ProductEntity> mNewUnitList = new ArrayList<>();//单价信息
@@ -382,8 +381,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onSuccess(List<CurrentPriceReturnEntity> currentPriceReturnEntities) {
                 entitys = currentPriceReturnEntities;
                 initViewPager();
-                processPriceInfo();
-//                mViewPager.setCurrentItem(0);//默认在中间
+                processPriceInfo();  //加载价格
                 refreshChartData();  //请求报价成功后,根据currentType刷新chart数据
             }
         });
@@ -486,13 +484,12 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 //            loopPagerAdapter.updateItemsData(mNewUnitList);
             loopPagerAdapter.notifyDataSetChanged();
         } else {
-            halfScreenWidth = DisplayUtil.getScreenWidth(context) / 2;
-
+            LogUtil.d("当前不为空,被调用了");
             mViewPager.setPageTransformer(true, new MyTransformation()); //设置切换效果
             mViewPager.setOffscreenPageLimit(3);
             loopPagerAdapter = new LoopPagerAdapter(context, mNewUnitList);
             mViewPager.setAdapter(loopPagerAdapter);
-            mViewPager.setCurrentItem(1);
+            mViewPager.setCurrentItem(mNewUnitList.size() / 2);
             mViewPager.setPageMargin(0);   //设置每页之间的左右间隔
 
             if (mNewUnitList.size() > 2) {

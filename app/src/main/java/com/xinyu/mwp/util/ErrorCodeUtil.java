@@ -102,6 +102,9 @@ public class ErrorCodeUtil {
             case -702:
                 msg = "存储订单失败";
                 break;
+            case -704:
+                msg = "...................";
+                break;
             case -801:
                 msg = "当前没有银行卡";
                 break;

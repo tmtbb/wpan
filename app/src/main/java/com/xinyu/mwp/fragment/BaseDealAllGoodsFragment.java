@@ -81,7 +81,7 @@ public class BaseDealAllGoodsFragment extends BaseRefreshAbsListControllerFragme
             @Override
             public void onSuccess(List<HistoryPositionListReturnEntity> historyPositionListReturnEntities) {
                 historyPositionList = historyPositionListReturnEntities;
-                LogUtil.d("start:" + start + ",1ssssssssssssssssss获取的历史信息是:" + historyPositionListReturnEntities);
+                LogUtil.d("start:" + start + ",-------获取的历史信息是:" + historyPositionListReturnEntities);
 //                refreshAdapter();
                 getRefreshController().refreshComplete(historyPositionList);
             }

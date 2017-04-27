@@ -10,7 +10,7 @@ import android.view.View;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.entity.BankCardEntity;
-import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
+import com.xinyu.mwp.entity.CashOutReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
@@ -61,6 +61,11 @@ public class CashActivity extends BaseControllerActivity {
     private String comment;
     private boolean flag = true;
     private BankCardEntity bankCardEntity;
+    private String bankName; //银行卡
+    private String branchBankName;  //支行
+    private String addressBank; //银行地址
+    private String cardNumber; //卡号
+    private String userName; //用户名
 
     @Override
     protected int getContentView() {
@@ -138,11 +143,11 @@ public class CashActivity extends BaseControllerActivity {
     }
 
     private void getInPutInfo() {
-        String bankInfo = bank.getEditTextString();
-        String branchBank = branch.getEditTextString();
-        String addressBank = address.getEditTextString();
-        String cardNumber = cardNo.getEditTextString();
-        String userName = cardName.getEditTextString();
+        bankName = bank.getEditTextString();
+        branchBankName = branch.getEditTextString();
+        addressBank = address.getEditTextString();
+        cardNumber = cardNo.getEditTextString();
+        userName = cardName.getEditTextString();
         comment = cash_comments.getEditTextString();
         password = pwd.getEditTextString();
         price = Double.parseDouble(money.getEditTextString());
@@ -150,25 +155,30 @@ public class CashActivity extends BaseControllerActivity {
 
     private void requestCash() {
         long bid = bankCardEntity.getBid();
-        NetworkAPIFactoryImpl.getDealAPI().cash(price, bid, password, new OnAPIListener<WithDrawCashReturnEntity>() {
-            @Override
-            public void onError(Throwable ex) {
-                ex.printStackTrace();
-                ToastUtils.show(context, "网络连接失败");
-            }
+        NetworkAPIFactoryImpl.getDealAPI().cashOut(bankCardEntity.getBid(),
+                (long) price, bankName, branchBankName, cardNumber, userName,
+                new OnAPIListener<CashOutReturnEntity>() {
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        ToastUtils.show(context, "网络连接失败");
+                        LogUtil.d("第三方提现失败");
+                    }
 
-            @Override
-            public void onSuccess(WithDrawCashReturnEntity withDrawCashReturnEntity) {
-                withDrawCashReturnEntity.setBank(bankCardEntity.getBank());
-                withDrawCashReturnEntity.setAmount(price);
-                UserManager.getInstance().getUserEntity().setBalance(withDrawCashReturnEntity.getBalance());
-                Intent intent = new Intent(CashActivity.this, CashResaultActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("cash", withDrawCashReturnEntity);
-                intent.putExtra("tag", bundle);
-                startActivity(intent);
-            }
-        });
+                    @Override
+                    public void onSuccess(CashOutReturnEntity cashOutReturnEntity) {
+                        LogUtil.d("第三方提现成功:" + cashOutReturnEntity.toString());
+                        cashOutReturnEntity.setBank(bankCardEntity.getBank());
+//                        withDrawCashReturnEntity.setBank(bankCardEntity.getBank());
+//                        withDrawCashReturnEntity.setAmount(price);
+//                        UserManager.getInstance().getUserEntity().setBalance(withDrawCashReturnEntity.getBalance());
+                        Intent intent = new Intent(CashActivity.this, CashResaultActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("cash", cashOutReturnEntity);
+                        intent.putExtra("tag", bundle);
+                        startActivity(intent);
+                    }
+                });
     }
 
     private void checkButtonState(final View button, final OnTextChangeListener... editText) {
