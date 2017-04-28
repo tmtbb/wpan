@@ -9,6 +9,7 @@ import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
+import com.xinyu.mwp.util.BankInfoUtil;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -61,38 +62,20 @@ public class CashRecordAdapter extends BaseListViewAdapter<WithDrawCashReturnEnt
             date.setText(data.getWithdrawTime().substring(0, 10));
             time.setText(data.getWithdrawTime().substring(11, 19));
             money.setText(data.getAmount() + "");
-            switch (data.getBank()) {
-                case "中国建设银行":  //处理中
-                    icon.setImageResource(R.mipmap.icon_bank_ccb);
-                    bankInfo.setText("提现到中国建设银行");
-                    break;
-                case "中国农业银行":  //成功
-                    icon.setImageResource(R.mipmap.icon_bank_abc);
-                    bankInfo.setText("提现到中国农业银行");
-                    break;
-                case "中国工商银行":  //处理中
-                    icon.setImageResource(R.mipmap.icon_bank_boc);
-                    bankInfo.setText("提现到中国工商银行");
-                    break;
-                case "中国招商银行":  //处理中
-                    icon.setImageResource(R.mipmap.icon_bank_cmb);
-                    bankInfo.setText("提现到中国招商银行");
-                    break;
-                default:
-                    icon.setImageResource(R.mipmap.icon_bank_union_pay);
-                    bankInfo.setText("提现到"+data.getBank());
-                    break;
-            }
-
+            icon.setImageResource(BankInfoUtil.getIcon(data.getBank()));
+            bankInfo.setText(String.format("提现到%s",data.getBank()));
             switch (data.getStatus()) {
                 case 1:
                     status.setText("处理中");
                     break;
-                case 0:
+                case 2:
                     status.setText("到账成功");
                     break;
                 case 3:
                     status.setText("提现失败");
+                    break;
+                case 4:
+                    status.setText("已退款");
                     break;
             }
         }

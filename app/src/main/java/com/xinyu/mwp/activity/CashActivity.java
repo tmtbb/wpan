@@ -19,6 +19,7 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.StringUtil;
+import com.xinyu.mwp.util.TestDataUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellEditView;
 import com.xinyu.mwp.view.CheckCodeView;
@@ -177,6 +178,8 @@ public class CashActivity extends BaseControllerActivity {
                         bundle.putSerializable("cash", cashOutReturnEntity);
                         intent.putExtra("tag", bundle);
                         startActivity(intent);
+                        //刷新余额
+                        TestDataUtil.requestBalance();
                     }
                 });
     }

@@ -204,7 +204,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         map.put("outTradeNo", outTradeNo);  //订单号
         map.put("amount", amount);
         map.put("content", content);  //描述
-        map.put("payType", Constant.payType.H5_ONLINE_BANK_PAY);
+        map.put("payType", payType);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.UnionPay,
                 SocketAPIConstant.ReqeutType.Pay, map);
         requestEntity(socketDataPacket, UnionPayReturnEntity.class, listener);

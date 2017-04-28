@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/ly_title_bar" />
+
+    <ImageView
+        android:id="@+id/iv_orcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_60"
+        android:src="@mipmap/icon_bank_union_pay" />
+
+    <Button
+        android:id="@+id/btn_save_orcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/login_selector"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="点击保存二维码"
+        android:textColor="@color/white"
+        android:textSize="@dimen/fontSize_16sp" />
+
+</LinearLayout>

@@ -179,7 +179,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -193,6 +193,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PayMentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.PayORCodeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
     </application>

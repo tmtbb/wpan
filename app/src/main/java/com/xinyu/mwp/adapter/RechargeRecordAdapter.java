@@ -70,8 +70,10 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
 //            ImageLoader.getInstance().displayImage(data.getIcon(), icon, DisplayImageOptionsUtil.getInstance().getUserHeaderOptions());
             if (data.getDepositName().equals("微信")) {
                 icon.setImageResource(R.mipmap.icon_wx);
-            } else {
+            } else if (data.getDepositName().equals("银联")){
                 icon.setImageResource(R.mipmap.icon_bank_union_pay);
+            }else{
+                icon.setImageResource(R.mipmap.icon_alipay);
             }
             money.setText(data.getAmount() + "");
             info.setText(data.getDepositName());
