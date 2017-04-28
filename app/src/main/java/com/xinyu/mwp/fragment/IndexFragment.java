@@ -283,6 +283,7 @@ public class IndexFragment extends BaseRefreshFragment {
                 if (requestState != REQUEST_ERROR) {
                     requestState = REQUEST_ERROR;
                     processErrorMessage();
+                    getRefreshController().refreshComplete();
                 }
             }
 

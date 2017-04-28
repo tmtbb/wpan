@@ -9,7 +9,6 @@ import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.CashOutReturnEntity;
-import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.util.BankInfoUtil;
 
 import org.xutils.view.annotation.Event;
@@ -45,7 +44,7 @@ public class CashResaultActivity extends BaseControllerActivity {
         rightText.setText("完成");
 
         Bundle bundle = getIntent().getBundleExtra("tag");
-          entity = (CashOutReturnEntity) bundle.getSerializable("cash");
+        entity = (CashOutReturnEntity) bundle.getSerializable("cash");
     }
 
     @Event(value = R.id.rightText)
@@ -58,7 +57,7 @@ public class CashResaultActivity extends BaseControllerActivity {
         super.initData();
         switch (entity.getStatus()) {
             case Constant.STATUS_PAYING: //处理中
-                status.setText("提现申请已经提交");
+                status.setText("提现处理中");
                 break;
             case Constant.STATUS_PYAED://代付成功
                 status.setText("提现成功");

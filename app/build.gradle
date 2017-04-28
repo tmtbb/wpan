@@ -86,4 +86,5 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.5.0'
 }
