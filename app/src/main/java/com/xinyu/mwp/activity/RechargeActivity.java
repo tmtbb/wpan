@@ -121,8 +121,8 @@ public class RechargeActivity extends BaseRefreshActivity {
             return;
         }
         double price = Double.parseDouble(rechargeMoney.getEditableText().toString().trim());
-        if (price <= 0) {
-            ToastUtils.show(context, "输入的金额有误,请重新输入");
+        if (price < 1) {
+            ToastUtils.show(context, "充值金额必须大于等于1元");
             return;
         }
 

@@ -70,6 +70,8 @@ public class PayORCodeActivity extends BaseControllerActivity {
                     return;
                 }
                 saveImageToGallery(context, bitmap);
+//                ImageTools.saveImage( context,bitmap );
+//                ToastUtils.show( context,"二维码已保存至本地图库" );
                 break;
         }
     }
