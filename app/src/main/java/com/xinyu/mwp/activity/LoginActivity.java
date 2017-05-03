@@ -7,12 +7,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
-import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;

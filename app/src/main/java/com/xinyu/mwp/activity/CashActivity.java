@@ -16,6 +16,7 @@ import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 import com.xinyu.mwp.util.StringUtil;
@@ -155,6 +156,10 @@ public class CashActivity extends BaseControllerActivity {
     }
 
     private void requestCash() {
+        if (price < 2) {
+            ToastUtils.show(context, "提现金额必须大于等于2元");
+            return;
+        }
         long bid = bankCardEntity.getBid();
         NetworkAPIFactoryImpl.getDealAPI().cashOut(bankCardEntity.getBid(),
                 (long) price, bankName, branchBankName, cardNumber, userName,
@@ -162,7 +167,7 @@ public class CashActivity extends BaseControllerActivity {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
-                        ToastUtils.show(context, "网络连接失败");
+                        ErrorCodeUtil.showEeorMsg(context, ex);
                         LogUtil.d("第三方提现失败");
                     }
 

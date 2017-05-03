@@ -1,5 +1,6 @@
 package com.xinyu.mwp.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +16,9 @@ import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.UnionPayReturnEntity;
+import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.PermissionManagerUtil;
 import com.xinyu.mwp.util.QRCodeUtil;
 import com.xinyu.mwp.util.ToastUtils;
 
@@ -36,6 +39,7 @@ public class PayORCodeActivity extends BaseControllerActivity {
     ImageView orcodeImg;
     private String paymentInfo = null;
     private Bitmap bitmap = null;
+    private PermissionManagerUtil permissionManagerUtil;
 
     @Override
     protected int getContentView() {
@@ -56,7 +60,7 @@ public class PayORCodeActivity extends BaseControllerActivity {
             }
 
             paymentInfo = entity.getPaymentInfo();
-            bitmap = QRCodeUtil.createQRCode(paymentInfo, 500);
+            bitmap = QRCodeUtil.createQRCode(paymentInfo, DisplayUtil.getScreenWidth(context) / 2);
             orcodeImg.setImageBitmap(bitmap);
         }
         setTitle(title);
@@ -69,11 +73,31 @@ public class PayORCodeActivity extends BaseControllerActivity {
                 if (bitmap == null) {
                     return;
                 }
-                saveImageToGallery(context, bitmap);
-//                ImageTools.saveImage( context,bitmap );
-//                ToastUtils.show( context,"二维码已保存至本地图库" );
+                permissionManagerUtil.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);      //申请权限
                 break;
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        permissionManagerUtil = new PermissionManagerUtil(new PermissionManagerUtil.OnPermissionListener() {
+            @Override
+            public void granted(String permission) {
+                saveImageToGallery(context, bitmap);
+            }
+
+            @Override
+            public void denied(String permission) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        permissionManagerUtil.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**
@@ -111,7 +135,6 @@ public class PayORCodeActivity extends BaseControllerActivity {
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));
     }
-
 
     @Override
     protected void onDestroy() {
