@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 24
@@ -55,11 +56,14 @@ android {
 //        }
     }
     lintOptions {
-        checkReleaseBuilds false
+        checkReleaseBuilds false  //release下打印log
     }
 
 }
-
+repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -87,4 +91,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.journeyapps:zxing-android-embedded:3.5.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }

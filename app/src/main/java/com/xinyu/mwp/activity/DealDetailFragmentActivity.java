@@ -14,6 +14,7 @@ import com.xinyu.mwp.fragment.BaseDealAllGoodsFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
 
@@ -85,6 +86,8 @@ public class DealDetailFragmentActivity extends BaseMultiFragmentActivity {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
+                mRecyclerView.setVisibility(View.GONE);
+                ErrorCodeUtil.showEeorMsg(context,ex);
             }
 
             @Override
@@ -92,6 +95,7 @@ public class DealDetailFragmentActivity extends BaseMultiFragmentActivity {
                 if (productList != null) {
                     productList.clear();
                 }
+                mRecyclerView.setVisibility(View.VISIBLE);
                 productList = productEntities;
                 LogUtil.d("商品列表--请求成功的信息是:" + productEntities.toString());
                 processData();

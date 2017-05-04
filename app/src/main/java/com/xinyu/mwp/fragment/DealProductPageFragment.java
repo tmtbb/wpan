@@ -818,7 +818,13 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         //如果当前是显示状态的话,执行;如果当前是隐藏状态的话,不执行了
 //        if (isShow) {
         handler.postDelayed(runnable, 3000);
-        refreshBalance();
+        TestDataUtil.requestBalance();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshBalance();  //更新余额
+            }
+        }, 500);
 //        }
     }
 

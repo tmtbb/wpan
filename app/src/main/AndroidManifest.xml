@@ -23,7 +23,6 @@
     <application
         android:name="com.xinyu.mwp.application.MyApplication"
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -199,5 +198,8 @@
             android:name=".activity.PayORCodeActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|fontScale"
             android:screenOrientation="portrait" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="13b0dd85b007ad78249b02fc26fa3972dff8da79" />
     </application>
 </manifest>

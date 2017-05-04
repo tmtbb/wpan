@@ -57,7 +57,8 @@
         android:layout_marginLeft="@dimen/dp_11"
         android:layout_marginTop="@dimen/dp_24"
         android:textColor="@color/font_666"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/next"

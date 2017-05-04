@@ -57,8 +57,8 @@ public enum Host {
 
     public static String getSocketServerIp() {
 //        return "61.147.114.87";
-        return "139.224.34.22";
-//        return "61.147.114.78";
+//        return "139.224.34.22";
+        return "122.144.169.217";
 //        return "192.168.8.131";
     }
 
@@ -67,8 +67,8 @@ public enum Host {
 //        return (short) 17002;
 //        return (short) 30001;
 //        return (short) 16002;
-//        return (short) 16008;
         return (short) 16205;
+//        return (short) 16305;
 //        return (short) 16007;
     }
 }

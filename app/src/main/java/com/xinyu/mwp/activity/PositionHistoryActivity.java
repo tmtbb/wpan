@@ -139,12 +139,14 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        showLoader("处理中...");
                         requestPosition(handle1);  //请求网络,选择盈利方式
                     }
                 }).setNegativeButton(type2, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                showLoader("处理中...");
                 requestPosition(handle2);  //请求网络,选择盈利方式
             }
         }).create().show();
@@ -156,12 +158,14 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 LogUtil.d("请求盈利错误");
+                closeLoader();
                 ToastUtils.show(context, "请求盈利失败,当前不可交易");
             }
 
             @Override
             public void onSuccess(HistoryPositionListReturnEntity profitEntity) {
                 LogUtil.d("请求盈利成功:" + profitEntity.toString());
+                closeLoader();
                 adapter.notifyPartsData(clickView, pos, profitEntity.getHandle());
             }
         });
