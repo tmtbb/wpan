@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">航空运费定盘</string>
+    <string name="app_name">航投宝</string>
     <string name="confirm_exit_app">再按一次退出%s</string>
 
     <string name="permission_get_accounts_hint">没有此权限，无法开启这个功能，请开启权限。PERMISSION_GET_ACCOUNTS</string>
@@ -30,7 +30,7 @@
     <string name="cancel_pay_msg">是否已完成支付?</string>
     <string name="pay_problem">遇到问题</string>
     <string name="pay_complete">完成支付</string>
-    <string name="cash_service_charge">手续费：每单第三方支付平台将收取2元手续费，限额5万元</string>
+    <string name="cash_service_charge">手续费：每单第三方支付平台将收取1元手续费，限额5万元</string>
 
 
 

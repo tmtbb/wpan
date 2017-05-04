@@ -10,6 +10,7 @@ import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.view.SpaceView;
 
@@ -54,6 +55,7 @@ public class CashRecordActivity extends BaseRefreshAbsListControllerActivity<Wit
             public void onError(Throwable ex) {
                 ex.printStackTrace();
                 getRefreshController().refreshComplete();
+                ErrorCodeUtil.showEeorMsg(context,ex);
             }
 
             @Override

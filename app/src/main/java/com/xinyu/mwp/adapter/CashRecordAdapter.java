@@ -65,6 +65,9 @@ public class CashRecordAdapter extends BaseListViewAdapter<WithDrawCashReturnEnt
             icon.setImageResource(BankInfoUtil.getIcon(data.getBank()));
             bankInfo.setText(String.format("提现到%s",data.getBank()));
             switch (data.getStatus()) {
+                case 0:
+                    status.setText("处理中");
+                    break;
                 case 1:
                     status.setText("处理中");
                     break;

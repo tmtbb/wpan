@@ -13,6 +13,7 @@ import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
+import com.xinyu.mwp.entity.RegisterVerifyCodeEntry;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.entity.WXUserInfoEntity;
 import com.xinyu.mwp.exception.CheckException;
@@ -23,6 +24,7 @@ import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
@@ -45,8 +47,6 @@ public class RegisterActivity extends BaseControllerActivity {
     private WPEditText phoneEditText;
     @ViewInject(R.id.msgEditText)
     private WPEditText msgEditText;
-    //    @ViewInject(R.id.soundEditText)
-    //    private WPEditText soundEditText;
     @ViewInject(R.id.pwdEditText)
     private WPEditText pwdEditText;
     @ViewInject(R.id.wpe_member_unit)
@@ -168,6 +168,12 @@ public class RegisterActivity extends BaseControllerActivity {
     }
 
     private void register() {
+        //本地校验验证码   MD5(yd1742653sd + code_time + rand_code + phone)
+        if (!RegisterVerifyCodeEntry.vToken.equals(MD5Util.MD5("yd1742653sd" + RegisterVerifyCodeEntry.timeStamp + vCode))) {
+           ToastUtils.show(context,"验证码错误,请重新输入");
+            return;
+        }
+
         NetworkAPIFactoryImpl.getUserAPI().register(phone, newPwd, vCode, memberUnitText, agentIdText, refereeIdText,
                 new OnAPIListener<RegisterReturnEntity>() {
                     @Override

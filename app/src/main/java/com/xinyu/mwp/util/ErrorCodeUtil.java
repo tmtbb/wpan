@@ -1,8 +1,10 @@
 package com.xinyu.mwp.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.xinyu.mwp.networkapi.NetworkAPIException;
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 
 /**
  * Created by Administrator on 2017/4/13.
@@ -12,6 +14,10 @@ public class ErrorCodeUtil {
      * 弹出错误信息
      */
     public static void showEeorMsg(Context context, Throwable ex) {
+        if (!SocketAPINettyBootstrap.getInstance().isOpen()) {
+            ToastUtils.show(context, "网络连接失败,请检查网络");
+            return;
+        }
 
         String msg = "";
         switch (((NetworkAPIException) ex).getErrorCode()) {
@@ -117,11 +123,12 @@ public class ErrorCodeUtil {
             case -804:
                 msg = "解绑银行卡失败";
                 break;
-            default:
-                msg = "网络连接失败";
-                break;
-
+//            default:
+//                msg = "网络连接失败";
+//                break;
         }
-        ToastUtils.show(context, msg);
+        if (!TextUtils.isEmpty(msg)) {
+            ToastUtils.show(context, msg);
+        }
     }
 }

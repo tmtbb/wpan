@@ -159,6 +159,9 @@ public class CashActivity extends BaseControllerActivity {
         if (price < 2) {
             ToastUtils.show(context, "提现金额必须大于等于2元");
             return;
+        } else if (price > 50000) {
+            ToastUtils.show(context, "提现金额超出范围");
+            return;
         }
         long bid = bankCardEntity.getBid();
         NetworkAPIFactoryImpl.getDealAPI().cashOut(bankCardEntity.getBid(),

@@ -112,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="请输入充值金额"
+                        android:hint="充值金额最低为100元"
                         android:inputType="numberDecimal"
                         android:paddingBottom="@dimen/dp_5"
                         android:paddingLeft="@dimen/dp_20"

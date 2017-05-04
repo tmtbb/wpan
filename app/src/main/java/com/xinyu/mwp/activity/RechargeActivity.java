@@ -100,7 +100,7 @@ public class RechargeActivity extends BaseRefreshActivity {
                 break;
 
             case R.id.rechargeType:
-                choice = 0;
+//                choice = 0;
                 createDialog();
                 break;
 
@@ -121,8 +121,8 @@ public class RechargeActivity extends BaseRefreshActivity {
             return;
         }
         double price = Double.parseDouble(rechargeMoney.getEditableText().toString().trim());
-        if (price < 1) {
-            ToastUtils.show(context, "充值金额必须大于等于1元");
+        if (price < 100) {   //换成100
+            ToastUtils.show(context, "充值金额必须大于等于100元");
             return;
         }
 
@@ -238,7 +238,7 @@ public class RechargeActivity extends BaseRefreshActivity {
 
 
     private void createDialog() {
-        new AlertDialog.Builder(this).setTitle("选择支付方式").setSingleChoiceItems(Constant.rechargeType, 0,
+        new AlertDialog.Builder(this).setTitle("选择支付方式").setSingleChoiceItems(Constant.rechargeType, choice,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         choice = which;
@@ -275,6 +275,12 @@ public class RechargeActivity extends BaseRefreshActivity {
     protected void onResume() {
         super.onResume();
         TestDataUtil.requestBalance();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元"); //更新余额
+            }
+        }, 500);
     }
 
     /**

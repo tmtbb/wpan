@@ -107,7 +107,7 @@ public class PayORCodeActivity extends BaseControllerActivity {
      * @param bmp
      */
     public static void saveImageToGallery(Context context, Bitmap bmp) {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "WeiPan");   // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "HangTouBao");   // 首先保存图片
         if (!appDir.exists()) {
             appDir.mkdir();
         }
@@ -131,7 +131,7 @@ public class PayORCodeActivity extends BaseControllerActivity {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        ToastUtils.show(context, "二维码已保存至:" + Environment.getExternalStorageDirectory() + "/CoolImage/" + "目录文件夹下");
+        ToastUtils.show(context, "二维码已保存至:" + Environment.getExternalStorageDirectory() + "/HangTouBao/" + "目录文件夹下");
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.getAbsolutePath())));
     }

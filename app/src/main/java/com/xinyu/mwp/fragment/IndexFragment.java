@@ -105,7 +105,7 @@ public class IndexFragment extends BaseRefreshFragment {
     protected void initView() {
         super.initView();
         initStatusBar();
-        titleText.setText("微盘");
+        titleText.setText(R.string.app_name);
         leftImage.setImageResource(R.mipmap.icon_head);
         reuqestData();  //商品列表
         isShow = true;

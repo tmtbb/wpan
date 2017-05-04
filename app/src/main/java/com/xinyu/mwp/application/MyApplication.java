@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 
+import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,6 +35,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 public class MyApplication extends MultiDexApplication implements OnUserUpdateListener {
 
     private static MyApplication application;
@@ -42,6 +45,7 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
 
     @Override
     public void onCreate() {
+        Fabric.with(this, new Crashlytics());
         super.onCreate();
         application = this;
         initNetworkAPIConfig();

@@ -54,13 +54,13 @@ public class VerifyCodeUtils {
             public void onSuccess(VerifyCodeReturnEntry verifyCodeReturnEntry) {
                 new CountUtil((TextView) msgEditText.getRightText()).start();   //收到回调才开启计时
                 if (verifyType == 0) {  //注册,保存注册返回的验证码时间戳
-                    RegisterVerifyCodeEntry.timeStamp = verifyCodeReturnEntry.timestamp;
+                    RegisterVerifyCodeEntry.timeStamp = verifyCodeReturnEntry.timeStamp;
                     RegisterVerifyCodeEntry.vToken = verifyCodeReturnEntry.vToken;
-//                    LogUtil.d("获取到--注册短信验证码,时间戳是:" + RegisterVerifyCodeEntry.timeStamp);
+                    LogUtil.d("获取到--注册短信验证码,时间戳是:" + RegisterVerifyCodeEntry.timeStamp+",时间戳:"+RegisterVerifyCodeEntry.vToken);
                 } else if (verifyType == 1) {  //登录
-                    LoginVerifyCodeEntry.timestamp = verifyCodeReturnEntry.timestamp;
+                    LoginVerifyCodeEntry.timestamp = verifyCodeReturnEntry.timeStamp;
                     LoginVerifyCodeEntry.vToken = verifyCodeReturnEntry.vToken;
-//                    LogUtil.d("获取到--登录短信验证码,时间戳是:" + LoginVerifyCodeEntry.timestamp);
+                    LogUtil.d("获取到--登录短信验证码,时间戳是:" + LoginVerifyCodeEntry.timestamp);
                 } else if (verifyType == 2) {
                     //更新服务
                 }

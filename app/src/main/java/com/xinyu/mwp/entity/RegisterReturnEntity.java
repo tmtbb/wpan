@@ -5,5 +5,5 @@ package com.xinyu.mwp.entity;
  */
 public class RegisterReturnEntity extends BaseEntity {
     public static int result;
-    public static int id;
+    public static int uid;
 }
