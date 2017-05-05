@@ -145,6 +145,14 @@
                     core_ptr:cell_name_size="@dimen/fontSize_16sp" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/recharge_service_charge"
+                    android:textColor="@color/color_666666" />
+
+                <TextView
                     android:id="@+id/commit"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

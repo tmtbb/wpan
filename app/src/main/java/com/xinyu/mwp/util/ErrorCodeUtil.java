@@ -108,8 +108,11 @@ public class ErrorCodeUtil {
             case -702:
                 msg = "存储订单失败";
                 break;
+            case -703:
+                msg = "最低充值金额为100元";
+                break;
             case -704:
-                msg = "...................";
+                msg = "提现失败,请稍后再试";
                 break;
             case -801:
                 msg = "当前没有银行卡";
@@ -123,9 +126,9 @@ public class ErrorCodeUtil {
             case -804:
                 msg = "解绑银行卡失败";
                 break;
-//            default:
-//                msg = "网络连接失败";
-//                break;
+            default:
+                msg = "连接超时,请稍后重试";
+                break;
         }
         if (!TextUtils.isEmpty(msg)) {
             ToastUtils.show(context, msg);
