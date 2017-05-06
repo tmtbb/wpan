@@ -33,7 +33,7 @@ public class VerifyCodeUtils {
         LogUtil.d("请求网络获取短信验证码------------------------------");
         CheckException exception = new CheckException();
         String phoneEdit = phoneEditText.getEditTextString();
-        if (new CheckHelper().checkMobile(phoneEdit, exception)) {
+        if (new CheckHelper().checkMobile(phoneEdit, exception)) {  //是手机号
             Utils.closeSoftKeyboard(view);
             obtainAuthCode(msgEditText,context,phoneEdit, verifyType);//获取验证码
         } else {
@@ -42,6 +42,7 @@ public class VerifyCodeUtils {
     }
 
     private static void obtainAuthCode(final WPEditText msgEditText, final Context context, String phoneEdit, final int verifyType) {
+        new CountUtil((TextView) msgEditText.getRightText()).start();   //收到回调才开启计时
         NetworkAPIFactoryImpl.getUserAPI().verifyCode(phoneEdit, verifyType, new OnAPIListener<VerifyCodeReturnEntry>() {
             @Override
             public void onError(Throwable ex) {
@@ -52,7 +53,6 @@ public class VerifyCodeUtils {
 
             @Override
             public void onSuccess(VerifyCodeReturnEntry verifyCodeReturnEntry) {
-                new CountUtil((TextView) msgEditText.getRightText()).start();   //收到回调才开启计时
                 if (verifyType == 0) {  //注册,保存注册返回的验证码时间戳
                     RegisterVerifyCodeEntry.timeStamp = verifyCodeReturnEntry.timeStamp;
                     RegisterVerifyCodeEntry.vToken = verifyCodeReturnEntry.vToken;

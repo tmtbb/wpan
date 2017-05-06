@@ -171,6 +171,7 @@ public class RegisterActivity extends BaseControllerActivity {
         //本地校验验证码   MD5(yd1742653sd + code_time + rand_code + phone)
         if (!RegisterVerifyCodeEntry.vToken.equals(MD5Util.MD5("yd1742653sd" + RegisterVerifyCodeEntry.timeStamp + vCode))) {
            ToastUtils.show(context,"验证码错误,请重新输入");
+            closeLoader();
             return;
         }
 

@@ -182,6 +182,7 @@ public class RechargeActivity extends BaseRefreshActivity {
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         LogUtil.d("调用第三方失败");
+                        ErrorCodeUtil.showEeorMsg(context, ex);
                     }
 
                     @Override
@@ -278,7 +279,9 @@ public class RechargeActivity extends BaseRefreshActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元"); //更新余额
+                if (UserManager.getInstance().getUserEntity() != null) {
+                    money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元"); //更新余额
+                }
             }
         }, 500);
     }
@@ -296,7 +299,9 @@ public class RechargeActivity extends BaseRefreshActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
+                        if (UserManager.getInstance().getUserEntity() != null) {
+                            money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
+                        }
                     }
                 }, 500);
                 next(RechargeRecordActivity.class);

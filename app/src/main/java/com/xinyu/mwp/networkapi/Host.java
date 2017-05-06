@@ -6,17 +6,12 @@ import android.text.TextUtils;
  * Created by wsz on 2016/4/27.
  */
 public enum Host {
-    INTERNAL_253("http://172.16.1.253"),
-    INTERNAL_19("http://172.16.3.19"),
-    INTERNAL_14("http://172.16.3.14/modou"),
-    INTERNAL_165("http://172.16.1.165"),
     INTERNAL_TEST("http://code.ywwl.com/modou"),
     EXTERNAL_TEST("http://tandroidapi.modou.com"),
     EXTERNAL_RELEASE("http://androidapi.modou.com");
 
     private String host;
     private String oldHost;
-    private int imPort = 5222;
 
     Host(String value) {
         this.host = value;
@@ -56,19 +51,10 @@ public enum Host {
     }
 
     public static String getSocketServerIp() {
-//        return "61.147.114.87";
-//        return "139.224.34.22";
         return "122.144.169.217";
-//        return "192.168.8.131";
     }
 
     public static short getSocketServerPort() {
-//        return (short) 16001;
-//        return (short) 17002;
-//        return (short) 30001;
-//        return (short) 16002;
         return (short) 16205;
-//        return (short) 16305;
-//        return (short) 16007;
     }
 }
