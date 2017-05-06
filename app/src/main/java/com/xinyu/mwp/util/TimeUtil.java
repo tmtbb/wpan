@@ -85,4 +85,15 @@ public class TimeUtil {
         SimpleDateFormat format = new SimpleDateFormat("E yyyyMM-dd");
         return format.format(new Date(time));
     }
+    //获取星期
+    public static String getWeek(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("EEEE");
+        return format.format(new Date(time));
+    }
+
+    //获取小时
+    public static String getHour(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("HH");
+        return format.format(new Date(time));
+    }
 }
