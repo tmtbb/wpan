@@ -301,6 +301,7 @@ public class IndexFragment extends BaseRefreshFragment {
     private void processErrorMessage() {
         if (requestState == REQUEST_ERROR) {
             LogUtil.d("数据为空,展示错误界面");
+            getRefreshController().refreshComplete();
             errorMessage.setVisibility(View.VISIBLE);
             bannerView.setVisibility(View.INVISIBLE);
         } else {

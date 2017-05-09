@@ -6,9 +6,7 @@ import com.xinyu.mwp.entity.CashOutReturnEntity;
 import com.xinyu.mwp.entity.CurrentPositionEntity;
 import com.xinyu.mwp.entity.CurrentPositionListReturnEntity;
 import com.xinyu.mwp.entity.CurrentPriceReturnEntity;
-import com.xinyu.mwp.entity.HistoryPositionEntity;
 import com.xinyu.mwp.entity.HistoryPositionListReturnEntity;
-import com.xinyu.mwp.entity.OpenPositionReturnEntity;
 import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.entity.SymbolInfosEntity;
 import com.xinyu.mwp.entity.CurrentTimeLineReturnEntity;
@@ -66,7 +64,7 @@ public interface DealAPI {
     void cash(double money, long cardId, String pwd, OnAPIListener<WithDrawCashReturnEntity> listener);
 
     //第三方  提现
-    void cashOut(long bid,long amount, String receiverBankName,
+    void cashOut(long bid, long amount, String receiverBankName,
                  String receiverBranchBankName, String receiverCardNo, String receiverAccountName,
                  OnAPIListener<CashOutReturnEntity> listener);
 

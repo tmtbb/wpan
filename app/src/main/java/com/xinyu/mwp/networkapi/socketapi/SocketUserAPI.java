@@ -64,13 +64,14 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     }
 
     @Override
-    public void verifyCode(String phone, int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener) {
+    public void verifyCode(String phone, int verifyType,int type, OnAPIListener<VerifyCodeReturnEntry> listener) {
         LogUtil.d("负责加入网络请求---获取短信验证码--------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("verifyType", verifyType);  //0-注册 1-登录 2-更新服务（暂用 1）
         map.put("phone", phone);
+        map.put("type", type);  //0-注册  1-修改密码
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.VerifyCode,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, VerifyCodeReturnEntry.class, listener);

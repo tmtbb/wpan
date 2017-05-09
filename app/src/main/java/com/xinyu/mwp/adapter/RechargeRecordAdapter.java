@@ -10,6 +10,7 @@ import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.RechargeRecordItemEntity;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -75,7 +76,7 @@ public class RechargeRecordAdapter extends BaseListViewAdapter<RechargeRecordIte
             }else{
                 icon.setImageResource(R.mipmap.icon_alipay);
             }
-            money.setText(data.getAmount() + "");
+            money.setText(NumberUtils.halfAdjust2(data.getAmount()));
             info.setText(data.getDepositName());
 
             if (data.getStatus() == 1) {

@@ -1,6 +1,5 @@
 package com.xinyu.mwp.activity;
 
-import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -66,7 +65,8 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
             public void onClick(View v) {
                 LogUtil.d("此时网络的连接状态是:" + SocketAPINettyBootstrap.getInstance().isOpen());
                 int verifyType = 1;// 0-注册 1-登录 2-更新服务
-                VerifyCodeUtils.getCode(msgEditText, verifyType, context, v, phoneEditText);
+                int type = 1;
+                VerifyCodeUtils.getCode(msgEditText, verifyType, context, v, phoneEditText, type);
             }
         });
 

@@ -94,9 +94,9 @@ public class LoginActivity extends BaseControllerActivity {
                 req.state = "wechat_sdk_demo_test";
                 MyApplication.api.sendReq(req);
                 break;
-//            case R.id.findPwd:    //去掉修改登录密码功能
-//                ActivityUtil.nextResetUserPwd(context);
-//                break;
+            case R.id.findPwd:    //忘记密码
+                ActivityUtil.nextResetUserPwd(context);
+                break;
             case R.id.loginButton:
                 showLoader("正在登录...");
                 CheckException exception = new CheckException();

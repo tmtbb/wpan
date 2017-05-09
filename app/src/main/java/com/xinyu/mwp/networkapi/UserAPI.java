@@ -19,7 +19,7 @@ public interface UserAPI {
 
     void register(String phone, String password, String vCode, long memberId, String agentId, String recommend, OnAPIListener<RegisterReturnEntity> listener);
 
-    void verifyCode(String phone, int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener);
+    void verifyCode(String phone, int verifyType, int type, OnAPIListener<VerifyCodeReturnEntry> listener);
 
     void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<Object> listener); //修改交易/用户密码
 
