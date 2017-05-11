@@ -51,7 +51,8 @@ public enum Host {
     }
 
     public static String getSocketServerIp() {
-        return "122.144.169.217";
+//        return "122.144.169.217";
+        return "139.224.34.22";
     }
 
     public static short getSocketServerPort() {

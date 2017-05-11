@@ -3,6 +3,8 @@ package com.xinyu.mwp.application;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
 
@@ -15,6 +17,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinyu.mwp.constant.Constant;
+import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
+import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -29,11 +33,13 @@ import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.Utils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.x;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import io.fabric.sdk.android.Fabric;
 
@@ -55,7 +61,9 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         mainHandler = new Handler();
         registerToWx();   //注册微信
     }
+
     public static IWXAPI api;
+
     private void registerToWx() {
         api = WXAPIFactory.createWXAPI(this, Constant.APP_ID, false);
         api.registerApp(Constant.APP_ID);
@@ -164,12 +172,13 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             public void onSuccess() {
                 LogUtil.d("检测到连接成功-------------------");
                 judgeIsLogin();
+                checkUpdate();  //检查更新
             }
 
             @Override
             public void onFailure(boolean tag) {
                 LogUtil.d("检测到连接失败--------------");
-                if (tag){
+                if (tag) {
                     connectionError();
                 }
 
@@ -209,4 +218,46 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             });
         }
     }
+
+    private void checkUpdate() {
+        LogUtil.d("检查更新----------");
+        NetworkAPIFactoryImpl.getUserAPI().update(new OnAPIListener<CheckUpdateInfoEntity>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+                LogUtil.d("检查更新失败-------------------------");
+            }
+
+            @Override
+            public void onSuccess(CheckUpdateInfoEntity checkUpdateInfoEntity) {
+                LogUtil.d("检查更新成功------------:" + checkUpdateInfoEntity.toString());
+                if (checkUpdateInfoEntity != null && checkUpdateInfoEntity.getNewAppVersionCode() > getVersionCode()) {
+                    //检查更新    需要更新,弹窗提示//强制和非强制
+
+                    LogUtil.d("发送广播------------------------------需要更新");
+                    EventBusMessage msg = new EventBusMessage(-11);
+                    msg.setCheckUpdateInfoEntity(checkUpdateInfoEntity);
+                    EventBus.getDefault().postSticky(msg);
+                } else {
+                    LogUtil.d("最新版本");
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 获取当前应用版本号
+     */
+    private int getVersionCode() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 }

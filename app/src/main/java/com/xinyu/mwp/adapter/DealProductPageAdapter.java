@@ -62,7 +62,7 @@ public class DealProductPageAdapter extends BaseListViewAdapter<CurrentPositionL
             if (data != null) {
                 productName.setText(data.getName());
                 openPositionCount.setText(data.getAmount() + "");
-                turnoverPrice.setText(String.format("成交价 %1$7s", NumberUtils.halfAdjust2(data.getOpenCost())));
+                turnoverPrice.setText("成交价 "+ NumberUtils.halfAdjust2(data.getOpenCost()));
 //                tradeCountDown.setProgress(process);
                 mLayout.setVisibility(View.VISIBLE);
                 final long newInterval = data.getEndTime() - System.currentTimeMillis();

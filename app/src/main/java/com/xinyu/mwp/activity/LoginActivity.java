@@ -1,15 +1,22 @@
 package com.xinyu.mwp.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.qiangxi.checkupdatelibrary.dialog.ForceUpdateDialog;
+import com.qiangxi.checkupdatelibrary.dialog.UpdateDialog;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.application.MyApplication;
+import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
@@ -32,6 +39,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import static com.qiangxi.checkupdatelibrary.dialog.ForceUpdateDialog.FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE;
+import static com.qiangxi.checkupdatelibrary.dialog.UpdateDialog.UPDATE_DIALOG_PERMISSION_REQUEST_CODE;
 
 
 /**
@@ -56,6 +66,8 @@ public class LoginActivity extends BaseControllerActivity {
     private CheckHelper checkHelper = new CheckHelper();
     private long exitNow;
     private boolean flag = true;
+    private ForceUpdateDialog mForceUpdateDialog;
+    private UpdateDialog mUpdateDialog;
 
     @Override
     protected int getContentView() {
@@ -172,7 +184,81 @@ public class LoginActivity extends BaseControllerActivity {
                 LogUtil.d("当前是接收到绑定成功的消息,finish");
                 finish();
                 break;
+            case -11:  //需要弹窗
+                LogUtil.d("当前是接收需要更新---的消息");
+                if (eventBusMessage.getCheckUpdateInfoEntity().getIsForceUpdate() == 0) {
+                    //强制
+                    LogUtil.d("强制更新------------------------");
+                    forceUpdateDialog(eventBusMessage.getCheckUpdateInfoEntity());
+                } else {  //非强制更新
+                    LogUtil.d("非强制更新------------------------");
+                    updateDialog(eventBusMessage.getCheckUpdateInfoEntity());
+                }
+                break;
         }
+    }
+
+    /**
+     * 6.0系统需要重写此方法
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //如果用户同意所请求的权限
+        if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //UPDATE_DIALOG_PERMISSION_REQUEST_CODE和FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE这两个常量是library中定义好的
+            //所以在进行判断时,必须要结合这两个常量进行判断.
+            //非强制更新对话框
+            if (requestCode == UPDATE_DIALOG_PERMISSION_REQUEST_CODE) {
+                //进行下载操作
+                LogUtil.d("进行非强制下载-----------------------");
+
+                mUpdateDialog.download();
+            }
+            //强制更新对话框
+            else if (requestCode == FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE) {
+                //进行下载操作
+                LogUtil.d("进行强制下载--------------------");
+                mForceUpdateDialog.download();
+            }
+        } else {
+            //用户不同意,提示用户,如下载失败,因为您拒绝了相关权限
+            Toast.makeText(this, "请先开启权限", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 强制更新,checkupdatelibrary中提供的默认强制更新Dialog,您完全可以自定义自己的Dialog,
+     */
+    public void forceUpdateDialog(CheckUpdateInfoEntity mCheckUpdateInfo) {
+        mForceUpdateDialog = new ForceUpdateDialog(this);
+        mForceUpdateDialog.setAppSize(mCheckUpdateInfo.getNewAppSize())
+                .setDownloadUrl(mCheckUpdateInfo.getNewAppUrl())
+                .setTitle(mCheckUpdateInfo.getAppName() + "有更新啦")
+                .setReleaseTime(mCheckUpdateInfo.getNewAppReleaseTime())
+                .setVersionName(mCheckUpdateInfo.getNewAppVersionName())
+                .setUpdateDesc(mCheckUpdateInfo.getNewAppUpdateDesc())
+                .setFileName(getResources().getString(R.string.app_name))
+                .setFilePath(Environment.getExternalStorageDirectory().getPath() + "/HangTouBao").show();
+    }
+
+    /**
+     * 非强制更新
+     */
+    public void updateDialog(CheckUpdateInfoEntity mCheckUpdateInfo) {
+        mUpdateDialog = new UpdateDialog(this);
+        mUpdateDialog.setAppSize(mCheckUpdateInfo.getNewAppSize())
+                .setDownloadUrl(mCheckUpdateInfo.getNewAppUrl())
+                .setTitle(mCheckUpdateInfo.getAppName() + "有更新啦")
+                .setReleaseTime(mCheckUpdateInfo.getNewAppReleaseTime())
+                .setVersionName(mCheckUpdateInfo.getNewAppVersionName())
+                .setUpdateDesc(mCheckUpdateInfo.getNewAppUpdateDesc())
+                .setFileName(getResources().getString(R.string.app_name))
+                .setFilePath(Environment.getExternalStorageDirectory().getPath() + "/HangTouBao")
+                .setShowProgress(true)
+                .setIconResId(R.mipmap.ic_launcher)
+                .setAppName(mCheckUpdateInfo.getAppName()).show();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.xinyu.mwp.entity;
 
-import android.widget.TextView;
 
 import com.xinyu.mwp.annotation.FieldJsonKey;
 
@@ -10,4 +9,5 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
 public class VerifyCodeReturnEntry extends BaseEntity {
     public static long timeStamp = 0;
     public static String vToken = "";
+    public static int status = -1;  // 0 成功  1,失败
 }

@@ -6,12 +6,14 @@ import android.widget.Button;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.SHA256Util;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -92,8 +94,9 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
 
     private void resetUserPwd() {
         int type = 0;//0：登录密码 1：交易密码，提现密码
-        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(phoneEditText.getEditTextString(), pwdEditText2.getEditTextString()
-                , msgEditText.getEditTextString(), type, new OnAPIListener<Object>() {
+        String newPwd = SHA256Util.shaEncrypt(SHA256Util.shaEncrypt(pwdEditText2.getEditTextString() + "t1@s#df!") +phoneEditText.getEditTextString());
+        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(phoneEditText.getEditTextString(), newPwd
+                , msgEditText.getEditTextString(), type, new OnAPIListener<VerifyCodeReturnEntry>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
@@ -102,10 +105,14 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
                     }
 
                     @Override
-                    public void onSuccess(Object o) {
+                    public void onSuccess(VerifyCodeReturnEntry entry) {
                         closeLoader();
-                        ToastUtils.show(context, "修改登录密码成功");
-                        finish();
+                        if (entry.status == 0) {
+                            ToastUtils.show(context, "修改登录密码成功");
+                            finish();
+                        } else {
+                            ToastUtils.show(context, "修改登录密码失败");
+                        }
                     }
                 });
     }

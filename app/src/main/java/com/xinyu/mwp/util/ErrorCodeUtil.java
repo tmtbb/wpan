@@ -109,7 +109,7 @@ public class ErrorCodeUtil {
                 msg = "存储订单失败";
                 break;
             case -703:
-                msg = "最低充值金额为100元";
+                msg = "充值失败,请稍后再试";
                 break;
             case -704:
                 msg = "提现失败,请稍后再试";

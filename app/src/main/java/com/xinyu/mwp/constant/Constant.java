@@ -8,6 +8,7 @@ public interface Constant {
     String SECRET = "1e372a173a248fb1b5c88d24236ef3b3";
 
     String USER_ENTITY = "user_entity";
+    String UPDATE_APK = "http://139.224.34.22/cgi-bin/flight/users/v1/get_version.fcgi";
 
     interface IntentKey {
         String CHOOSE_IMGS_SCAN = "CHOOSE_IMGS_SCAN";

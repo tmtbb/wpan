@@ -48,5 +48,6 @@ public interface SocketAPIConstant {
         Short RechargeRecord = 1019;
         Short UnionPay = 7039;
         Short WXBind = 3015;
+        Short Update = 3017;
     }
 }

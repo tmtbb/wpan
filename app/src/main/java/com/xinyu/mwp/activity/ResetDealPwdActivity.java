@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
+import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
 import com.xinyu.mwp.exception.CheckException;
 import com.xinyu.mwp.helper.CheckHelper;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -92,14 +93,14 @@ public class ResetDealPwdActivity extends BaseControllerActivity {
     private void resetDealPwd(String pwd) {
         String memberId = UserManager.getInstance().getUserEntity().getMobile();
         int type = 1;//0：登录密码 1：交易密码，提现密码
-        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(memberId, pwd, null, type, new OnAPIListener<Object>() {
+        NetworkAPIFactoryImpl.getUserAPI().resetDealPwd(memberId, pwd, null, type, new OnAPIListener<VerifyCodeReturnEntry>() {
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
             }
 
             @Override
-            public void onSuccess(Object object) {
+            public void onSuccess(VerifyCodeReturnEntry object) {
                 LogUtil.d("请求数据成功,交易密码,返回的数据为:" + object.toString());
             }
         });
