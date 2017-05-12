@@ -181,7 +181,6 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
                 if (tag) {
                     connectionError();
                 }
-
             }
         });
     }
@@ -225,16 +224,11 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             @Override
             public void onError(Throwable ex) {
                 ex.printStackTrace();
-                LogUtil.d("检查更新失败-------------------------");
             }
 
             @Override
             public void onSuccess(CheckUpdateInfoEntity checkUpdateInfoEntity) {
-                LogUtil.d("检查更新成功------------:" + checkUpdateInfoEntity.toString());
                 if (checkUpdateInfoEntity != null && checkUpdateInfoEntity.getNewAppVersionCode() > getVersionCode()) {
-                    //检查更新    需要更新,弹窗提示//强制和非强制
-
-                    LogUtil.d("发送广播------------------------------需要更新");
                     EventBusMessage msg = new EventBusMessage(-11);
                     msg.setCheckUpdateInfoEntity(checkUpdateInfoEntity);
                     EventBus.getDefault().postSticky(msg);

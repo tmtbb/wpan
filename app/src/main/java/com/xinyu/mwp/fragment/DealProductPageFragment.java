@@ -1,10 +1,7 @@
 package com.xinyu.mwp.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
-import android.provider.Settings;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +35,6 @@ import com.xinyu.mwp.fragment.base.BaseRefreshAbsListControllerFragment;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
-import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
@@ -654,20 +650,20 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             return;
         }
         //停盘时间  周六早上6--周1早上3点
-        LogUtil.d("当前的星期是:"+TimeUtil.getWeek(System.currentTimeMillis())+"小时:"+Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())));
-        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期六") ){
-            if (Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())) >= 6){
-                ToastUtils.show(context,"停盘时间,不可交易");
+        LogUtil.d("当前的星期是:" + TimeUtil.getWeek(System.currentTimeMillis()) + "小时:" + Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())));
+        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期六")) {
+            if (Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())) >= 6) {
+                ToastUtils.show(context, "停盘时间,不可交易");
                 return;
             }
         }
-        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期日") ){
-            ToastUtils.show(context,"停盘时间,不可交易");
+        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期日")) {
+            ToastUtils.show(context, "停盘时间,不可交易");
             return;
         }
-        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期一") ){
-            if (Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())) <3 ){
-                ToastUtils.show(context,"停盘时间,不可交易");
+        if (TimeUtil.getWeek(System.currentTimeMillis()).equals("星期一")) {
+            if (Integer.parseInt(TimeUtil.getHour(System.currentTimeMillis())) < 3) {
+                ToastUtils.show(context, "停盘时间,不可交易");
                 return;
             }
         }
@@ -700,7 +696,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             public void onClick(DialogInterface dialog, int which) {
                 int progress = CustomDialog.mSeekBar.getProgress();
                 final double amount = progress + 1;
-                final int codeId = mUnitViewList.get(newItemIndex).getId();
+                final long codeId = mUnitViewList.get(newItemIndex).getId();
                 final boolean deferred;
                 if (mUnitViewList.get(newItemIndex).getDeferred() == 1) {
                     deferred = true;                        //是否过滤
@@ -797,7 +793,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param amount       建仓手数
      * @param deferred     是否过滤
      */
-    private void requestOpenPosition(int codeId, int finalBuySell, double amount, boolean deferred) {
+    private void requestOpenPosition(long codeId, int finalBuySell, double amount, boolean deferred) {
         NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<CurrentPositionListReturnEntity>() {
             @Override
             public void onError(Throwable ex) {

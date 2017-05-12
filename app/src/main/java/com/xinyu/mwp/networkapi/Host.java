@@ -51,8 +51,26 @@ public enum Host {
     }
 
     public static String getSocketServerIp() {
-//        return "122.144.169.217";
-        return "139.224.34.22";
+       return "122.144.169.217";
+//        return "139.224.34.22";
+
+//        if (!TextUtils.isEmpty(ip)) {
+//            return ip;
+//        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    InetAddress x = InetAddress.getByName("flight.dlgrme.com");
+//                    ip = x.getHostAddress();//得到字符串形式的ip地址
+//                    LogUtil.d("域名解析成功:" + ip);
+//                } catch (UnknownHostException e) {
+//                    e.printStackTrace();
+//                    LogUtil.d("域名解析失败:");
+//                }
+//            }
+//        }).start();
+//        return ip;
     }
 
     public static short getSocketServerPort() {
