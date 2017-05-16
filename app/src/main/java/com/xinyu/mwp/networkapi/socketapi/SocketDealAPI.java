@@ -260,8 +260,8 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void currentPosition(double pid, OnAPIListener<CurrentPositionEntity> listener) {
-        LogUtil.d("当前的仓位详情");
+    public void currentPosition(long pid, OnAPIListener<CurrentPositionEntity> listener) {
+        LogUtil.d("当前的仓位详情-----------------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());

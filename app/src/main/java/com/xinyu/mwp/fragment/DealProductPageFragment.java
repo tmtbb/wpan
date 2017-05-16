@@ -140,7 +140,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     productList.clear();
                 }
                 productList = productEntities;
-                LogUtil.d("商品列表--请求成功的信息是:" + productEntities.toString());
+                LogUtil.d("商品列表--请求成功的信息是sssss----------------:" + productEntities.toString());
                 processData();
             }
         });
@@ -208,7 +208,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         if (mUnitViewList.size() == 0) {
             mUnitViewList = products.get(0);
         }
-        double id = mUnitViewList.get(0).getId();
+        long id = mUnitViewList.get(0).getId();
         NetworkAPIFactoryImpl.getDealAPI().currentPosition(id, new OnAPIListener<CurrentPositionEntity>() {
             @Override
             public void onError(Throwable ex) {

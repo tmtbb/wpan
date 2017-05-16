@@ -72,7 +72,7 @@ public interface DealAPI {
     void cashList(int status, int startPos, int count, OnAPIListener<List<WithDrawCashReturnEntity>> listener);
 
     //提现列表
-    void currentPosition(double pid, OnAPIListener<CurrentPositionEntity> listener);
+    void currentPosition(long pid, OnAPIListener<CurrentPositionEntity> listener);
 
     //提现列表
     void profit(long tid, int handle, OnAPIListener<HistoryPositionListReturnEntity> listener);

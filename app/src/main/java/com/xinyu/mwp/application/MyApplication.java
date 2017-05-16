@@ -127,7 +127,7 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
     @Override
     public void onUserUpdate(boolean isLogin) {
         String userToken = null;
-        int id = 0;
+        long id = 0;
         if (UserManager.getInstance().isLogin()) {
             userToken = UserManager.getInstance().getUserEntity().getToken();
             id = UserManager.getInstance().getUserEntity().getId();
@@ -253,5 +253,4 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             return -1;
         }
     }
-
 }

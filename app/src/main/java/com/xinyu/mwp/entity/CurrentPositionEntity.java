@@ -11,8 +11,8 @@ public class CurrentPositionEntity extends BaseEntity{
      * name : JL884
      */
 
-    private int gid;
-    private int id;
+    private long gid;
+    private long id;
     private String name = "";
     private String currentPositionName = "";
 
@@ -24,19 +24,19 @@ public class CurrentPositionEntity extends BaseEntity{
         this.currentPositionName = currentPositionName;
     }
 
-    public int getGid() {
+    public long getGid() {
         return gid;
     }
 
-    public void setGid(int gid) {
+    public void setGid(long gid) {
         this.gid = gid;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

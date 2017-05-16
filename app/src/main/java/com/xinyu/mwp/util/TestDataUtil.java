@@ -98,8 +98,8 @@ public class TestDataUtil {
             RechargeRecordEntity entity = new RechargeRecordEntity();
             entity.setTime("2017年" + (i + 1) + "月");
             List<RechargeRecordItemEntity> itemEntities = new ArrayList<>();
-            for (int j = 0; j < 30; j++) {
-                RechargeRecordItemEntity itemEntity = new RechargeRecordItemEntity();
+//            for (int j = 0; j < 30; j++) {
+//                RechargeRecordItemEntity itemEntity = new RechargeRecordItemEntity();
 //                itemEntity.setMoney(String.valueOf(1999 + i));
 ////                itemEntity.setStatus(String.valueOf(new Random().nextInt(2)));
 //                itemEntity.setIcon(ImageUtil.getRandomUrl());
@@ -108,7 +108,7 @@ public class TestDataUtil {
 //                itemEntity.setTimeDate("11-11");
 //                itemEntity.setTimeWeek("周五");
 //                itemEntities.add(itemEntity);
-            }
+//            }
             entity.setInfo(itemEntities);
             rrEntities.add(entity);
         }

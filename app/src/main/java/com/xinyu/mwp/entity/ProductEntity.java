@@ -12,7 +12,7 @@ public class ProductEntity extends BaseEntity {
     private double deferred;
     private double depositFee;
     private String exchangeName;
-    private int id;
+    private long id;  //商品id
     private int maxLot;
     private int minLot;
     private String name;
@@ -84,11 +84,11 @@ public class ProductEntity extends BaseEntity {
         this.exchangeName = exchangeName;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

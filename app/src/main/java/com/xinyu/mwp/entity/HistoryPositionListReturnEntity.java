@@ -29,7 +29,7 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
 
     private boolean result;
     private long positionId;
-    private int id;
+    private long id;
     private String code;
     private String typeCode;
     private String name;
@@ -82,11 +82,11 @@ public class HistoryPositionListReturnEntity extends BaseEntity {
         this.positionId = positionId;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
