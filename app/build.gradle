@@ -8,7 +8,7 @@ android {
         applicationId "com.xinyu.mwp"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 1
+        versionCode 20170511
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -35,7 +35,7 @@ android {
     /**  混淆配置 **/
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
             jniDebuggable false
@@ -94,4 +94,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+    compile 'com.qiangxi.checkupdatelibrary:checkupdatelibrary:1.1.2@aar'
 }

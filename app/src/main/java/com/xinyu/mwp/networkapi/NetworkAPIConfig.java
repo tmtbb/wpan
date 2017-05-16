@@ -56,11 +56,11 @@ public class NetworkAPIConfig {
 
     }
 
-    public int getUserId() {
+    public Object getUserId() {
         return getConfig(UserIdKey);
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         config.put(UserIdKey,userId);
     }
 

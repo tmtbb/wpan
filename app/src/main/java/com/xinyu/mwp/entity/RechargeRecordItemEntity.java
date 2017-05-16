@@ -21,7 +21,7 @@ public class RechargeRecordItemEntity extends BaseEntity {
     @FieldJsonKey("rid")
     private long rid;
     @FieldJsonKey("id")
-    private int id;
+    private long id;
     @FieldJsonKey("amount")
     private double amount;
     @FieldJsonKey("depositTime")
@@ -47,11 +47,11 @@ public class RechargeRecordItemEntity extends BaseEntity {
         this.rid = rid;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

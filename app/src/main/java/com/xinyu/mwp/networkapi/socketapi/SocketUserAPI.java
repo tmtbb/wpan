@@ -3,6 +3,7 @@ package com.xinyu.mwp.networkapi.socketapi;
 import com.xinyu.mwp.application.MyApplication;
 import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BalanceInfoEntity;
+import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.LoginVerifyCodeEntry;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
@@ -64,25 +65,27 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     }
 
     @Override
-    public void verifyCode(String phone, int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener) {
+    public void verifyCode(String phone, int verifyType, int type, OnAPIListener<VerifyCodeReturnEntry> listener) {
         LogUtil.d("负责加入网络请求---获取短信验证码--------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
         map.put("verifyType", verifyType);  //0-注册 1-登录 2-更新服务（暂用 1）
         map.put("phone", phone);
+        map.put("type", type);  //0-注册  1-修改密码
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.VerifyCode,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, VerifyCodeReturnEntry.class, listener);
     }
 
     @Override
-    public void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<Object> listener) {
+    public void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<VerifyCodeReturnEntry> listener) {
         LogUtil.d("修改用户密码-----------");
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("phone", phone);
         map.put("pwd", pwd);
+        map.put("vCode", vCode);
         map.put("type", type);  //0：登录密码 1：交易密码，提现密码
         map.put("timestamp", LoginVerifyCodeEntry.timestamp);
         map.put("vToken", LoginVerifyCodeEntry.vToken);
@@ -141,5 +144,14 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.WXBind,
                 SocketAPIConstant.ReqeutType.User, map);
         requestEntity(socketDataPacket, RegisterReturnEntity.class, listener);
+    }
+
+    @Override
+    public void update(OnAPIListener<CheckUpdateInfoEntity> listener) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("ttype", 1);
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Update,
+                SocketAPIConstant.ReqeutType.User, map);
+        requestEntity(socketDataPacket, CheckUpdateInfoEntity.class, listener);
     }
 }

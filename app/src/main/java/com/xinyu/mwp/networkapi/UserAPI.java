@@ -1,6 +1,7 @@
 package com.xinyu.mwp.networkapi;
 
 import com.xinyu.mwp.entity.BalanceInfoEntity;
+import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.RegisterReturnEntity;
 import com.xinyu.mwp.entity.VerifyCodeReturnEntry;
@@ -19,9 +20,9 @@ public interface UserAPI {
 
     void register(String phone, String password, String vCode, long memberId, String agentId, String recommend, OnAPIListener<RegisterReturnEntity> listener);
 
-    void verifyCode(String phone, int verifyType, OnAPIListener<VerifyCodeReturnEntry> listener);
+    void verifyCode(String phone, int verifyType, int type, OnAPIListener<VerifyCodeReturnEntry> listener);
 
-    void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<Object> listener); //修改交易/用户密码
+    void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<VerifyCodeReturnEntry> listener); //修改交易/用户密码
 
     void test(int testID, OnAPIListener<Object> listener);
 
@@ -30,4 +31,6 @@ public interface UserAPI {
     void balance(OnAPIListener<BalanceInfoEntity> listener);
 
     void bindNumber(String phone, String openid, String password, String vCode, long memberId, String agentId, String recommend, String nickname, String headerUrl, OnAPIListener<RegisterReturnEntity> listener);
+
+    void update(OnAPIListener<CheckUpdateInfoEntity> listener);
 }

@@ -11,16 +11,12 @@ import com.xinyu.mwp.activity.base.BaseActivity;
 import com.xinyu.mwp.entity.BankInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.listener.OnAPIListener;
-import com.xinyu.mwp.listener.OnChildViewClickListener;
 import com.xinyu.mwp.listener.OnTextChangeListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.StringUtil;
-import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CellEditView;
-import com.xinyu.mwp.view.CellView;
 import com.xinyu.mwp.view.SimpleTextWatcher;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,7 +60,7 @@ public class AddBankInfoActivity_1 extends BaseActivity {
             public void onError(Throwable ex) {
                 ex.printStackTrace();
 //                ToastUtils.show(context,"请输入正确的银行卡号");
-                ErrorCodeUtil.showEeorMsg(context,ex);
+                ErrorCodeUtil.showEeorMsg(context, ex);
             }
 
             @Override

@@ -8,7 +8,7 @@ public class WithDrawCashReturnEntity extends BaseEntity {
      * {"balance":992360,"result":1}
      */
     private long wid;
-    private int id;
+    private long id;
     private double charge;
     private double amount;
     private String withdrawTime;
@@ -48,11 +48,11 @@ public class WithDrawCashReturnEntity extends BaseEntity {
         this.wid = wid;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

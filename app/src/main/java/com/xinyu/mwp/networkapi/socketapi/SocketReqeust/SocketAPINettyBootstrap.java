@@ -87,7 +87,7 @@ public class SocketAPINettyBootstrap {
             if (onConnectListener != null) {
                 onConnectListener.onFailure(tag);
             }
-            SystemClock.sleep(15 * 1000); //睡眠,重新链接
+            SystemClock.sleep(10 * 1000); //睡眠,重新链接
             startConnect(tag);
             return false;
         }

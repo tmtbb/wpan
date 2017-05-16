@@ -118,8 +118,10 @@ public class CashActivity extends BaseControllerActivity {
         money.setOnChildViewClickListener(new OnChildViewClickListener() {
             @Override
             public void onChildViewClick(View childView, int action, Object obj) {
-                money.setEditTextString(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
-                LogUtil.d("提现全部余额:" + NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+                if (UserManager.getInstance().getUserEntity() != null) {
+                    money.setEditTextString(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+                    LogUtil.d("提现全部余额:" + NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
+                }
             }
         });
     }

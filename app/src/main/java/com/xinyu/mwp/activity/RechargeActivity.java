@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -82,7 +83,7 @@ public class RechargeActivity extends BaseRefreshActivity {
         rightText.setText("充值记录");
         rightText.setVisibility(View.VISIBLE);
         Utils.closeSoftKeyboard(rechargeMoney);
-        NumberUtils.setEditTextPoint(rechargeMoney, 2);  //设置充值金额的小数位数
+        rechargeMoney.setInputType(InputType.TYPE_CLASS_NUMBER);
 //        api = WXAPIFactory.createWXAPI(context, null);
 //        api.registerApp(Constant.APP_ID);
 
@@ -125,13 +126,15 @@ public class RechargeActivity extends BaseRefreshActivity {
             ToastUtils.show(context, "充值金额必须大于等于100元");
             return;
         }
+        if (price > 50000) {
+            ToastUtils.show(context, "单笔充值金额最高为5万");
+            return;
+        }
 
         if (choice == 0) {
             payType = Constant.payType.WECHAT_QRCODE_PAY;
-//            ToastUtils.show(context, "微信支付");
 //            requestWXPay(title, price);
         } else {
-            // showToast("银联支付");
             //requestUnionPay(title, price);
             payType = Constant.payType.ALIPAY_QRCODE_PAY;
         }

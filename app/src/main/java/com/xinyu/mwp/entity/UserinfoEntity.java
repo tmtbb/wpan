@@ -9,7 +9,7 @@ import com.xinyu.mwp.annotation.FieldJsonKey;
 public class UserinfoEntity extends BaseEntity {
 
     @FieldJsonKey("id")
-    private int id;
+    private long id;
 //    @FieldJsonKey("screenName")
 //    private String screenName;
 //    @FieldJsonKey("memberId")
@@ -45,15 +45,15 @@ public class UserinfoEntity extends BaseEntity {
         this.type = type;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-//    public String getScreenName() {
+    //    public String getScreenName() {
 //        return screenName;
 //    }
 //

@@ -13,7 +13,7 @@ public class BankCardEntity extends BaseEntity {
     @FieldJsonKey("bid")
     private long bid;
     @FieldJsonKey("id")
-    private int id;
+    private long id;
     @FieldJsonKey("bank")
     private String bank;
     @FieldJsonKey("branchBank")
@@ -63,11 +63,11 @@ public class BankCardEntity extends BaseEntity {
         this.bid = bid;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

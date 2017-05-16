@@ -10,7 +10,7 @@ public class UserEntity extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @FieldJsonKey("id")
-    private int id = -1;
+    private long id = -1;
     @FieldJsonKey("token")
     private String token = "";
     @FieldJsonKey("icon")
@@ -210,11 +210,11 @@ public class UserEntity extends BaseEntity implements Serializable {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

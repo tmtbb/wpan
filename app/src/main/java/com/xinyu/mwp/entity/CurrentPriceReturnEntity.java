@@ -1,6 +1,5 @@
 package com.xinyu.mwp.entity;
 
-import java.util.List;
 
 /**
  * Created by Administrator on 2017/2/23.
@@ -31,7 +30,7 @@ public class CurrentPriceReturnEntity extends BaseEntity {
     private double closedYesterdayPrice;
     private double highPrice;
     private double lowPrice;
-    private int priceTime;
+    private long priceTime;
     private double upDown;
     private double pchg;
     private String symbol;
@@ -142,11 +141,11 @@ public class CurrentPriceReturnEntity extends BaseEntity {
         this.lowPrice = lowPrice;
     }
 
-    public int getPriceTime() {
+    public long getPriceTime() {
         return priceTime;
     }
 
-    public void setPriceTime(int priceTime) {
+    public void setPriceTime(long priceTime) {
         this.priceTime = priceTime;
     }
 

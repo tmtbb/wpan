@@ -14,7 +14,7 @@ public class WXAccessTokenEntity extends BaseEntity {
      */
 
     private String access_token;
-    private int expires_in;
+    private long expires_in;  //接口调用凭证超时时间
     private String refresh_token;
     private String openid;
     private String scope;
@@ -27,11 +27,11 @@ public class WXAccessTokenEntity extends BaseEntity {
         this.access_token = access_token;
     }
 
-    public int getExpires_in() {
+    public long getExpires_in() {
         return expires_in;
     }
 
-    public void setExpires_in(int expires_in) {
+    public void setExpires_in(long expires_in) {
         this.expires_in = expires_in;
     }
 

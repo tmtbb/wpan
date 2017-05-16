@@ -104,7 +104,8 @@ public class RegisterActivity extends BaseControllerActivity {
                     return;
                 }
                 int verifyType = 0;// 0-注册 1-登录 2-更新服务
-                VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText);
+                int type = 0;  //0-注册
+                VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText,type);
             }
         });
 
