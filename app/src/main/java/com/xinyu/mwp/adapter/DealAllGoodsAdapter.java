@@ -152,10 +152,10 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             String type = "";
             if (historyData.getBuySell() == 1) {
                 buyType.updateContentLeftImage(R.mipmap.icon_buyup);
-                type = "买涨";
+                type = "买入";
             } else if (historyData.getBuySell() == -1) {
                 buyType.updateContentLeftImage(R.mipmap.icon_buydown);
-                type = "买跌";
+                type = "卖出";
             }
             StringBuffer sb = new StringBuffer();
             sb.append(type);
@@ -187,10 +187,10 @@ public class DealAllGoodsAdapter extends BaseListViewAdapter<HistoryPositionList
             String type = "";
             if (historyData.getBuySell() == 1) {
                 buyType.updateContentLeftImage(R.mipmap.icon_buyup);
-                type = "买涨";
+                type = "买入";
             } else if (historyData.getBuySell() == -1) {
                 buyType.updateContentLeftImage(R.mipmap.icon_buydown);
-                type = "买跌";
+                type = "卖出";
             }
             StringBuffer sb = new StringBuffer();
             sb.append(type);

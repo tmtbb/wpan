@@ -348,16 +348,17 @@ public class IndexFragment extends BaseRefreshFragment {
     private void showDialog(int type) {
         String buyType = null;
         if (type == Constant.TYPE_BUY_MINUS) {
-            buyType = "买跌";
+            buyType = "卖出";
         } else if (type == Constant.TYPE_BUY_PLUS) {
-            buyType = "买涨";
+            buyType = "买入";
         }
         CustomDialog.Builder builder = new CustomDialog.Builder(context, type);
+        final String finalBuyType = buyType;
         builder.setPositiveButton(buyType, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 //买涨点击后操作
-                ToastUtils.show(context, "买跌");
+                ToastUtils.show(context, finalBuyType);
             }
         });
 

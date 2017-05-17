@@ -24,7 +24,7 @@ public interface SocketAPIConstant {
         Short VerifyCode = 3011;
         Short Register = 3001;
         Short DealPwd = 3005;
-        Short Test = 3000;
+        Short Heart = 3019;
         Short ProductList = 5005;
         Short TimeLine = 4003;
         Short CurrentPrice = 4001;

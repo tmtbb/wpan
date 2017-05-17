@@ -26,6 +26,7 @@ import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.SHA256Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -197,6 +198,7 @@ public class RegisterActivity extends BaseControllerActivity {
                         } else if (registerEntity.result == 1) {
                             ToastUtils.show(context, "注册成功");
 //                            loginGetUserInfo(newPwd);  //登录请求数据
+                            SPUtils.putString("phone", phone);
                             finish();
                         }
                     }
@@ -227,6 +229,7 @@ public class RegisterActivity extends BaseControllerActivity {
                         UserManager.getInstance().saveUserEntity(en);
                         UserManager.getInstance().setLogin(true);
                         MyApplication.getApplication().onUserUpdate(true);
+                        SPUtils.putString("phone", loginReturnEntity.getUserinfo().getPhone());
 //                        finish();
                         LogUtil.d("调用登录成功了");
                         //绑定成功,登录成功--发送消息,进入首页

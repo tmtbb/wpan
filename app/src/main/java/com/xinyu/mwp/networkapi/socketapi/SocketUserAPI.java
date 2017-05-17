@@ -95,13 +95,14 @@ public class SocketUserAPI extends SocketBaseAPI implements UserAPI {
     }
 
     @Override
-    public void test(int testID, OnAPIListener<Object> listener) {
+    public void heart(OnAPIListener<Object> listener) {
         LogUtil.d("心跳包-----------");
         HashMap<String, Object> map = new HashMap<>();
-        map.put("id", testID);
-        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Test,
+        map.put("uid", NetworkAPIFactoryImpl.getConfig().getUserId());
+        map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
+        SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Heart,
                 SocketAPIConstant.ReqeutType.User, map);
-        requestEntity(socketDataPacket, VerifyCodeReturnEntry.class, listener);
+      requestJsonObject(socketDataPacket,listener);
     }
 
     @Override

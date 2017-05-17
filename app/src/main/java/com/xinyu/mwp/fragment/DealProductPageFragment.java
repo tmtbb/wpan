@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.DealDetailFragmentActivity;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.activity.RechargeActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
@@ -589,7 +590,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 //                next(UserAssetsActivity.class);
                 break;
             case R.id.ll_history_record:  //仓位历史记录
-                next(PositionHistoryActivity.class);
+               // next(PositionHistoryActivity.class);
+                next(DealDetailFragmentActivity.class);
                 break;
             case R.id.tv_exchange_buy_plus:
                 showDialog(Constant.TYPE_BUY_PLUS);
@@ -672,10 +674,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         String buyType = null;
         int buySell = 1;
         if (type == Constant.TYPE_BUY_MINUS) {
-            buyType = "买跌";
+            buyType = "卖出";
             buySell = -1;
         } else if (type == Constant.TYPE_BUY_PLUS) {
-            buyType = "买涨";
+            buyType = "买入";
             buySell = 1;
         }
         int maxLot = mUnitViewList.get(newItemIndex).getMaxLot();

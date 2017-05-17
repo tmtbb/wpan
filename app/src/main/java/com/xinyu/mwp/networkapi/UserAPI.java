@@ -24,7 +24,7 @@ public interface UserAPI {
 
     void resetDealPwd(String phone, String pwd, String vCode, int type, OnAPIListener<VerifyCodeReturnEntry> listener); //修改交易/用户密码
 
-    void test(int testID, OnAPIListener<Object> listener);
+    void heart(OnAPIListener<Object> listener);
 
     void loginWithToken(OnAPIListener<LoginReturnEntity> listener);
 

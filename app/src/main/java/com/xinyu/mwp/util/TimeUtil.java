@@ -33,7 +33,7 @@ public class TimeUtil {
     }
 
     public static String getDateAndTime(long time) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd  HH:mm:ss");
         return format.format(new Date(time));
     }
 

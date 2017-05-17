@@ -31,7 +31,6 @@
                 android:id="@+id/branch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:celledit_hint="请选择银行支行"
                 app:celledit_name="银行支行" />
 
             <com.xinyu.mwp.view.CellEditView
@@ -46,14 +45,12 @@
                 android:id="@+id/cardNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:celledit_hint="收款人卡号"
                 app:celledit_name="卡号" />
 
             <com.xinyu.mwp.view.CellEditView
                 android:id="@+id/cardName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:celledit_hint="收款人姓名"
                 app:celledit_name="姓名" />
 
             <include layout="@layout/ly_space" />
@@ -79,13 +76,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:celledit_hint="备注"
-                app:celledit_name="添加备注" />
+                app:celledit_name="添加备注"
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_15"
                 android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_15"
                 android:text="@string/cash_service_charge"
                 android:textColor="@color/color_666666" />
 

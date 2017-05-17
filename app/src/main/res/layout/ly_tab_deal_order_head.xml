@@ -146,7 +146,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_tv_exchange_plus_corner5"
                 android:gravity="center"
-                android:text="买涨"
+                android:text="买入"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -159,7 +159,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_tv_exchange_minus_corner5"
                 android:gravity="center"
-                android:text="买跌"
+                android:text="卖出"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -197,7 +197,7 @@
                 android:layout_marginRight="@dimen/dp_15"
                 android:drawablePadding="@dimen/dp_7"
                 android:drawableRight="@mipmap/ic_drawer_right"
-                android:text="历史交易"
+                android:text="交易明细"
                 android:textColor="@color/color_666666"
                 android:textSize="@dimen/fontSize_15sp" />
         </LinearLayout>

@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cell_icon="@mipmap/icon_buyup"
-        app:cell_name="买涨" />
+        app:cell_name="买入" />
 
     <com.xinyu.mwp.view.CellView
         android:id="@+id/buyDown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cell_icon="@mipmap/icon_buydown"
-        app:cell_name="买跌" />
+        app:cell_name="卖出" />
 
     <com.xinyu.mwp.view.CellView
         android:id="@+id/createDepot"

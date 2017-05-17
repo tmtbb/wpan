@@ -55,7 +55,7 @@ public class ErrorCodeUtil {
                 msg = "当前手机号码已经被注册";
                 break;
             case -302:
-                msg = "密码错误";
+                msg = "账户或密码错误，请重新填写";
                 break;
             case -303:
                 msg = "当前手机号码已被注册";

@@ -3,6 +3,7 @@ package com.xinyu.mwp.application;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.HeartPackageService;
 import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
@@ -31,6 +33,7 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.FileCacheUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
+import com.xinyu.mwp.util.ServiceUtils;
 import com.xinyu.mwp.util.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,6 +51,7 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
     private static MyApplication application;
     public static List<Activity> activityList = new ArrayList<Activity>();
     public static Handler mainHandler;
+    private Intent intent;
 
     @Override
     public void onCreate() {
@@ -55,6 +59,7 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         super.onCreate();
         application = this;
         initNetworkAPIConfig();
+        initHeartPackage();
         initImageLoader();
         initUser();
         checkToken();
@@ -159,6 +164,8 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
                     .getSystemService(Context.NOTIFICATION_SERVICE))
                     .cancelAll();
         }
+        LogUtil.d("程序退出了----关掉服务---------------");
+        stopService(intent);
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
@@ -252,5 +259,14 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             e.printStackTrace();
             return -1;
         }
+    }
+
+    private void initHeartPackage() {
+        LogUtil.d("服务sss的运行状态是:" + ServiceUtils.isServiceRunning(this, "com.xinyu.mwp.networkapi.HeartPackageService"));
+        intent = new Intent(this, HeartPackageService.class);
+        if (!ServiceUtils.isServiceRunning(this, "com.xinyu.mwp.networkapi.HeartPackageService")) {
+            startService(intent);
+        }
+
     }
 }
