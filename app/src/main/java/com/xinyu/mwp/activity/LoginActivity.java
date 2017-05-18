@@ -246,4 +246,12 @@ public class LoginActivity extends BaseControllerActivity {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.d("登录可见的-------------");
+        String result = SPUtils.getString("phone", "");
+        userNameEditText.setEditTextString(result);
+    }
 }

@@ -26,6 +26,7 @@ import com.xinyu.mwp.util.ErrorCodeUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
 import com.xinyu.mwp.util.SHA256Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -87,7 +88,7 @@ public class RegisterActivity extends BaseControllerActivity {
 
         setTitle(title);
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText);
+        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText, memberUnit, agentId, refereeId);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
         memberUnit.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
     }
@@ -105,7 +106,7 @@ public class RegisterActivity extends BaseControllerActivity {
                 }
                 int verifyType = 0;// 0-注册 1-登录 2-更新服务
                 int type = 0;  //0-注册
-                VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText,type);
+                VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText, type);
             }
         });
 
@@ -171,7 +172,7 @@ public class RegisterActivity extends BaseControllerActivity {
     private void register() {
         //本地校验验证码   MD5(yd1742653sd + code_time + rand_code + phone)
         if (!RegisterVerifyCodeEntry.vToken.equals(MD5Util.MD5("yd1742653sd" + RegisterVerifyCodeEntry.timeStamp + vCode))) {
-           ToastUtils.show(context,"验证码错误,请重新输入");
+            ToastUtils.show(context, "验证码错误,请重新输入");
             closeLoader();
             return;
         }
@@ -197,6 +198,7 @@ public class RegisterActivity extends BaseControllerActivity {
                         } else if (registerEntity.result == 1) {
                             ToastUtils.show(context, "注册成功");
 //                            loginGetUserInfo(newPwd);  //登录请求数据
+                            SPUtils.putString("phone", phone);
                             finish();
                         }
                     }
@@ -227,6 +229,7 @@ public class RegisterActivity extends BaseControllerActivity {
                         UserManager.getInstance().saveUserEntity(en);
                         UserManager.getInstance().setLogin(true);
                         MyApplication.getApplication().onUserUpdate(true);
+                        SPUtils.putString("phone", loginReturnEntity.getUserinfo().getPhone());
 //                        finish();
                         LogUtil.d("调用登录成功了");
                         //绑定成功,登录成功--发送消息,进入首页

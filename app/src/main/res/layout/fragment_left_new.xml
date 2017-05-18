@@ -9,16 +9,16 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_20"
-        android:background="@color/default_main_color">
+        android:background="@color/default_main_color"
+        android:paddingTop="@dimen/dp_20">
 
         <ImageView
             android:id="@+id/iv_member"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10"
-            android:src="@mipmap/icon_member" />
+            android:src="@mipmap/icon_member"
+            android:visibility="invisible" />
     </FrameLayout>
 
 
@@ -32,7 +32,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-
+            android:paddingBottom="@dimen/dp_1"
+            android:paddingTop="@dimen/dp_1"
             android:text="账户余额(元)"
             android:textColor="@color/white"
             android:textSize="@dimen/fontSize_14sp" />
@@ -227,6 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
                 app:cell_icon="@mipmap/icon_detail"
+                android:visibility="gone"
                 app:cell_name="交易明细" />
 
             <com.xinyu.mwp.view.CellView

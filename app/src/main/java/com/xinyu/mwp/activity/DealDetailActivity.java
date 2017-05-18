@@ -34,6 +34,14 @@ public class DealDetailActivity extends BaseControllerActivity {
     private CellView earnestPercent;
     @ViewInject(R.id.dealCounter)
     private CellView dealCounter;
+    @ViewInject(R.id.tv_open_position_price)
+    private CellView openPositionPrice;
+    @ViewInject(R.id.tv_open_position_time)
+    private CellView openPositionTime;
+    @ViewInject(R.id.tv_close_position_price)
+    private CellView closePositionPrce;
+    @ViewInject(R.id.tv_close_position_time)
+    private CellView closePositionTime;
     private HistoryPositionListReturnEntity entity;
 
     @Override
@@ -58,9 +66,9 @@ public class DealDetailActivity extends BaseControllerActivity {
             public void run() {
                 String type = "";
                 if (entity.getBuySell() == -1) {
-                    type = "买跌";
+                    type = "卖出";
                 } else if (entity.getBuySell() == 1) {
-                    type = "买涨";
+                    type = "买入";
                 }
                 dealType.updateContent(type);
                 dealKinds.updateContent(entity.getName());
@@ -70,6 +78,10 @@ public class DealDetailActivity extends BaseControllerActivity {
                 numberFormat.setMinimumFractionDigits(2);
                 dealCounter.updateContent(numberFormat.format(entity.getOpenCharge()));
                 earnestPercent.updateContent(numberFormat.format(entity.getOpenCharge()));//定金比例
+                openPositionPrice.updateContent(entity.getOpenPrice() + "");
+                openPositionTime.updateContent(TimeUtil.getDateAndTime(entity.getPositionTime() * 1000));
+                closePositionPrce.updateContent(entity.getClosePrice() + "");
+                closePositionTime.updateContent(TimeUtil.getDateAndTime(entity.getCloseTime() * 1000));
                 rootLayout.setVisibility(View.VISIBLE);
                 closeLoader();
             }

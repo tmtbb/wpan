@@ -95,6 +95,9 @@ public class CashActivity extends BaseControllerActivity {
             EventBus.getDefault().register(this);
             flag = false;
         }
+        branch.getEdit().setFocusable(false);
+        cardNo.getEdit().setFocusable(false);
+        cardName.getEdit().setFocusable(false);
     }
 
     /*
@@ -108,6 +111,7 @@ public class CashActivity extends BaseControllerActivity {
             branch.setEditTextString(eventBusMessage.getBranchBank());
             cardNo.setEditTextString(eventBusMessage.getCardNo());
             cardName.setEditTextString(eventBusMessage.getName());
+            money.getEdit().requestFocus();
         }
     }
 
@@ -120,7 +124,6 @@ public class CashActivity extends BaseControllerActivity {
             public void onChildViewClick(View childView, int action, Object obj) {
                 if (UserManager.getInstance().getUserEntity() != null) {
                     money.setEditTextString(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
-                    LogUtil.d("提现全部余额:" + NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()));
                 }
             }
         });
@@ -165,14 +168,15 @@ public class CashActivity extends BaseControllerActivity {
             ToastUtils.show(context, "提现金额超出范围");
             return;
         }
-        long bid = bankCardEntity.getBid();
+        showLoader("正在处理...");
         NetworkAPIFactoryImpl.getDealAPI().cashOut(bankCardEntity.getBid(),
-                (long) price, bankName, branchBankName, cardNumber, userName,
+                price, bankName, branchBankName, cardNumber, userName,
                 new OnAPIListener<CashOutReturnEntity>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         ErrorCodeUtil.showEeorMsg(context, ex);
+                        closeLoader();
                         LogUtil.d("第三方提现失败");
                     }
 
@@ -180,6 +184,7 @@ public class CashActivity extends BaseControllerActivity {
                     public void onSuccess(CashOutReturnEntity cashOutReturnEntity) {
                         LogUtil.d("第三方提现成功:" + cashOutReturnEntity.toString());
                         cashOutReturnEntity.setBank(bankCardEntity.getBank());
+                        closeLoader();
 //                        withDrawCashReturnEntity.setBank(bankCardEntity.getBank());
 //                        withDrawCashReturnEntity.setAmount(price);
 //                        UserManager.getInstance().getUserEntity().setBalance(withDrawCashReturnEntity.getBalance());

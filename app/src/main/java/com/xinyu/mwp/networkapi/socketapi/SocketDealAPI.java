@@ -1,6 +1,5 @@
 package com.xinyu.mwp.networkapi.socketapi;
 
-import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.constant.SocketAPIConstant;
 import com.xinyu.mwp.entity.BankCardEntity;
 import com.xinyu.mwp.entity.BankInfoEntity;
@@ -225,7 +224,7 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
     }
 
     @Override
-    public void cashOut(long bid,long amount, String receiverBankName, String receiverBranchBankName,
+    public void cashOut(long bid,double amount, String receiverBankName, String receiverBranchBankName,
                         String receiverCardNo, String receiverAccountName, OnAPIListener<CashOutReturnEntity> listener) {
         LogUtil.d("第三方提现");
         HashMap<String, Object> map = new HashMap<>();

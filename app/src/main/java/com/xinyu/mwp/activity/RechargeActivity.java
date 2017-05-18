@@ -179,12 +179,14 @@ public class RechargeActivity extends BaseRefreshActivity {
     private void requestPayMent(long price) {
         String outTradeNo = ""; //订单号
         final String content = "";  //描述
+        showLoader("正在处理...");
         NetworkAPIFactoryImpl.getDealAPI().payment(outTradeNo, price, content, payType,
                 new OnAPIListener<UnionPayReturnEntity>() {
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         LogUtil.d("调用第三方失败");
+                        closeLoader();
                         ErrorCodeUtil.showEeorMsg(context, ex);
                     }
 
@@ -195,6 +197,7 @@ public class RechargeActivity extends BaseRefreshActivity {
 //                bundle.putSerializable("payment", unionPayReturnEntity);
 //                intent.putExtra("pay", bundle);
 //                startActivity(intent);
+                        closeLoader();
                         unionPayReturnEntity.setPayType(payType);
                         LogUtil.d("模拟进入二维码界面");
                         Intent intent = new Intent(context, PayORCodeActivity.class);

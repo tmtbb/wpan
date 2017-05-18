@@ -10,6 +10,7 @@ import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.util.BankInfoUtil;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -61,9 +62,9 @@ public class CashRecordAdapter extends BaseListViewAdapter<WithDrawCashReturnEnt
         protected void update(WithDrawCashReturnEntity data) {
             date.setText(data.getWithdrawTime().substring(0, 10));
             time.setText(data.getWithdrawTime().substring(11, 19));
-            money.setText(data.getAmount() + "");
+            money.setText(NumberUtils.halfAdjust2(data.getAmount()));
             icon.setImageResource(BankInfoUtil.getIcon(data.getBank()));
-            bankInfo.setText(String.format("提现到%s",data.getBank()));
+            bankInfo.setText(String.format("提现到%s", data.getBank()));
             switch (data.getStatus()) {
                 case 0:
                     status.setText("处理中");

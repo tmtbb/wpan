@@ -64,7 +64,7 @@ public interface DealAPI {
     void cash(double money, long cardId, String pwd, OnAPIListener<WithDrawCashReturnEntity> listener);
 
     //第三方  提现
-    void cashOut(long bid, long amount, String receiverBankName,
+    void cashOut(long bid, double amount, String receiverBankName,
                  String receiverBranchBankName, String receiverCardNo, String receiverAccountName,
                  OnAPIListener<CashOutReturnEntity> listener);
 

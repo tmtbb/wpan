@@ -10,6 +10,7 @@ import com.xinyu.mwp.activity.base.BaseControllerActivity;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.CashOutReturnEntity;
 import com.xinyu.mwp.util.BankInfoUtil;
+import com.xinyu.mwp.util.NumberUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -71,6 +72,6 @@ public class CashResaultActivity extends BaseControllerActivity {
         }
         bankIcon.setImageResource(BankInfoUtil.getIcon(entity.getBank()));
         bankName.setText(entity.getBank());
-        money.setText(entity.getAmount() + "");
+        money.setText(NumberUtils.halfAdjust2(entity.getAmount()));
     }
 }

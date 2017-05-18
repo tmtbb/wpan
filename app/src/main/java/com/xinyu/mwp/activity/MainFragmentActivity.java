@@ -1,5 +1,7 @@
 package com.xinyu.mwp.activity;
+
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
@@ -10,10 +12,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.qiangxi.checkupdatelibrary.dialog.UpdateDialog;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseMultiFragmentActivity;
 import com.xinyu.mwp.application.MyApplication;
+import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
 import com.xinyu.mwp.fragment.DealFragment;
@@ -25,11 +29,14 @@ import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.ActivityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
+import com.xinyu.mwp.view.CustomDialog;
 import com.xinyu.mwp.view.ForceUpdateDialog;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.xutils.view.annotation.ViewInject;
+
 import static com.xinyu.mwp.view.ForceUpdateDialog.FORCE_UPDATE_DIALOG_PERMISSION_REQUEST_CODE;
 import static com.qiangxi.checkupdatelibrary.dialog.UpdateDialog.UPDATE_DIALOG_PERMISSION_REQUEST_CODE;
 
@@ -144,9 +151,8 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
                         next(RechargeActivity.class);
                         break;
                     case R.id.logout:
-                        UserManager.getInstance().logout();
-                        ToastUtils.show(context, "退出登录");
-                        next(LoginActivity.class);
+                        showAlertDialog();
+
                         break;
                 }
             }
@@ -171,6 +177,25 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
             public void onDrawerStateChanged(int newState) {
             }
         });
+    }
+
+    private void showAlertDialog() {
+        CustomDialog.Builder builder = new CustomDialog.Builder(context, Constant.TYPE_INSUFFICIENT_BALANCE);
+        builder.setMessage(getResources().getString(R.string.aleret_layout))
+                .setPositiveButton(R.string.aleret_quit, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        UserManager.getInstance().logout();
+                        ToastUtils.show(context, "退出登录");
+                        next(LoginActivity.class);
+                    }
+                }).setNegativeButton(R.string.aleret_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     public void postNext(final Class clazz) {
@@ -234,20 +259,6 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        UserManager.getInstance().unregisterUserUpdateListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtil.d("执行onResume");
-        if (UserManager.getInstance().isLogin()) {
-            leftFragment.userUpdate();
-        }
-    }
 
     private void judgeIsLogin() {
         if (!UserManager.getInstance().isLogin()) {  //退出登录或者断网的状态下,直接跳转到登录界面
@@ -332,4 +343,20 @@ public class MainFragmentActivity extends BaseMultiFragmentActivity implements O
         EventBus.getDefault().removeAllStickyEvents();
         EventBus.getDefault().unregister(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        UserManager.getInstance().unregisterUserUpdateListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.d("执行onResume");
+        if (UserManager.getInstance().isLogin()) {
+            leftFragment.userUpdate();
+        }
+    }
+
 }

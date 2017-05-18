@@ -270,7 +270,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/default_red"
-                android:text="买涨"
+                android:text="买入"
                 android:textColor="@color/white"
                 android:textSize="@dimen/fontSize_18sp" />
         </LinearLayout>

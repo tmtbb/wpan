@@ -41,6 +41,7 @@
             android:id="@+id/dealTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:cell_arrow_visible="false"
             app:cell_content_color="@color/font_666"
             app:cell_content_size="@dimen/dp_16"
@@ -61,8 +62,8 @@
             android:id="@+id/earnest_percent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cell_arrow_visible="false"
             android:visibility="gone"
+            app:cell_arrow_visible="false"
             app:cell_content_color="@color/font_666"
             app:cell_content_size="@dimen/dp_16"
             app:cell_icon_visible="false"
@@ -77,6 +78,46 @@
             app:cell_content_size="@dimen/dp_16"
             app:cell_icon_visible="false"
             app:cell_name="手续费率" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/tv_open_position_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="建仓价格" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/tv_open_position_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="建仓时间" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/tv_close_position_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="平仓价格" />
+
+        <com.xinyu.mwp.view.CellView
+            android:id="@+id/tv_close_position_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cell_arrow_visible="false"
+            app:cell_content_color="@color/font_666"
+            app:cell_content_size="@dimen/dp_16"
+            app:cell_icon_visible="false"
+            app:cell_name="平仓时间" />
     </LinearLayout>
 
 </LinearLayout>

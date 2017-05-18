@@ -180,6 +180,7 @@ public class CustomDialog extends Dialog {
                 mNegativeButton.setVisibility(View.GONE);
             }
             if (title != null) {
+                mTitle.setVisibility(View.VISIBLE);
                 mTitle.setText(title);
             }
             if (message != null) {

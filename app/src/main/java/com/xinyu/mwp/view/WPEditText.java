@@ -147,6 +147,11 @@ public class WPEditText extends BaseLinearLayout {
 
         return "";
     }
+    public void setEditTextString(String str) {
+        if (editText != null) {
+             editText.setText(str);
+        }
+    }
 
     public View getRightText() {
         return rightText;
