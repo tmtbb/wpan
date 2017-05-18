@@ -215,6 +215,5 @@
         </provider>
 
         <service android:name="com.qiangxi.checkupdatelibrary.service.DownloadService" />
-        <service android:name=".networkapi.HeartPackageService" />
     </application>
 </manifest>

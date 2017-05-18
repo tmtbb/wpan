@@ -1,8 +1,12 @@
 package com.xinyu.mwp.networkapi.socketapi.SocketReqeust;
 
 
+import com.xinyu.mwp.listener.OnAPIListener;
+import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 
 /**
  * Created by yaowang on 2017/2/18.
@@ -32,7 +36,36 @@ public class SocketAPINettyHandler extends SimpleChannelInboundHandler<SocketDat
         SocketAPINettyBootstrap.getInstance().connect(false);
     }
 
-//    public interface OnConnectListener {
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        super.userEventTriggered(ctx, evt);
+
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent e = (IdleStateEvent) evt;
+            switch (e.state()) {
+                case WRITER_IDLE:
+                    sendHeartPackage();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void sendHeartPackage() {
+        NetworkAPIFactoryImpl.getUserAPI().heart(new OnAPIListener<Object>() {
+            @Override
+            public void onError(Throwable ex) {
+                ex.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(Object o) {
+            }
+        });
+    }
+
+    //    public interface OnConnectListener {
 //
 //        void onExist();
 //
