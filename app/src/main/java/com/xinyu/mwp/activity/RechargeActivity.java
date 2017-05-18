@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.unionpay.UPPayAssistEx;
@@ -64,8 +68,9 @@ public class RechargeActivity extends BaseRefreshActivity {
     private CellView rechargeType;
     @ViewInject(R.id.iv_bannerview)
     private ImageView bannerView;
+    @ViewInject(R.id.tv_warm_tip)
+    private TextView warmTip;
     private int choice = 0;
-    //    private IWXAPI api;
     private WXPayReturnEntity wxPayEntity;
     private String payType = Constant.payType.WECHAT_QRCODE_PAY; //默认微信扫码
     private boolean flag = true;
@@ -84,12 +89,15 @@ public class RechargeActivity extends BaseRefreshActivity {
         rightText.setVisibility(View.VISIBLE);
         Utils.closeSoftKeyboard(rechargeMoney);
         rechargeMoney.setInputType(InputType.TYPE_CLASS_NUMBER);
-//        api = WXAPIFactory.createWXAPI(context, null);
-//        api.registerApp(Constant.APP_ID);
+
+        SpannableStringBuilder ssbuilder = new SpannableStringBuilder(getResources().getString(R.string.cash_service_charge));
+        ForegroundColorSpan yellowSpan = new ForegroundColorSpan(getResources().getColor(R.color.red));
+        ssbuilder.setSpan(yellowSpan, 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        warmTip.setText(ssbuilder);
 
         if (flag) {
-            EventBus.getDefault().register(this); // EventBus注册广播()
-            flag = false;//更改标记,使其不会再进行多次注册
+            EventBus.getDefault().register(this);
+            flag = false;
         }
     }
 

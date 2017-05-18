@@ -100,7 +100,10 @@ public class LoginActivity extends BaseControllerActivity {
                     ToastUtils.show(context, "您还未安装微信客户端");
                     return;
                 }
-                ToastUtils.show(context, "微信登录");
+                if ((System.currentTimeMillis() - exitNow) < 2000) {
+                    return;
+                }
+                exitNow = System.currentTimeMillis();
                 final SendAuth.Req req = new SendAuth.Req();
                 req.scope = "snsapi_userinfo";
                 req.state = "wechat_sdk_demo_test";

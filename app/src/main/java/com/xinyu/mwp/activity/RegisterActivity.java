@@ -88,7 +88,7 @@ public class RegisterActivity extends BaseControllerActivity {
 
         setTitle(title);
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText, memberUnit, agentId, refereeId);
+        checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText, memberUnit, agentId);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
         memberUnit.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
     }
@@ -170,7 +170,7 @@ public class RegisterActivity extends BaseControllerActivity {
     }
 
     private void register() {
-        //本地校验验证码   MD5(yd1742653sd + code_time + rand_code + phone)
+//        本地校验验证码   MD5(yd1742653sd + code_time + rand_code + phone)
         if (!RegisterVerifyCodeEntry.vToken.equals(MD5Util.MD5("yd1742653sd" + RegisterVerifyCodeEntry.timeStamp + vCode))) {
             ToastUtils.show(context, "验证码错误,请重新输入");
             closeLoader();

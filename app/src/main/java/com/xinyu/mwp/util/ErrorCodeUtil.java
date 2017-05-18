@@ -55,7 +55,7 @@ public class ErrorCodeUtil {
                 msg = "当前手机号码已经被注册";
                 break;
             case -302:
-                msg = "账户或密码错误，请重新填写";
+                msg = "账号或密码错误，请重新填写";
                 break;
             case -303:
                 msg = "当前手机号码已被注册";
@@ -64,10 +64,13 @@ public class ErrorCodeUtil {
                 msg = "该用户存在";
                 break;
             case -305:
-                msg = "手机号或密码错误";
+                msg = "账号或密码错误";
                 break;
             case -306:
-                msg = "会员ID不能为空";
+                msg = "经纪人ID不存在";
+                break;
+            case -307:
+                msg = "会员单位不存在";
                 break;
             case -401:
                 msg = "没有对应的报价";

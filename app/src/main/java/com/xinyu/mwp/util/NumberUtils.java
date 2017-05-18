@@ -4,9 +4,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-
 
 /**
  * Created by Administrator on 2017/2/27.
@@ -16,7 +13,10 @@ public class NumberUtils {
      * 四舍五入,保留2位小数
      */
     public static String halfAdjust2(double number) {
-        return String.format("%.2f", number);
+        if (number < 0.005){
+            return "0.00";
+        }
+        return String.format("%.2f", number - 0.005);
     }
 
     /**

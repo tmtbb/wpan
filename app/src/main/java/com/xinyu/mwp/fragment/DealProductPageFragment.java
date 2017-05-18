@@ -590,7 +590,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 //                next(UserAssetsActivity.class);
                 break;
             case R.id.ll_history_record:  //仓位历史记录
-               // next(PositionHistoryActivity.class);
+//                next(PositionHistoryActivity.class);
                 next(DealDetailFragmentActivity.class);
                 break;
             case R.id.tv_exchange_buy_plus:

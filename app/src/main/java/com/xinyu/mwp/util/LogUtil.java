@@ -11,7 +11,7 @@ public class LogUtil {
     /**
      * 日志打印开关，开发与调试为true，在正式版发布时为false
      */
-    public static boolean showLog = true;//showLog;
+    public static boolean showLog = false;//showLog;
 
     /**
      * 统一的标签
