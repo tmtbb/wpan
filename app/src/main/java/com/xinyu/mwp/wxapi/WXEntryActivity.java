@@ -29,6 +29,7 @@ import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.JSONEntityUtil;
 import com.xinyu.mwp.util.LogUtil;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -154,7 +155,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     String str2 = body2.string();
                     LogUtil.d("获取用户信息成功:" + str2);
                     WXUserInfoEntity entity2 = JSONEntityUtil.JSONToEntity(WXUserInfoEntity.class, str2);
-                    bindPhoneNumber(entity2);   //根据用户信息,绑定手机号码
+                    requestWXLogin(entity2);   //根据用户信息,请求微信登录
                 }
             }
         });
@@ -201,7 +202,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         });
     }
 
-    private void bindPhoneNumber(final WXUserInfoEntity entity2) {
+    private void requestWXLogin(final WXUserInfoEntity entity2) {
         //请求微信登录
         NetworkAPIFactoryImpl.getUserAPI().wxLogin(entity2.getOpenid(), new OnAPIListener<LoginReturnEntity>() {
             @Override
@@ -232,7 +233,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 UserManager.getInstance().saveUserEntity(en);
                 UserManager.getInstance().setLogin(true);
                 MyApplication.getApplication().onUserUpdate(true);
-
+                SPUtils.putString("phone", loginReturnEntity.getUserinfo().getPhone());
                 EventBus.getDefault().postSticky(new EventBusMessage(-6));  //传递消息
                 finish();
             }

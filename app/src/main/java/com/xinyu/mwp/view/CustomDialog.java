@@ -31,6 +31,7 @@ public class CustomDialog extends Dialog {
     public static TextView mTurnoverMoney;  //成交额
     public static TextView mServiceCharge;
     public static TextView mCurrentPosition;  //当前仓位
+    public static TextView mCurrentPositionPrice;  //当前仓位价格
     private static RadioButton mFreight;
     private static RadioButton mReturnDouble;
     public static TextView mCurrentCount;
@@ -224,6 +225,7 @@ public class CustomDialog extends Dialog {
 //            //双倍返还
 //            mReturnDouble = (RadioButton) layout.findViewById(R.id.rb_trade_return_double);
             mCurrentPosition = (TextView) layout.findViewById(R.id.tv_current_position);
+            mCurrentPositionPrice = (TextView) layout.findViewById(R.id.tv_current_position_price);  //建仓价格
         }
 
 

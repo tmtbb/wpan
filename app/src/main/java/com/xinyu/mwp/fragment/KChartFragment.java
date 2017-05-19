@@ -127,15 +127,15 @@ public class KChartFragment extends BaseFrameLayout {
             return;
         }
 
-        //为上海到东京的集合  特殊处理  v-symbol : "fx_sjpycnh"  上海-东京 分时图才做特殊处理
+        //为上海到东京的集合  特殊处理  v-symbol : "fx_sjpycnh"  上海-东京 分时图才做特殊处理  第一条单独拿出来处理
         if (currentTimeLineEntities.get(0).getSymbol().equals("fx_sjpycnh") && chartType == 0) {
             List<CurrentTimeLineReturnEntity> newList = new ArrayList<>();
             int j = 0;
-            if (currentTimeLineEntities.size() > 6) {
-                j = currentTimeLineEntities.size() - 6;
+            if (currentTimeLineEntities.size() > 7) {    //第一条单独拿出来,取倒数后7条
+                j = currentTimeLineEntities.size() - 7;
             }
 
-            for (int i = j; i < currentTimeLineEntities.size(); i++) {  //取倒数后6条数据
+            for (int i = j; i < currentTimeLineEntities.size() - 1; i++) {  //取倒数后6条数据
                 CurrentTimeLineReturnEntity entity = currentTimeLineEntities.get(i);
                 for (int k = 0; k < 5; k++) {
                     CurrentTimeLineReturnEntity tpEntity = new CurrentTimeLineReturnEntity();
@@ -157,8 +157,9 @@ public class KChartFragment extends BaseFrameLayout {
                 } else if (i % 5 == 4) {
                     newList.get(i).setPriceTime(priceTime);
                 }
-                LogUtil.d("当前索引:" + i + "得到的newList的priceTime:" + priceTime);
+//                LogUtil.d("当前索引:" + i + "得到的newList的priceTime:" + priceTime);
             }
+            newList.add(currentTimeLineEntities.get(currentTimeLineEntities.size() - 1));
             this.newCurrentTimeLineEntities = newList;
         } else {
             List<CurrentTimeLineReturnEntity> newTimeLineList = new ArrayList<>();
@@ -178,6 +179,7 @@ public class KChartFragment extends BaseFrameLayout {
             preChartType = 1;
             refreshMarkerView(1);
         }
+//        LogUtil.d("这边接收到的集合数据ssssssssss:" + newCurrentTimeLineEntities.toString());
 
         candleEntries = getCandleEntries(newCurrentTimeLineEntities, 0);//获取处理过的集合
         itemcount = newCurrentTimeLineEntities.size();
