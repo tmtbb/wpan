@@ -1,11 +1,17 @@
 package com.xinyu.mwp.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.activity.base.BaseControllerActivity;
@@ -55,6 +61,8 @@ public class CashActivity extends BaseControllerActivity {
     private CellEditView cash_comments;
     @ViewInject(R.id.checkCode)
     private CheckCodeView checkCode;
+    @ViewInject(R.id.tv_warm_tip)
+    private TextView warmTip;
 
     @ViewInject(R.id.cash)
     private View cash;
@@ -98,6 +106,11 @@ public class CashActivity extends BaseControllerActivity {
         branch.getEdit().setFocusable(false);
         cardNo.getEdit().setFocusable(false);
         cardName.getEdit().setFocusable(false);
+
+        SpannableStringBuilder ssbuilder = new SpannableStringBuilder(getResources().getString(R.string.cash_service_charge));
+        ForegroundColorSpan yellowSpan = new ForegroundColorSpan(getResources().getColor(R.color.red));
+        ssbuilder.setSpan(yellowSpan, 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        warmTip.setText(ssbuilder);
     }
 
     /*

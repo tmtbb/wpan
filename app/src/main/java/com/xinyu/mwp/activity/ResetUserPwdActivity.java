@@ -14,6 +14,7 @@ import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.SHA256Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.util.Utils;
 import com.xinyu.mwp.util.VerifyCodeUtils;
@@ -109,6 +110,7 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
                         closeLoader();
                         if (entry.status == 0) {
                             ToastUtils.show(context, "修改登录密码成功");
+                            SPUtils.putString("phone", phoneEditText.getEditTextString());
                             finish();
                         } else {
                             ToastUtils.show(context, "修改登录密码失败");

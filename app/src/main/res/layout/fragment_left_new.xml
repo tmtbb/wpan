@@ -228,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_14"
                 app:cell_icon="@mipmap/icon_detail"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cell_name="交易明细" />
 
             <com.xinyu.mwp.view.CellView

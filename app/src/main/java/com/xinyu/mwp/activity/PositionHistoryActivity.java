@@ -1,6 +1,8 @@
 package com.xinyu.mwp.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
@@ -14,7 +16,6 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.listener.OnItemChildViewClickListener;
 import com.xinyu.mwp.listener.OnRefreshPageListener;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
-import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.ToastUtils;
 import com.xinyu.mwp.view.CustomDialog;
@@ -88,30 +89,36 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
                 clickView = childView;
                 pos = position;
                 item = adapter.getItem(position);
+                LogUtil.d("当前点击了历史记录的条目---------");
 
-                if (item.getHandle() == Constant.ACTION_NONE) {  //未操作
-                    //弹窗
-                    if (item.getBuySell() == 1 && item.isResult()) {   //买入,上涨   双倍返还和货运
-                        createDialog(Constant.handleText[1], Constant.handleText[2], Constant.ACTION_DOUBLE, Constant.ACTION_FREIGHT);
-                    } else if (item.getBuySell() == 1 && !item.isResult()) { //买入,下跌  只能选择货运
-                        createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
-                    }
-
-                    if (UserManager.getInstance().getUserEntity().getUserType() == 0) {   //普通会员
-                        if (item.getBuySell() != 1) {  //卖出(买跌)
-                            if (!item.isResult()) { //盈利  上涨  亏损 -->亏损 无操作
-
-                            } else {
-                                //买跌,上涨  -->
-                                createDialog(Constant.handleText[1], null, Constant.ACTION_DOUBLE, 0);
-                            }
-                        }
-                    } else {   //直营会员
-                        if (item.getBuySell() != 1 && item.isResult()) {  //卖出,卖出去了-->盈利   货运
-                            createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
-                        }
-                    }
-                }
+                Intent intent = new Intent(context, DealDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("historyData", (HistoryPositionListReturnEntity) obj);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+//                if (item.getHandle() == Constant.ACTION_NONE) {  //未操作
+//                    //弹窗
+//                    if (item.getBuySell() == 1 && item.isResult()) {   //买入,上涨   双倍返还和货运
+//                        createDialog(Constant.handleText[1], Constant.handleText[2], Constant.ACTION_DOUBLE, Constant.ACTION_FREIGHT);
+//                    } else if (item.getBuySell() == 1 && !item.isResult()) { //买入,下跌  只能选择货运
+//                        createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
+//                    }
+//
+//                    if (UserManager.getInstance().getUserEntity().getUserType() == 0) {   //普通会员
+//                        if (item.getBuySell() != 1) {  //卖出(买跌)
+//                            if (!item.isResult()) { //盈利  上涨  亏损 -->亏损 无操作
+//
+//                            } else {
+//                                //买跌,上涨  -->
+//                                createDialog(Constant.handleText[1], null, Constant.ACTION_DOUBLE, 0);
+//                            }
+//                        }
+//                    } else {   //直营会员
+//                        if (item.getBuySell() != 1 && item.isResult()) {  //卖出,卖出去了-->盈利   货运
+//                            createDialog(Constant.handleText[2], null, Constant.ACTION_FREIGHT, 0);
+//                        }
+//                    }
+//                }
 
 
             }
@@ -166,7 +173,7 @@ public class PositionHistoryActivity extends BaseRefreshAbsListControllerActivit
             public void onSuccess(HistoryPositionListReturnEntity profitEntity) {
                 LogUtil.d("请求盈利成功:" + profitEntity.toString());
                 closeLoader();
-                adapter.notifyPartsData(clickView, pos, profitEntity.getHandle());
+//                adapter.notifyPartsData(clickView, pos, profitEntity.getHandle());
             }
         });
     }

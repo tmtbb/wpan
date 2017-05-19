@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.activity.DealDetailFragmentActivity;
 import com.xinyu.mwp.activity.PositionHistoryActivity;
 import com.xinyu.mwp.activity.RechargeActivity;
 import com.xinyu.mwp.adapter.DealProductPageAdapter;
@@ -590,8 +589,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 //                next(UserAssetsActivity.class);
                 break;
             case R.id.ll_history_record:  //仓位历史记录
-               // next(PositionHistoryActivity.class);
-                next(DealDetailFragmentActivity.class);
+                next(PositionHistoryActivity.class);
+//                next(DealDetailFragmentActivity.class);
                 break;
             case R.id.tv_exchange_buy_plus:
                 showDialog(Constant.TYPE_BUY_PLUS);
@@ -810,8 +809,6 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 LogUtil.d("建仓请求网络成功" + openPositionReturnEntity.toString());
                 closeLoader();
                 ToastUtils.show(context, "交易成功");
-
-
                 initCurrentPositionList(start, requestCount);  //刷新当前建仓列表数据
                 TestDataUtil.requestBalance();
                 new Handler().postDelayed(new Runnable() {

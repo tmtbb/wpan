@@ -15,7 +15,7 @@
         android:layout_marginTop="@dimen/dp_19"
         app:edit_hint="请设置您的手机号码"
         app:edit_icon="@mipmap/icon_phone"
-        app:edit_left_text="+86"
+        app:edit_left_text="账号"
         app:edit_pwd="false"
         app:edit_show_eye="false"
         app:edit_show_icon="true"
