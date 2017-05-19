@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.xinyu.mwp.R;
 import com.xinyu.mwp.adapter.base.BaseListViewAdapter;
 import com.xinyu.mwp.adapter.viewholder.BaseViewHolder;
@@ -35,7 +36,7 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionL
         if (view != null) {
             HistoryPositionListReturnEntity historyPositionListReturnEntity = getList().get(position);
             historyPositionListReturnEntity.setHandle(handle);
-            getList().set(position,historyPositionListReturnEntity);
+            getList().set(position, historyPositionListReturnEntity);
             TextView actionType = (TextView) view.findViewById(R.id.tv_action_type);
             TextView actionNone = (TextView) view.findViewById(R.id.tv_action_none);
 
@@ -63,6 +64,12 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionL
         private TextView actionType;
         @ViewInject(R.id.tv_desc_turnover)
         private TextView tradeDirection;  //交易方向
+        @ViewInject(R.id.tv_open_position)
+        private TextView openPosition;  //建仓价格
+        @ViewInject(R.id.tv_close_position)
+        private TextView closePosition;  //交易方向
+
+        private HistoryPositionListReturnEntity historyData;
 
         public HistoryPositionViewHolder(Context context) {
             super(context);
@@ -76,9 +83,14 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionL
         @Override
         protected void update(HistoryPositionListReturnEntity data) {
             if (data != null) {
+                historyData = data;
                 name.setText(data.getName());
                 price.setText("¥ " + NumberUtils.halfAdjust2(data.getOpenCost()));
+
+                openPosition.setText(data.getOpenPrice() + "");
+                closePosition.setText(data.getClosePrice() + "");
                 tradeDirection.setText(data.getBuySell() == 1 ? "买入" : "卖出");
+
                 if (data.isResult()) {  //盈
                     price.setTextColor(context.getResources().getColor(R.color.default_red));
                     profit.setVisibility(View.VISIBLE);
@@ -89,27 +101,28 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionL
                     profit.setVisibility(View.INVISIBLE);
                     loss.setVisibility(View.VISIBLE);
                 }
-                switch (data.getHandle()) {
-                    case Constant.ACTION_NONE:
-                        actionNone.setVisibility(View.VISIBLE);
-                        actionType.setVisibility(View.INVISIBLE);
-                        actionNone.setText(Constant.handleText[data.getHandle()]);
-                        break;
-                    case Constant.ACTION_DOUBLE:
-                    case Constant.ACTION_FREIGHT:
-                    case Constant.ACTION_RETURN:
-                        actionType.setVisibility(View.VISIBLE);
-                        actionNone.setVisibility(View.INVISIBLE);
-                        actionType.setText(Constant.handleText[data.getHandle()]);
-                        break;
-                }
+                //未操作,货运等
+//                switch (data.getHandle()) {
+//                    case Constant.ACTION_NONE:
+//                        actionNone.setVisibility(View.VISIBLE);
+//                        actionType.setVisibility(View.INVISIBLE);
+//                        actionNone.setText(Constant.handleText[data.getHandle()]);
+//                        break;
+//                    case Constant.ACTION_DOUBLE:
+//                    case Constant.ACTION_FREIGHT:
+//                    case Constant.ACTION_RETURN:
+//                        actionType.setVisibility(View.VISIBLE);
+//                        actionNone.setVisibility(View.INVISIBLE);
+//                        actionType.setText(Constant.handleText[data.getHandle()]);
+//                        break;
+//                }
                 //普通会员 买跌--上涨, 亏损   卖亏了 未操作---->  不显示
-                if (UserManager.getInstance().getUserEntity().getUserType() == 0 && data.getBuySell() != 1 && !data.isResult()){
-                    if (data.getHandle() == Constant.ACTION_NONE){
-                        actionNone.setVisibility(View.INVISIBLE);
-                        actionType.setVisibility(View.INVISIBLE);
-                    }
-                }
+//                if (UserManager.getInstance().getUserEntity().getUserType() == 0 && data.getBuySell() != 1 && !data.isResult()){
+//                    if (data.getHandle() == Constant.ACTION_NONE){
+//                        actionNone.setVisibility(View.INVISIBLE);
+//                        actionType.setVisibility(View.INVISIBLE);
+//                    }
+//                }
                 long datas = data.getCloseTime() * 1000;
                 time.setText(TimeUtil.getDateAndTime(datas));
             }
@@ -117,7 +130,8 @@ public class HistoryPositionAdapter extends BaseListViewAdapter<HistoryPositionL
 
         @Event(value = R.id.rl_history_item)
         private void click(View v) {
-            onItemChildViewClick(v, 99);
+//            onItemChildViewClick(v, 99);
+            onItemChildViewClick(v, 0, historyData);
         }
     }
 }

@@ -274,6 +274,7 @@ public class RechargeActivity extends BaseRefreshActivity {
                     @Override
                     public void run() {
                         if (UserManager.getInstance().getUserEntity() != null) {
+                            LogUtil.d("充值界面当前的userInfo:"+UserManager.getInstance().getUserEntity());
                             account.updateContentLeft(UserManager.getInstance().getUserEntity().getMobile());
                             money.updateContentLeft(NumberUtils.halfAdjust2(UserManager.getInstance().getUserEntity().getBalance()) + "元");
                         }

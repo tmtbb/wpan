@@ -105,7 +105,10 @@ public class RegisterActivity extends BaseControllerActivity {
                     return;
                 }
                 int verifyType = 0;// 0-注册 1-登录 2-更新服务
-                int type = 0;  //0-注册
+                int type = 0;  //0-注册,绑定2,忘记密码1
+                if (isBind) {
+                    type = 2;
+                }
                 VerifyCodeUtils.getCode(msgEditText, verifyType, context, view, phoneEditText, type);
             }
         });

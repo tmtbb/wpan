@@ -100,7 +100,7 @@ public class LoginActivity extends BaseControllerActivity {
                     ToastUtils.show(context, "您还未安装微信客户端");
                     return;
                 }
-                if ((System.currentTimeMillis() - exitNow) < 2000) {
+                if ((System.currentTimeMillis() - exitNow) < 3000) {
                     return;
                 }
                 exitNow = System.currentTimeMillis();
@@ -131,7 +131,7 @@ public class LoginActivity extends BaseControllerActivity {
                                 @Override
                                 public void onSuccess(LoginReturnEntity loginReturnEntity) {
                                     closeLoader();
-                                    ToastUtils.show(context, "登陆成功");
+                                    ToastUtils.show(context, "登录成功");
                                     UserEntity en = new UserEntity();
                                     en.setBalance(loginReturnEntity.getUserinfo().getBalance());
                                     en.setId(loginReturnEntity.getUserinfo().getId());

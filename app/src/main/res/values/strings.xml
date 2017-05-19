@@ -25,7 +25,7 @@
 
     <string name="referee_id">请输入推荐人ID(选填)</string>
     <string name="agent_id">请输入经纪人ID</string>
-    <string name="member_unit">请输入会员单位</string>
+    <string name="member_unit">请输入会员单位ID</string>
     <string name="pay_state">提示</string>
     <string name="cancel_pay_msg">是否已完成支付?</string>
     <string name="pay_problem">遇到问题</string>
