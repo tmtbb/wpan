@@ -667,7 +667,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     }
 
     private void showDialog(int type) {
-        isDialogShow = true;
+
         if (mUnitViewList.size() == 0 || mViewPager == null || entitys == null) {
             ToastUtils.show(context, "请求数据失败");
             return;
@@ -691,7 +691,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         }
 
-
+        isDialogShow = true;
         String buyType = null;
         int buySell = 1;
         if (type == Constant.TYPE_BUY_MINUS) {
