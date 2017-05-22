@@ -40,13 +40,6 @@ public class ViewUtils {
     }
 
     /**
-     * 在主线程执行一段任务
-     * @param r
-     */
-    public static void runOnUIThread(Runnable r){
-        MyApplication.mainHandler.post(r);
-    }
-    /**
      * 移除子View
      * @param child
      */

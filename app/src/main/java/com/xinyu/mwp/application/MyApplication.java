@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
@@ -19,6 +21,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xinyu.mwp.constant.Constant;
 import com.xinyu.mwp.entity.CheckUpdateInfoEntity;
 import com.xinyu.mwp.entity.EventBusMessage;
+import com.xinyu.mwp.entity.IpAndPortEntity;
 import com.xinyu.mwp.entity.LoginReturnEntity;
 import com.xinyu.mwp.entity.UserEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
@@ -26,28 +29,41 @@ import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
+
+import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
 import com.xinyu.mwp.user.OnUserUpdateListener;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.FileCacheUtil;
+
+import com.xinyu.mwp.util.JSONEntityUtil;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.MD5Util;
+import com.xinyu.mwp.util.SPUtils;
 import com.xinyu.mwp.util.Utils;
+
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 import io.fabric.sdk.android.Fabric;
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 
 public class MyApplication extends MultiDexApplication implements OnUserUpdateListener {
 
     private static MyApplication application;
     public static List<Activity> activityList = new ArrayList<Activity>();
-    public static Handler mainHandler;
 
     @Override
     public void onCreate() {
@@ -55,10 +71,11 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         super.onCreate();
         application = this;
         initNetworkAPIConfig();
+//        requestServerIp();
+
         initImageLoader();
         initUser();
         checkToken();
-        mainHandler = new Handler();
         registerToWx();   //注册微信
     }
 
@@ -71,10 +88,12 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
 
 
     private void initNetworkAPIConfig() {
+        LogUtil.d("初始化网络配置-----");
         NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
         networkAPIConfig.setContext(getApplicationContext());
         networkAPIConfig.setSocketServerIp(Host.getSocketServerIp());
         networkAPIConfig.setSocketServerPort(Host.getSocketServerPort());
+        LogUtil.d("初始化网络配置ip:" + Host.getSocketServerIp() + "端口:" + Host.getSocketServerPort());
         NetworkAPIFactoryImpl.initConfig(networkAPIConfig);
         x.Ext.init(this);
         x.Ext.setDebug(true);
@@ -228,6 +247,8 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
 
             @Override
             public void onSuccess(CheckUpdateInfoEntity checkUpdateInfoEntity) {
+                SPUtils.putString("version",checkUpdateInfoEntity.getNewAppVersionName());
+                LogUtil.d("checkUpdateInfoEntity:"+checkUpdateInfoEntity.toString());
                 if (checkUpdateInfoEntity != null && checkUpdateInfoEntity.getNewAppVersionCode() > getVersionCode()) {
                     EventBusMessage msg = new EventBusMessage(-11);
                     msg.setCheckUpdateInfoEntity(checkUpdateInfoEntity);
@@ -253,4 +274,41 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
             return -1;
         }
     }
+
+//    //负载均衡
+//    private final OkHttpClient client = new OkHttpClient();
+//
+//    private void requestServerIp() {
+//        LogUtil.d("posy请求负载均衡--------------");
+//        FormBody body = new FormBody.Builder()
+//                .build();
+//
+//        Request request = new Request.Builder()
+//                .url("http://139.224.34.22/cgi-bin/flight/router/v1/get_server.fcgi")
+//                .post(body)
+//                .build();
+//        client.newCall(request).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                SocketAPIRequestManage.getInstance().stop();
+//                ResponseBody body2 = response.body();
+//                String str2 = body2.string();
+//                IpAndPortEntity entity = JSONEntityUtil.JSONToEntity(IpAndPortEntity.class, str2);
+//                if (entity != null) {
+////                    Host.serverIp = entity.getIp();
+//                    Host.serverIp = "122.144.169.217";
+//                    Host.serverPort = (short) entity.getPort();
+//                    LogUtil.d("获取的host:" + Host.serverIp + "," + Host.serverPort);
+//
+//                }
+//                LogUtil.d("请求成功,停掉链接,重新配置网络--------");
+//                initNetworkAPIConfig();
+//            }
+//        });
+//    }
 }

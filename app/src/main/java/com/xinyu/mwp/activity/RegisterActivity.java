@@ -84,6 +84,7 @@ public class RegisterActivity extends BaseControllerActivity {
             entity = (WXUserInfoEntity) bundle.getSerializable("wxBind");
             title = "请绑定手机号码";
             isBind = true;
+            nextButton.setText("绑定");
         }
 
         setTitle(title);

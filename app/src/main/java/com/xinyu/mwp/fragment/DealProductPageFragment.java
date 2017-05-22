@@ -803,7 +803,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         turnoverPrice = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount - chargeFree));
         CustomDialog.mTurnoverMoney.setText("¥ " + turnoverPrice);//成交额
         CustomDialog.mCurrentPosition.setText(String.format(currentPositionEntity.getCurrentPositionName() + "%s", currentPositionEntity.getName()));//当前仓位
-        CustomDialog.mCurrentPositionPrice.setText(NumberUtils.halfAdjust4(entitys.get(newItemIndex).getCurrentPrice()));//仓位价格
+        CustomDialog.mCurrentPositionPrice.setText(NumberUtils.halfAdjust4(unit));//仓位价格
     }
 
     private double getCurrentUnit() {
