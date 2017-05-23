@@ -4,10 +4,15 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.qiangxi.checkupdatelibrary.dialog.UpdateDialog;
@@ -81,10 +86,11 @@ public class LoginActivity extends BaseControllerActivity {
         leftImage.setVisibility(View.INVISIBLE);
         userNameEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(loginButton, userNameEditText, passwordEditText);
+        checkHelper.checkPwdInPutType(passwordEditText.getEditText(), context);
         setSwipeBackEnable(false);
         if (flag) {
-            EventBus.getDefault().register(this); // EventBus注册广播()
-            flag = false;//更改标记,使其不会再进行多次注册
+            EventBus.getDefault().register(this);
+            flag = false;
         }
     }
 
@@ -110,6 +116,7 @@ public class LoginActivity extends BaseControllerActivity {
                 MyApplication.api.sendReq(req);
                 break;
             case R.id.findPwd:    //忘记密码
+                LogUtil.d("-----当前的ip:" + NetworkAPIFactoryImpl.getConfig().getSocketServerIp());
                 ActivityUtil.nextResetUserPwd(context);
                 break;
             case R.id.loginButton:
@@ -256,5 +263,49 @@ public class LoginActivity extends BaseControllerActivity {
         LogUtil.d("登录可见的-------------");
         String result = SPUtils.getString("phone", "");
         userNameEditText.setEditTextString(result);
+    }
+
+    /**
+     * edittext输入监听，不允许输入中文
+     */
+    public class NoChineseTextWatcher implements TextWatcher {
+        final String reg = "[^[\u4E00-\u9FA5]]";//正则表达式，非中文
+        private boolean isNotMatch = false;
+        private EditText editText;
+
+        public NoChineseTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String str = s.toString();
+            if (!TextUtils.isEmpty(str)) {
+                char[] chars = str.toCharArray();
+                for (int i = 0; i < str.length(); i++) {
+                    String aChar = String.valueOf(chars[i]);
+                    if (!aChar.matches(reg)) {
+                        isNotMatch = true;
+                    }
+                }
+                if (isNotMatch) {
+                    ToastUtils.show(context, "密码不能设置中文，请重新设置！");
+                    editText.setText("");
+                    isNotMatch = false;
+                }
+            } else {
+                isNotMatch = false;
+            }
+        }
     }
 }

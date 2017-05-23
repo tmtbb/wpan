@@ -733,6 +733,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     ToastUtils.show(context, "最大持仓数为5,请平仓后再建仓");
                 } else {
                     showLoader("正在提交订单...");
+                    LogUtil.d("建仓之前codeId," + codeId + ",finalBuySell:" + finalBuySell + ",amount:" + amount + ",deferred:" + deferred);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -821,6 +822,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param deferred     是否过滤
      */
     private void requestOpenPosition(long codeId, int finalBuySell, double amount, boolean deferred) {
+        LogUtil.d("建仓的时候codeId," + codeId + ",finalBuySell:" + finalBuySell + ",amount:" + amount + ",deferred:" + deferred);
         NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<CurrentPositionListReturnEntity>() {
             @Override
             public void onError(Throwable ex) {

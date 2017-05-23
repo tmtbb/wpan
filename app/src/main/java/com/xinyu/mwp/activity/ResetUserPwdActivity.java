@@ -58,6 +58,8 @@ public class ResetUserPwdActivity extends BaseControllerActivity {
         phoneEditText.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         checkHelper.checkButtonState(okButton, phoneEditText, msgEditText, pwdEditText1, pwdEditText2);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
+        checkHelper.checkPwdInPutType(pwdEditText1.getEditText(), context);
+        checkHelper.checkPwdInPutType(pwdEditText2.getEditText(), context);
     }
 
     @Override

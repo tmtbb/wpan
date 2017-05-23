@@ -50,25 +50,25 @@ public enum Host {
         }
     }
 
-//    public static String serverIp = "139.224.34.22";
-//    public static short serverPort = 16205;
+    public static String serverIp = "139.224.34.22";
+    public static short serverPort = 16205;
 
     public static String getSocketServerIp() {
-        return "122.144.169.217";
+//        return "122.144.169.217";
 //        return "139.224.34.22";
-//        return serverIp;
+        return serverIp;
     }
 
     public static short getSocketServerPort() {
-        return (short) 16205;
+        return serverPort;
 //        return serverPort;
     }
 
-//    public static void setSocketServerIp(String serverIp) {
-//        Host.serverIp = serverIp;
-//    }
-//
-//    public static void setSocketServerPort(short serverPort) {
-//        Host.serverPort = serverPort;
-//    }
+    public static void setSocketServerIp(String serverIp) {
+        Host.serverIp = serverIp;
+    }
+
+    public static void setSocketServerPort(short serverPort) {
+        Host.serverPort = serverPort;
+    }
 }

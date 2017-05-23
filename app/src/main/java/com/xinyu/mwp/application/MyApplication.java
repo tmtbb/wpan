@@ -28,6 +28,7 @@ import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.Host;
 import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
+import com.xinyu.mwp.networkapi.socketapi.SocketAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPINettyBootstrap;
 
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketAPIRequestManage;
@@ -71,10 +72,10 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         super.onCreate();
         application = this;
         initNetworkAPIConfig();
-//        requestServerIp();
+        requestServerIp();
 
         initImageLoader();
-        initUser();
+//        initUser();
         checkToken();
         registerToWx();   //注册微信
     }
@@ -86,17 +87,20 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         api.registerApp(Constant.APP_ID);
     }
 
+    NetworkAPIConfig networkAPIConfig;
 
     private void initNetworkAPIConfig() {
         LogUtil.d("初始化网络配置-----");
-        NetworkAPIConfig networkAPIConfig = new NetworkAPIConfig();
+        networkAPIConfig = new NetworkAPIConfig();
         networkAPIConfig.setContext(getApplicationContext());
         networkAPIConfig.setSocketServerIp(Host.getSocketServerIp());
         networkAPIConfig.setSocketServerPort(Host.getSocketServerPort());
-        LogUtil.d("初始化网络配置ip:" + Host.getSocketServerIp() + "端口:" + Host.getSocketServerPort());
+        LogUtil.d("初始化网络配置----ip:" + Host.getSocketServerIp() + "端口:" + Host.getSocketServerPort());
         NetworkAPIFactoryImpl.initConfig(networkAPIConfig);
         x.Ext.init(this);
         x.Ext.setDebug(true);
+
+        initUser();
     }
 
     /**
@@ -211,12 +215,12 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
 
     private void judgeIsLogin() {
         if (UserManager.getInstance().isLogin()) {
-            LogUtil.d("已经登录,开始校验token");
+            LogUtil.d("--已经登录,开始校验token");
             NetworkAPIFactoryImpl.getUserAPI().loginWithToken(new OnAPIListener<LoginReturnEntity>() {
                 @Override
                 public void onError(Throwable ex) {
                     ex.printStackTrace();
-                    LogUtil.d("登录失败.token已经失效");
+                    LogUtil.d("--登录失败.token已经失效");
                     UserManager.getInstance().logout();
                     onUserUpdate(false);
                 }
@@ -247,14 +251,14 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
 
             @Override
             public void onSuccess(CheckUpdateInfoEntity checkUpdateInfoEntity) {
-                SPUtils.putString("version",checkUpdateInfoEntity.getNewAppVersionName());
-                LogUtil.d("checkUpdateInfoEntity:"+checkUpdateInfoEntity.toString());
+                SPUtils.putString("version", checkUpdateInfoEntity.getNewAppVersionName());
+                LogUtil.d("checkUpdateInfoEntity:" + checkUpdateInfoEntity.toString());
                 if (checkUpdateInfoEntity != null && checkUpdateInfoEntity.getNewAppVersionCode() > getVersionCode()) {
                     EventBusMessage msg = new EventBusMessage(-11);
                     msg.setCheckUpdateInfoEntity(checkUpdateInfoEntity);
                     EventBus.getDefault().postSticky(msg);
                 } else {
-                    LogUtil.d("最新版本");
+                    LogUtil.d("--最新版本");
                 }
             }
         });
@@ -275,40 +279,39 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         }
     }
 
-//    //负载均衡
-//    private final OkHttpClient client = new OkHttpClient();
-//
-//    private void requestServerIp() {
-//        LogUtil.d("posy请求负载均衡--------------");
-//        FormBody body = new FormBody.Builder()
-//                .build();
-//
-//        Request request = new Request.Builder()
-//                .url("http://139.224.34.22/cgi-bin/flight/router/v1/get_server.fcgi")
-//                .post(body)
-//                .build();
-//        client.newCall(request).enqueue(new okhttp3.Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
+    //负载均衡
+    private final OkHttpClient client = new OkHttpClient();
+
+    private void requestServerIp() {
+        LogUtil.d("post请求负载均衡--------------");
+        FormBody body = new FormBody.Builder()
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://139.224.34.22/cgi-bin/flight/router/v1/get_server.fcgi")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                LogUtil.d("负载均衡请求失败----------------");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
 //                SocketAPIRequestManage.getInstance().stop();
-//                ResponseBody body2 = response.body();
-//                String str2 = body2.string();
-//                IpAndPortEntity entity = JSONEntityUtil.JSONToEntity(IpAndPortEntity.class, str2);
-//                if (entity != null) {
-////                    Host.serverIp = entity.getIp();
-//                    Host.serverIp = "122.144.169.217";
-//                    Host.serverPort = (short) entity.getPort();
-//                    LogUtil.d("获取的host:" + Host.serverIp + "," + Host.serverPort);
-//
-//                }
-//                LogUtil.d("请求成功,停掉链接,重新配置网络--------");
-//                initNetworkAPIConfig();
-//            }
-//        });
-//    }
+                ResponseBody body2 = response.body();
+                String str2 = body2.string();
+                IpAndPortEntity entity = JSONEntityUtil.JSONToEntity(IpAndPortEntity.class, str2);
+                if (entity != null) {
+//                    Host.setSocketServerIp("122.144.169.217");
+//                    Host.setSocketServerPort((short) entity.getPort());
+                    networkAPIConfig.setSocketServerIp(entity.getIp());
+                    networkAPIConfig.setSocketServerPort((short) 16205);
+                    LogUtil.d("负载均衡请求成功,设置ip和端口--------------");
+                }
+            }
+        });
+    }
 }

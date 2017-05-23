@@ -92,6 +92,7 @@ public class RegisterActivity extends BaseControllerActivity {
         checkHelper.checkButtonState(nextButton, phoneEditText, msgEditText, pwdEditText, memberUnit, agentId);
         checkHelper.checkVerificationCode(msgEditText.getRightText(), phoneEditText);
         memberUnit.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
+        checkHelper.checkPwdInPutType(pwdEditText.getEditText(), context);
     }
 
     @Override
