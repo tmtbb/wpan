@@ -138,6 +138,8 @@
                     android:id="@+id/rechargeType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    core_ptr:cell_arrow_visible="false"
+                    core_ptr:cell_contentleft="支付宝支付"
                     core_ptr:cell_contentleft_size="@dimen/fontSize_18sp"
                     core_ptr:cell_icon="@mipmap/icon_rechargetype"
                     core_ptr:cell_name="充值方式"

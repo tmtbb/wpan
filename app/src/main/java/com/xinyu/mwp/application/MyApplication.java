@@ -72,7 +72,7 @@ public class MyApplication extends MultiDexApplication implements OnUserUpdateLi
         super.onCreate();
         application = this;
         initNetworkAPIConfig();
-        requestServerIp();
+     //   requestServerIp();  //负载均衡
 
         initImageLoader();
 //        initUser();

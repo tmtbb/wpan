@@ -70,7 +70,7 @@ public class RechargeActivity extends BaseRefreshActivity {
     private ImageView bannerView;
     @ViewInject(R.id.tv_warm_tip)
     private TextView warmTip;
-    private int choice = 0;
+    private int choice = 1;
     //    private IWXAPI api;
     private WXPayReturnEntity wxPayEntity;
     private String payType = Constant.payType.WECHAT_QRCODE_PAY; //默认微信扫码
@@ -111,7 +111,7 @@ public class RechargeActivity extends BaseRefreshActivity {
 
             case R.id.rechargeType:
 //                choice = 0;
-                createDialog();
+            //    createDialog();
                 break;
 
             case R.id.myBankCard:
