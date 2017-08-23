@@ -1,7 +1,9 @@
 package com.xinyu.mwp.helper;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -186,5 +188,52 @@ public class CheckHelper {
             return false;
         }
         return true;
+    }
+
+    public void checkPwdInPutType(EditText editText, Context context) {
+        editText.addTextChangedListener(new NoChineseTextWatcher(editText, context));
+    }
+
+    public class NoChineseTextWatcher implements TextWatcher {
+        final String reg = "[^[\u4E00-\u9FA5]]";//正则表达式，非中文
+        private boolean isNotMatch = false;
+        private EditText editText;
+        private Context context;
+
+        public NoChineseTextWatcher(EditText editText, Context context) {
+            this.editText = editText;
+            this.context = context;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String str = s.toString();
+            if (!TextUtils.isEmpty(str)) {
+                char[] chars = str.toCharArray();
+                for (int i = 0; i < str.length(); i++) {
+                    String aChar = String.valueOf(chars[i]);
+                    if (!aChar.matches(reg)) {
+                        isNotMatch = true;
+                    }
+                }
+                if (isNotMatch) {
+                    ToastUtils.show(context, "密码不能设置中文，请重新设置！");
+                    editText.setText("");
+                    isNotMatch = false;
+                }
+            } else {
+                isNotMatch = false;
+            }
+        }
     }
 }

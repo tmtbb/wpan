@@ -107,6 +107,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         }
     };
     private LinearLayout priceInfo;
+    private boolean isDialogShow = false;
+    int amountCount = 50;
 
     public DealProductPageFragment() {
         isShow = true;
@@ -382,6 +384,10 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 initViewPager();
                 processPriceInfo();  //加载价格
                 refreshChartData();  //请求报价成功后,根据currentType刷新chart数据
+                if (isDialogShow) {
+                    initDialogData(amountCount);
+                }
+
             }
         });
     }
@@ -392,9 +398,9 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     private void refreshChartData() {
         switch (currentType) {
             case Constant.MIN_LINE1:  //加载分时图
-                if (count % 5 == 0) {
-                    processTimeLine();
-                }
+//                if (count % 5 == 0) {
+                processTimeLine();
+//                }
                 break;
             case Constant.MIN_LINE5:  //5分时K线图
                 if (count % 25 == 0) {
@@ -443,8 +449,23 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
 
             @Override
             public void onSuccess(List<CurrentTimeLineReturnEntity> currentTimeLineReturnEntities) {
-                LogUtil.d("分时请求网络成功" + currentTimeLineReturnEntities.toString());
+//                LogUtil.d("分时请求网络成功" + currentTimeLineReturnEntities.toString());
+                //把 entitys 的当前报价追加在分时最后面
                 currentTimeLineEntities = currentTimeLineReturnEntities;
+                CurrentPriceReturnEntity priceReturnEntity = entitys.get(newItemIndex);
+                CurrentTimeLineReturnEntity entity = new CurrentTimeLineReturnEntity();
+                entity.setCurrentPrice(priceReturnEntity.getCurrentPrice());
+                entity.setPriceTime(priceReturnEntity.getPriceTime());
+                entity.setChange(priceReturnEntity.getChange());
+                entity.setClosedYesterdayPrice(priceReturnEntity.getClosedYesterdayPrice());
+                entity.setHighPrice(priceReturnEntity.getHighPrice());
+                entity.setLowPrice(priceReturnEntity.getLowPrice());
+                entity.setExchangeName(priceReturnEntity.getExchangeName());
+                entity.setPchg(priceReturnEntity.getPchg());
+                entity.setOpeningTodayPrice(priceReturnEntity.getOpeningTodayPrice());
+                entity.setUpDown(priceReturnEntity.getUpDown());
+                entity.setSymbol(priceReturnEntity.getSymbol());
+                currentTimeLineEntities.add(0, entity);
                 kChartFragment.loadChartData(currentTimeLineEntities, 0);
             }
         });
@@ -646,6 +667,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
     }
 
     private void showDialog(int type) {
+
         if (mUnitViewList.size() == 0 || mViewPager == null || entitys == null) {
             ToastUtils.show(context, "请求数据失败");
             return;
@@ -669,7 +691,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
             }
         }
 
-
+        isDialogShow = true;
         String buyType = null;
         int buySell = 1;
         if (type == Constant.TYPE_BUY_MINUS) {
@@ -691,7 +713,8 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                 .setProgressChangeListener(new CustomDialog.Builder.ProgressChangeListener() {
                     @Override
                     public void processData(int amount) {
-                        initDialogData(amount);    //手数是progress + 1
+                        amountCount = amount;
+                        initDialogData(amountCount);    //手数是progress + 1
                     }
                 }).setPositiveButton(buyType, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -710,6 +733,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     ToastUtils.show(context, "最大持仓数为5,请平仓后再建仓");
                 } else {
                     showLoader("正在提交订单...");
+                    LogUtil.d("建仓之前codeId," + codeId + ",finalBuySell:" + finalBuySell + ",amount:" + amount + ",deferred:" + deferred);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -723,11 +747,13 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
                     }).start();
                 }
                 dialog.dismiss();
+                isDialogShow = false;
             }
         }).setNegativeButton("取消",
                 new android.content.DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        isDialogShow = false;
                         ToastUtils.show(context, "取消");
                     }
                 }).create().show();
@@ -778,6 +804,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
         turnoverPrice = Double.parseDouble(NumberUtils.halfAdjust2(unit * amount - chargeFree));
         CustomDialog.mTurnoverMoney.setText("¥ " + turnoverPrice);//成交额
         CustomDialog.mCurrentPosition.setText(String.format(currentPositionEntity.getCurrentPositionName() + "%s", currentPositionEntity.getName()));//当前仓位
+        CustomDialog.mCurrentPositionPrice.setText(NumberUtils.halfAdjust4(unit));//仓位价格
     }
 
     private double getCurrentUnit() {
@@ -795,6 +822,7 @@ public class DealProductPageFragment extends BaseRefreshAbsListControllerFragmen
      * @param deferred     是否过滤
      */
     private void requestOpenPosition(long codeId, int finalBuySell, double amount, boolean deferred) {
+        LogUtil.d("建仓的时候codeId," + codeId + ",finalBuySell:" + finalBuySell + ",amount:" + amount + ",deferred:" + deferred);
         NetworkAPIFactoryImpl.getDealAPI().openPosition(codeId, finalBuySell, amount, turnoverPrice, deferred, new OnAPIListener<CurrentPositionListReturnEntity>() {
             @Override
             public void onError(Throwable ex) {

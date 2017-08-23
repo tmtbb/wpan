@@ -70,7 +70,8 @@ public class RechargeActivity extends BaseRefreshActivity {
     private ImageView bannerView;
     @ViewInject(R.id.tv_warm_tip)
     private TextView warmTip;
-    private int choice = 0;
+    private int choice = 1;
+    //    private IWXAPI api;
     private WXPayReturnEntity wxPayEntity;
     private String payType = Constant.payType.WECHAT_QRCODE_PAY; //默认微信扫码
     private boolean flag = true;
@@ -90,7 +91,7 @@ public class RechargeActivity extends BaseRefreshActivity {
         Utils.closeSoftKeyboard(rechargeMoney);
         rechargeMoney.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-        SpannableStringBuilder ssbuilder = new SpannableStringBuilder(getResources().getString(R.string.cash_service_charge));
+        SpannableStringBuilder ssbuilder = new SpannableStringBuilder(getResources().getString(R.string.recharge_service_charge));
         ForegroundColorSpan yellowSpan = new ForegroundColorSpan(getResources().getColor(R.color.red));
         ssbuilder.setSpan(yellowSpan, 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         warmTip.setText(ssbuilder);
@@ -110,7 +111,7 @@ public class RechargeActivity extends BaseRefreshActivity {
 
             case R.id.rechargeType:
 //                choice = 0;
-                createDialog();
+            //    createDialog();
                 break;
 
             case R.id.myBankCard:

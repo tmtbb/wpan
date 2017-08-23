@@ -1,11 +1,13 @@
 package com.xinyu.mwp.fragment;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xinyu.mwp.R;
+import com.xinyu.mwp.activity.ChooseUploadImgsActivity;
 import com.xinyu.mwp.entity.BalanceInfoEntity;
 import com.xinyu.mwp.entity.TotalDealInfoEntity;
 import com.xinyu.mwp.fragment.base.BaseControllerFragment;
@@ -14,6 +16,7 @@ import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.user.UserManager;
 import com.xinyu.mwp.util.LogUtil;
 import com.xinyu.mwp.util.NumberUtils;
+import com.xinyu.mwp.util.SPUtils;
 
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -33,6 +36,8 @@ public class LeftFragment extends BaseControllerFragment {
     private Button logout;
     @ViewInject(R.id.iv_member)
     private ImageView memberIcon;
+    @ViewInject(R.id.tv_version)
+    private TextView version;
 
     private LeftClickListener leftClickListener;
 
@@ -130,5 +135,17 @@ public class LeftFragment extends BaseControllerFragment {
                 memberIcon.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String versionName = SPUtils.getString("version", "1.1");
+                version.setText("版本号: " + versionName);
+            }
+        }, 1000);
     }
 }

@@ -1,8 +1,6 @@
 package com.xinyu.mwp.view;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,7 +9,6 @@ import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.xinyu.mwp.R;
-import com.xinyu.mwp.util.DisplayUtil;
 import com.xinyu.mwp.util.NumberUtils;
 
 

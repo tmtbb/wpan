@@ -94,7 +94,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="@dimen/dp_30"
-            android:text="下一步" />
+            android:text="注册" />
 
         <include layout="@layout/ly_register_footer" />
 

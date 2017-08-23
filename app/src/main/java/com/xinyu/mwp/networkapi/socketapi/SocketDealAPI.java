@@ -19,6 +19,7 @@ import com.xinyu.mwp.entity.WXPayReturnEntity;
 import com.xinyu.mwp.entity.WithDrawCashReturnEntity;
 import com.xinyu.mwp.listener.OnAPIListener;
 import com.xinyu.mwp.networkapi.DealAPI;
+import com.xinyu.mwp.networkapi.NetworkAPIConfig;
 import com.xinyu.mwp.networkapi.NetworkAPIFactoryImpl;
 import com.xinyu.mwp.networkapi.socketapi.SocketReqeust.SocketDataPacket;
 import com.xinyu.mwp.util.LogUtil;
@@ -39,7 +40,6 @@ public class SocketDealAPI extends SocketBaseAPI implements DealAPI {
         HashMap<String, Object> map = new HashMap<>();
         map.put("id", NetworkAPIFactoryImpl.getConfig().getUserId());
         map.put("token", NetworkAPIFactoryImpl.getConfig().getUserToken());
-        LogUtil.d("商品列表请求数据--------");
         map.put("pid", 1002);
         SocketDataPacket socketDataPacket = socketDataPacket(SocketAPIConstant.OperateCode.Products,
                 SocketAPIConstant.ReqeutType.Deal, map);

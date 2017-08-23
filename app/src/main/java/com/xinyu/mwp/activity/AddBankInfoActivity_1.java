@@ -37,6 +37,7 @@ public class AddBankInfoActivity_1 extends BaseActivity {
     @ViewInject(R.id.next)
     private TextView next;
     private boolean flag = true;
+    private long exitNow;
 
     @Override
     protected int getContentView() {
@@ -55,6 +56,11 @@ public class AddBankInfoActivity_1 extends BaseActivity {
 
     @Event(value = {R.id.next})
     private void click(View v) {
+        if ((System.currentTimeMillis() - exitNow) < 3000) {
+            return;
+        }
+        exitNow = System.currentTimeMillis();
+
         NetworkAPIFactoryImpl.getDealAPI().bankName(cardNumber.getEditTextString(), new OnAPIListener<BankInfoEntity>() {
             @Override
             public void onError(Throwable ex) {
